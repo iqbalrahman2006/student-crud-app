@@ -51,52 +51,100 @@ const Reports = ({ students }) => {
     }, [students]);
 
     // --- CSV PIVOT ENGINE ---
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [viewMode, setViewMode] = useState('pivot'); // 'pivot' or 'raw'
+
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         if (!file) return;
 
+        setLoading(true);
+        setError(null);
+
         const reader = new FileReader();
         reader.onload = (evt) => {
-            const text = evt.target.result;
-            const lines = text.split('\n').map(l => l.trim()).filter(l => l);
-            if (lines.length < 2) {
-                alert("Invalid CSV: Need at least header and one row.");
-                return;
-            }
+            try {
+                const text = evt.target.result;
+                const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+                if (lines.length < 2) {
+                    throw new Error("Invalid CSV: Need at least header and one row.");
+                }
 
-            const headers = lines[0].split(',').map(h => h.replace(/"/g, '')); // Basic parse
-            const rows = lines.slice(1).map(line => {
-                const values = line.split(','); // Simplified split (assumes no internal commas for safe mode)
-                const obj = {};
-                headers.forEach((h, i) => obj[h] = values[i] ? values[i].replace(/"/g, '') : '');
-                return obj;
-            });
+                const headers = lines[0].split(',').map(h => h.replace(/"/g, ''));
+                const rows = lines.slice(1).map(line => {
+                    // Robust CSV parsing for quoted fields could go here, staying simple for now but safe
+                    const values = line.split(',');
+                    const obj = {};
+                    headers.forEach((h, i) => {
+                        obj[h] = values[i] ? values[i].replace(/"/g, '').trim() : '';
+                    });
+                    return obj;
+                });
 
-            setCsvData(rows);
-            // Default config
-            if (headers.length > 0) {
-                setPivotConfig({ groupBy: headers[0], value: 'count' });
+                if (rows.length === 0) throw new Error("CSV parsed but no data rows found.");
+
+                setCsvData(rows);
+                if (headers.length > 0) {
+                    setPivotConfig({
+                        groupBy: headers[0],
+                        valueField: headers[1] || headers[0],
+                        aggregation: 'count'
+                    });
+                }
+            } catch (err) {
+                console.error("CSV Parse Error:", err);
+                setError(err.message || "Failed to parse CSV file");
+            } finally {
+                setLoading(false);
             }
         };
-        reader.readAsText(file);
+        reader.onerror = () => {
+            setError("Failed to read file");
+            setLoading(false);
+        };
+
+        // Emulate processing time for UX
+        setTimeout(() => reader.readAsText(file), 500);
     };
 
     const pivotTable = useMemo(() => {
         if (!csvData.length || !pivotConfig.groupBy) return null;
 
-        const groups = {};
-        csvData.forEach(row => {
-            const key = row[pivotConfig.groupBy] || "Unknown";
-            if (!groups[key]) groups[key] = [];
-            groups[key].push(row);
-        });
+        try {
+            const groups = {};
+            csvData.forEach(row => {
+                const key = row[pivotConfig.groupBy] || "Unknown";
+                if (!groups[key]) groups[key] = [];
+                groups[key].push(row);
+            });
 
-        const results = Object.keys(groups).map(key => {
-            const count = groups[key].length;
-            return { label: key, count };
-        });
+            const results = Object.keys(groups).map(key => {
+                const groupRows = groups[key];
+                let value = 0;
 
-        return results.sort((a, b) => b.count - a.count);
+                if (pivotConfig.aggregation === 'count') {
+                    value = groupRows.length;
+                } else if (pivotConfig.aggregation === 'sum') {
+                    value = groupRows.reduce((sum, r) => sum + (parseFloat(r[pivotConfig.valueField]) || 0), 0);
+                } else if (pivotConfig.aggregation === 'avg') {
+                    const total = groupRows.reduce((sum, r) => sum + (parseFloat(r[pivotConfig.valueField]) || 0), 0);
+                    value = groupRows.length ? (total / groupRows.length) : 0;
+                }
+
+                // Format if float
+                if (typeof value === 'number' && !Number.isInteger(value)) {
+                    value = parseFloat(value.toFixed(2));
+                }
+
+                return { label: key, value, count: groupRows.length }; // Always return count for info
+            });
+
+            return results.sort((a, b) => b.value - a.value);
+        } catch (e) {
+            console.error("Pivot Calculation Error", e);
+            return [];
+        }
     }, [csvData, pivotConfig]);
 
 
@@ -158,7 +206,7 @@ const Reports = ({ students }) => {
                         <ol style={{ paddingLeft: '20px', marginTop: '8px' }}>
                             <li>Upload any standard CSV file (ensure headers are on the first row).</li>
                             <li>Use the controls to <strong>Group By</strong> specific fields (e.g., Country, Course).</li>
-                            <li>Visualize the distribution and export the summarized data for external use.</li>
+                            <li>Select <strong>Aggregation</strong> method (Count, Sum, Avg) on numerical columns.</li>
                         </ol>
                     </div>
 
@@ -166,11 +214,13 @@ const Reports = ({ students }) => {
                         <h3 style={{ marginTop: 0 }}>📂 Upload External CSV</h3>
                         <p className="text-muted">Drag & drop or click to upload file for analysis.</p>
                         <input type="file" accept=".csv" onChange={handleFileUpload} style={{ marginTop: '10px' }} />
+                        {loading && <div style={{ marginTop: '10px', color: 'var(--primary)' }}>Computing Pivot Data...</div>}
+                        {error && <div style={{ marginTop: '10px', color: 'var(--danger-text)' }}>⚠️ {error}</div>}
                     </div>
 
                     {csvData.length > 0 && (
                         <div className="pivot-workspace fade-in">
-                            <div className="pivot-controls">
+                            <div className="pivot-controls" style={{ flexWrap: 'wrap' }}>
                                 <div className="control-group">
                                     <label>Group Rows By:</label>
                                     <select
@@ -183,37 +233,85 @@ const Reports = ({ students }) => {
                                 </div>
                                 <div className="control-group">
                                     <label>Aggregation:</label>
-                                    <select className="setting-select" disabled>
-                                        <option>Count of Records</option>
+                                    <select
+                                        className="setting-select"
+                                        value={pivotConfig.aggregation}
+                                        onChange={(e) => setPivotConfig(prev => ({ ...prev, aggregation: e.target.value }))}
+                                    >
+                                        <option value="count">Count Records</option>
+                                        <option value="sum">Sum Values</option>
+                                        <option value="avg">Average Values</option>
                                     </select>
                                 </div>
-                                <div className="control-group" style={{ display: 'flex', alignItems: 'end' }}>
+                                {pivotConfig.aggregation !== 'count' && (
+                                    <div className="control-group">
+                                        <label>Value Field:</label>
+                                        <select
+                                            className="setting-select"
+                                            value={pivotConfig.valueField}
+                                            onChange={(e) => setPivotConfig(prev => ({ ...prev, valueField: e.target.value }))}
+                                        >
+                                            {Object.keys(csvData[0]).map(k => <option key={k} value={k}>{k}</option>)}
+                                        </select>
+                                    </div>
+                                )}
+                                <div className="control-group" style={{ display: 'flex', alignItems: 'end', marginLeft: 'auto', gap: '10px' }}>
+
+                                    <div className="toggle-group">
+                                        <button className={`toggle-btn ${viewMode === 'pivot' ? 'active' : ''}`} onClick={() => setViewMode('pivot')}>Pivot View</button>
+                                        <button className={`toggle-btn ${viewMode === 'raw' ? 'active' : ''}`} onClick={() => setViewMode('raw')}>Raw Data</button>
+                                    </div>
+
                                     <span className="badge badge-success" style={{ padding: '10px 16px', fontSize: '0.9rem' }}>
-                                        Total Records: {csvData.length}
+                                        Rows: {csvData.length}
                                     </span>
                                 </div>
                             </div>
 
-                            <div className="table-card">
-                                <table className="student-table sticky-header">
-                                    <thead>
-                                        <tr>
-                                            <th>{pivotConfig.groupBy}</th>
-                                            <th>Record Count</th>
-                                            <th>% Share</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {pivotTable.map((row) => (
-                                            <tr key={row.label}>
-                                                <td>{row.label}</td>
-                                                <td>{row.count}</td>
-                                                <td>{((row.count / csvData.length) * 100).toFixed(1)}%</td>
+                            {viewMode === 'pivot' ? (
+                                <div className="table-card">
+                                    <table className="student-table sticky-header">
+                                        <thead>
+                                            <tr>
+                                                <th>{pivotConfig.groupBy}</th>
+                                                <th>{pivotConfig.aggregation.toUpperCase()} ({pivotConfig.aggregation === 'count' ? 'Records' : pivotConfig.valueField})</th>
+                                                <th>% Share (of {pivotConfig.aggregation === 'count' ? 'Count' : 'Total'})</th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                                        </thead>
+                                        <tbody>
+                                            {pivotTable && pivotTable.map((row) => {
+                                                const totalVal = pivotTable.reduce((acc, r) => acc + r.value, 0);
+                                                return (
+                                                    <tr key={row.label}>
+                                                        <td>{row.label}</td>
+                                                        <td>{row.value}</td>
+                                                        <td>{totalVal > 0 ? ((row.value / totalVal) * 100).toFixed(1) : 0}%</td>
+                                                    </tr>
+                                                )
+                                            })}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            ) : (
+                                /* RAW DATA VIEW */
+                                <div className="table-card" style={{ maxHeight: '500px', overflow: 'auto' }}>
+                                    <table className="student-table sticky-header">
+                                        <thead>
+                                            <tr>
+                                                {Object.keys(csvData[0]).map(h => <th key={h}>{h}</th>)}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {csvData.slice(0, 100).map((row, i) => (
+                                                <tr key={i}>
+                                                    {Object.values(row).map((v, j) => <td key={j}>{v}</td>)}
+                                                </tr>
+                                            ))}
+                                            {csvData.length > 100 && <tr><td colSpan={Object.keys(csvData[0]).length} style={{ textAlign: 'center', color: '#999' }}>... {csvData.length - 100} more rows hidden for performance ...</td></tr>}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
@@ -233,7 +331,7 @@ const Reports = ({ students }) => {
                         <div className="stat-card">
                             <div className="stat-label">Active Rate</div>
                             <div className="stat-value">
-                                {((stats.active / stats.total) * 100).toFixed(0)}%
+                                {stats.total ? ((stats.active / stats.total) * 100).toFixed(0) : 0}%
                             </div>
                         </div>
                     </div>
@@ -244,7 +342,7 @@ const Reports = ({ students }) => {
                             <h3>GPA Distribution</h3>
                             <div className="bar-chart">
                                 {Object.entries(stats.gpaDist).map(([label, count]) => {
-                                    const percent = (count / stats.total) * 100;
+                                    const percent = stats.total ? (count / stats.total) * 100 : 0;
                                     return (
                                         <div key={label} className="chart-row">
                                             <span className="chart-label">{label}</span>

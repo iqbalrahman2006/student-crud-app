@@ -1,1 +1,31 @@
-node_modules
+node_module# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build
+dist/
+build/
+
+# React
+client/node_modules/
+client/build/
+
+# Logs
+logs/
+*.log
+.log/
+
+# Env
+*.env
+.env.*
+
+# Backup folders
+*_BACKUP_*/
+*backup*/
+
+# OS files
+.DS_Store
+Thumbs.db
+

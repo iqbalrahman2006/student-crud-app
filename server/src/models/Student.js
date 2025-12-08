@@ -33,7 +33,7 @@ const studentSchema = new mongoose.Schema({
     gpa: {
         type: Number,
         min: 0,
-        max: 4.0
+        max: 10.0
     },
     city: {
         type: String,

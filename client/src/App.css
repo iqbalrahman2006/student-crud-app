@@ -694,18 +694,8 @@ body {
   gap: 12px;
 }
 
-.section-number {
-  background: var(--primary-light);
-  color: var(--primary);
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.9rem;
-  font-weight: 800;
-}
+/* .section-number REMOVED per UI Guidelines */
+
 
 /* Message Population Grid */
 .message-grid {
@@ -771,6 +761,7 @@ body {
   color: var(--text-secondary);
   pointer-events: none;
   transition: all 0.2s ease;
+  z-index: 10;
   background-color: transparent;
 }
 
@@ -1243,3 +1234,22 @@ input:checked+.slider:before {
     grid-column: span 1;
   }
 }
+
+/* FIX: Blood Group Overlap & Small Screen Safety */
+@media (max-width: 480px) {
+  .floating-input {
+    font-size: 0.9rem;
+    /* Prevent zoom on iOS */
+  }
+}
+
+/* Ensure Floating Label Groups have flow */
+.floating-label-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  /* Flexbox grid fix */
+}
+
+/* Clean up unused numbering styles to strictly comply with "No Numbering" rule */
+/* .section-number { REMOVED } */
