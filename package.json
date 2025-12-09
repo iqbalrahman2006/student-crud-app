@@ -1,18 +1,14 @@
 {
-  "name": "student-crud-app",
-  "version": "1.0.0",
+  "name": "student-crud-app-root",
   "private": true,
   "scripts": {
+    "dev": "npx kill-port 3000 5000 && npx concurrently \"npm run client\" \"npm run server\"",
     "client": "npm start --prefix client",
-    "server": "npm start --prefix server",
-    "dev": "kill-port 3000 5000 && concurrently \"npm run client\" \"npm run server\"",
-    "start": "npm run dev",
-    "install": "npm install --prefix client && npm install --prefix server"
-  },
-  "dependencies": {
-    "concurrently": "^6.5.1"
+    "server": "npm run dev --prefix server",
+    "setup": "npm install --prefix client && npm install --prefix server"
   },
   "devDependencies": {
-    "kill-port": "^2.0.1"
+    "kill-port": "^2.0.1",
+    "concurrently": "^8.2.2"
   }
 }

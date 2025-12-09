@@ -33,4 +33,27 @@ describe('Settings Page Tests', () => {
         // Wait for "Saved!"
         expect(screen.getByText(/✅ Saved!/i)).toBeInTheDocument();
     });
+
+    test('Reset Defaults restores initial state immediately', () => {
+        // Mock window.confirm
+        window.confirm = jest.fn(() => true);
+        render(<Settings />);
+
+        // Change a setting first
+        const darkBtn = screen.getByLabelText('Dark Mode');
+        fireEvent.click(darkBtn);
+        expect(darkBtn).toHaveClass('active');
+
+        // Click Reset
+        const resetBtn = screen.getByText(/Reset Defaults/i);
+        fireEvent.click(resetBtn);
+
+        // Should verify confirmation called
+        expect(window.confirm).toHaveBeenCalled();
+
+        // Should revert to Light (active class removed from Dark button or check Light button)
+        // Since logic sets 'light' as active, check Light button
+        const lightBtn = screen.getByLabelText('Light Mode');
+        expect(lightBtn).toHaveClass('active');
+    });
 });

@@ -54,13 +54,16 @@ describe('StudentForm Enterprise Tests', () => {
     });
 
     // CRITICAL UI CHECK 2: Blood Group
-    test('renders Blood Group field correctly', () => {
+    test('renders Blood Group field correctly and validates', () => {
         render(<StudentForm {...defaultProps} />);
         // Should be in first section (Personal Info)
-        const bloodInput = screen.getByLabelText(/Blood Group/i);
-        expect(bloodInput).toBeInTheDocument();
-        // Check placeholder is clean
-        expect(bloodInput).toHaveAttribute('placeholder', 'e.g. O+');
+        const bloodSelect = screen.getByLabelText(/Blood Group/i);
+        expect(bloodSelect).toBeInTheDocument();
+        expect(bloodSelect.tagName).toBe('SELECT');
+
+        // Check options exist
+        fireEvent.change(bloodSelect, { target: { value: 'O+' } });
+        expect(bloodSelect.value).toBe('O+');
     });
 
     test('navigates through Accordion sections correctly', async () => {

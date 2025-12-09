@@ -1,0 +1,6 @@
+{
+    "ignore": [
+        "scripts/*"
+    ],
+    "delay": "1000"
+}

@@ -95,6 +95,13 @@ function StudentForm({ isOpen, onRequestClose, onSubmit, student, submitting }) 
         }
         break;
 
+      case "bloodGroup":
+        const validGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
+        if (value && !validGroups.includes(value)) {
+          error = "Invalid selection";
+        }
+        break;
+
       default:
         break;
     }
@@ -228,7 +235,28 @@ function StudentForm({ isOpen, onRequestClose, onSubmit, student, submitting }) 
               {/* ENTERPRISE FIELDS */}
               {renderFloatingInput("guardianName", "Guardian Name", "text")}
               {renderFloatingInput("emergencyContact", "Emergency Contact", "tel")}
-              {renderFloatingInput("bloodGroup", "Blood Group", "text", false, { placeholder: "e.g. O+" })}
+
+              {/* Blood Group Dropdown - Strict Selection */}
+              <div className="form-group floating-label-group">
+                <select
+                  id="bloodGroup"
+                  name="bloodGroup"
+                  className={`floating-input ${errors.bloodGroup && touched.bloodGroup ? 'has-error' : ''}`}
+                  value={formData.bloodGroup}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                >
+                  <option value="">Select...</option>
+                  {['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'].map(bg => (
+                    <option key={bg} value={bg}>{bg}</option>
+                  ))}
+                </select>
+                {/* Fixed Overlap: Locked floating label for Select used to prevent collision */}
+                <label htmlFor="bloodGroup" className="floating-label" style={{ top: '6px', fontSize: '0.75rem', color: 'var(--primary)' }}>Blood Group</label>
+                {errors.bloodGroup && touched.bloodGroup && (
+                  <div className="error-text"><span>⚠️</span> {errors.bloodGroup}</div>
+                )}
+              </div>
 
               <div className="form-actions-right">
                 <button type="button" className="button button-submit" onClick={() => goToSection(2)}>Next ➔</button>

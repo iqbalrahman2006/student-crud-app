@@ -101,6 +101,7 @@ const Settings = ({
 
     const resetDefaults = () => {
         if (!window.confirm("Reset all settings to default?")) return;
+
         const defaults = {
             theme: 'light',
             density: 'comfortable',
@@ -110,8 +111,27 @@ const Settings = ({
             adminRole: 'Administrator',
             notifications: { email: true, sms: false }
         };
+
+        // 1. Update State
         setLocalConfig(defaults);
-        setIsSaved(false);
+
+        // 2. Persist to LocalStorage immediately
+        localStorage.setItem('app_theme', defaults.theme);
+        localStorage.setItem('app_density', defaults.density);
+        localStorage.setItem('app_refresh', defaults.refreshInterval);
+        localStorage.setItem('app_softDelete', defaults.softDelete);
+        localStorage.setItem('admin_name', defaults.adminName);
+        localStorage.setItem('admin_role', defaults.adminRole);
+        localStorage.setItem('app_notifications', JSON.stringify(defaults.notifications));
+
+        // 3. Apply to App Props immediately
+        if (setTheme) setTheme(defaults.theme);
+        if (setDensity) setDensity(defaults.density);
+        if (setRefreshInterval) setRefreshInterval(parseInt(defaults.refreshInterval));
+
+        // 4. Feedback
+        setIsSaved(true);
+        setTimeout(() => setIsSaved(false), 2000);
     };
 
     return (

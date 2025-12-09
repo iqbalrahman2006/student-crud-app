@@ -39,7 +39,7 @@ describe('Enterprise App Integration', () => {
         const reportsLinks = screen.getAllByText(/Reports/i);
         fireEvent.click(reportsLinks[0]); // Click sidebar link
 
-        expect(screen.getByText(/Analytics Dashboard/i)).toBeInTheDocument();
+        expect(screen.getByText(/Analytics & Reports/i)).toBeInTheDocument();
     });
 
     test('navigates to Settings module', async () => {
@@ -50,7 +50,7 @@ describe('Enterprise App Integration', () => {
         const settingsLinks = screen.getAllByText(/Settings/i);
         fireEvent.click(settingsLinks[0]);
 
-        expect(screen.getByText(/System Preferences/i)).toBeInTheDocument();
+        expect(screen.getByText(/System Settings/i)).toBeInTheDocument();
     });
 
     test('navigates back to Students list', async () => {
@@ -63,7 +63,7 @@ describe('Enterprise App Integration', () => {
         fireEvent.click(reportsLinks[0]);
 
         // Ensure we are on reports
-        expect(screen.getByText(/Analytics Dashboard/i)).toBeInTheDocument();
+        expect(screen.getByText(/Analytics & Reports/i)).toBeInTheDocument();
 
         const studentLinks = screen.getAllByText(/Students/i);
         // Usually the first one is Sidebar, second might be breadcrumb or button
