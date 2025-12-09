@@ -22,11 +22,13 @@ const AuditLogs = () => {
     const fetchLogs = async () => {
         setLoading(true);
         try {
-            const query = new URLSearchParams({
-                page: page,
-                limit: 20,
-                ...filters
-            }).toString();
+            // Robustly construct params
+            const params = { page, limit: 20 };
+            if (filters.action) params.action = filters.action;
+            if (filters.start) params.start = filters.start;
+            if (filters.end) params.end = filters.end;
+
+            const query = new URLSearchParams(params).toString();
 
             const res = await axios.get(`http://localhost:5000/api/v1/library/audit-logs?${query}`, {
                 headers: { 'x-role': 'ADMIN' } // Mock Auth
@@ -39,6 +41,7 @@ const AuditLogs = () => {
             setLoading(false);
         }
     };
+
 
     const handleFilterChange = (e) => {
         setFilters({ ...filters, [e.target.name]: e.target.value });

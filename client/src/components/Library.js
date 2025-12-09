@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import Modal from 'react-modal';
 import { addBook, updateBook, issueBook, triggerReminders } from '../services/api';
 import '../App.css';
@@ -10,7 +11,37 @@ import TransactionHistory from './library/TransactionHistory';
 import AuditLogs from './library/AuditLogs';
 
 const Library = ({ students }) => {
+    const location = useLocation();
+    const history = useHistory();
     const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, books, issued, history, logs
+
+    // SYNC TABS WITH URL
+    React.useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        let tab = 'dashboard';
+
+        // Check if path contains specific segments or params
+        if (location.pathname.includes('/inventory') || queryParams.get('filter') || queryParams.get('open') || queryParams.get('department')) {
+            tab = 'books';
+        } else if (location.pathname.includes('/issued')) {
+            tab = 'issued';
+        } else if (location.pathname.includes('/history')) {
+            tab = 'history';
+        } else if (location.pathname.includes('/logs')) {
+            tab = 'logs';
+        }
+
+        setActiveTab(tab);
+    }, [location]);
+
+    // WRAPPER FOR TAB SWITCHING
+    const switchTab = (tabName) => {
+        let path = '/library';
+        if (tabName === 'books') path = '/library/inventory';
+        else if (tabName !== 'dashboard') path = `/library/${tabName}`;
+        history.push(path);
+        setActiveTab(tabName);
+    };
 
     // 2. Issue Handlers (Re-added state and handlers that were hidden/lost)
     const [isBookModalOpen, setIsBookModalOpen] = useState(false);
@@ -75,11 +106,13 @@ const Library = ({ students }) => {
                 </div>
 
                 <div className="action-buttons">
-                    <button className={`button ${activeTab === 'dashboard' ? 'status-active' : 'button-edit'}`} onClick={() => setActiveTab('dashboard')}>📊 Dashboard</button>
-                    <button className={`button ${activeTab === 'books' ? 'status-active' : 'button-edit'}`} onClick={() => setActiveTab('books')}>📖 Inventory</button>
-                    <button className={`button ${activeTab === 'issued' ? 'status-active' : 'button-edit'}`} onClick={() => setActiveTab('issued')}>📨 Active Loans</button>
-                    <button className={`button ${activeTab === 'history' ? 'status-active' : 'button-edit'}`} onClick={() => setActiveTab('history')}>📜 History</button>
-                    <button className={`button ${activeTab === 'logs' ? 'status-active' : 'button-edit'}`} onClick={() => setActiveTab('logs')}>🛡️ Logs</button>
+                    <div className="action-buttons">
+                        <button className={`button ${activeTab === 'dashboard' ? 'status-active' : 'button-edit'}`} onClick={() => switchTab('dashboard')}>📊 Dashboard</button>
+                        <button className={`button ${activeTab === 'books' ? 'status-active' : 'button-edit'}`} onClick={() => switchTab('books')}>📖 Inventory</button>
+                        <button className={`button ${activeTab === 'issued' ? 'status-active' : 'button-edit'}`} onClick={() => switchTab('issued')}>📨 Active Loans</button>
+                        <button className={`button ${activeTab === 'history' ? 'status-active' : 'button-edit'}`} onClick={() => switchTab('history')}>📜 History</button>
+                        <button className={`button ${activeTab === 'logs' ? 'status-active' : 'button-edit'}`} onClick={() => switchTab('logs')}>🛡️ Logs</button>
+                    </div>
                 </div>
             </div>
 
