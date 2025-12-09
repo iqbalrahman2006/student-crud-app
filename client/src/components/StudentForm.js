@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import Modal from "react-modal";
 import { GLOBAL_LOCATIONS, getCountries, getCities } from "../data/locations";
 import HybridSelect from "./HybridSelect";
+import LibraryProfileView from "./library/LibraryProfileView";
 import "../App.css";
 
 try {
@@ -404,6 +405,23 @@ function StudentForm({ isOpen, onRequestClose, onSubmit, student, submitting }) 
               <div className="form-actions-right">
                 <button type="button" className="button button-cancel" onClick={() => goToSection(2)}>Back</button>
               </div>
+            </div>
+          )}
+        </div>
+
+        {/* === SECTION 4: LIBRARY ACTIVITY (ENTERPRISE) === */}
+        <div className={`accordion-section ${activeSection === 4 ? 'active' : ''}`}>
+          <div className="accordion-header" onClick={() => goToSection(4)}>
+            <h3>Library Activity</h3>
+            <span className="accordion-icon">{activeSection === 4 ? '−' : '+'}</span>
+          </div>
+          {activeSection === 4 && (
+            <div className="accordion-content fade-in">
+              {!student ? (
+                <div className="empty-state">Save student first to view library data.</div>
+              ) : (
+                <LibraryProfileView studentId={student._id} />
+              )}
             </div>
           )}
         </div>

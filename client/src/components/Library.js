@@ -1,257 +1,110 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
-import { getBooks, addBook, updateBook, deleteBook, issueBook, returnBook, renewBook, getTransactions } from '../services/api';
+import { addBook, updateBook, issueBook, triggerReminders } from '../services/api';
 import '../App.css';
 
-const Library = ({ students }) => { // Receives students prop for Issue modal
-    const [activeTab, setActiveTab] = useState('books'); // books, issued, history
-    const [books, setBooks] = useState([]);
-    const [transactions, setTransactions] = useState([]);
-    const [loading, setLoading] = useState(false);
+// Sub Components
+import LibraryAnalytics from './library/LibraryAnalytics';
+import BookInventory from './library/BookInventory';
+import TransactionHistory from './library/TransactionHistory';
+import AuditLogs from './library/AuditLogs';
 
-    // Modals
+const Library = ({ students }) => {
+    const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, books, issued, history, logs
+
+    // 2. Issue Handlers (Re-added state and handlers that were hidden/lost)
     const [isBookModalOpen, setIsBookModalOpen] = useState(false);
     const [isIssueModalOpen, setIsIssueModalOpen] = useState(false);
-
-    // Form States
-    const [currentBook, setCurrentBook] = useState(null); // For Edit
-    const [bookForm, setBookForm] = useState({ title: '', author: '', isbn: '', genre: '', totalCopies: 1 });
+    const [isAlertsOpen, setIsAlertsOpen] = useState(false);
+    const [isTriggering, setIsTriggering] = useState(false);
+    const [currentBook, setCurrentBook] = useState(null);
+    const [bookForm, setBookForm] = useState({ title: '', author: '', isbn: '', genre: '', department: 'General', totalCopies: 1 });
     const [issueForm, setIssueForm] = useState({ bookId: '', studentId: '', days: 14 });
+    const [refreshKey, setRefreshKey] = useState(0);
 
-    useEffect(() => {
-        loadData();
-    }, [activeTab]);
-
-    const loadData = async () => {
-        setLoading(true);
-        try {
-            if (activeTab === 'books') {
-                const res = await getBooks();
-                setBooks(res.data.data || []);
-            } else if (activeTab === 'issued') {
-                const res = await getTransactions('Issued');
-                setTransactions(res.data.data || []);
-            } else if (activeTab === 'history') {
-                const res = await getTransactions('Returned'); // Or all
-                setTransactions(res.data.data || []);
-            }
-        } catch (e) {
-            console.error("Failed to load library data", e);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // --- BOOK CRUD ---
     const handleBookSubmit = async (e) => {
         e.preventDefault();
         try {
-            if (currentBook) {
-                await updateBook(currentBook._id, bookForm);
-            } else {
-                await addBook(bookForm);
-            }
+            if (currentBook) await updateBook(currentBook._id, bookForm);
+            else await addBook(bookForm);
             setIsBookModalOpen(false);
-            setBookForm({ title: '', author: '', isbn: '', genre: '', totalCopies: 1 });
+            setBookForm({ title: '', author: '', isbn: '', genre: '', department: 'General', totalCopies: 1 });
             setCurrentBook(null);
-            loadData();
-        } catch (e) {
-            alert("Error saving book: " + (e.response?.data?.message || e.message));
-        }
-    };
-
-    const handleDeleteBook = async (id) => {
-        if (!window.confirm("Delete this book?")) return;
-        try {
-            await deleteBook(id);
-            loadData();
-        } catch (e) {
-            alert("Error deleting book");
-        }
+            setRefreshKey(prev => prev + 1);
+        } catch (e) { alert("Error saving book: " + (e.response?.data?.message || e.message)); }
     };
 
     const openEditBook = (book) => {
         setCurrentBook(book);
-        setBookForm({
-            title: book.title,
-            author: book.author,
-            isbn: book.isbn,
-            genre: book.genre,
-            totalCopies: book.totalCopies
-        });
+        setBookForm({ title: book.title, author: book.author, isbn: book.isbn, genre: book.genre, department: book.department || 'General', totalCopies: book.totalCopies });
         setIsBookModalOpen(true);
     };
 
-    // --- TRANSACTIONS ---
+    const openIssueBook = (book) => {
+        setIssueForm(prev => ({ ...prev, bookId: book._id }));
+        setIsIssueModalOpen(true);
+    };
+
     const handleIssueSubmit = async (e) => {
         e.preventDefault();
         try {
             await issueBook(issueForm);
             setIsIssueModalOpen(false);
             setIssueForm({ bookId: '', studentId: '', days: 14 });
-            // Refresh logic depends on where we are, but usually go to 'issued' tab
             setActiveTab('issued');
-        } catch (e) {
-            alert("Issue Failed: " + (e.response?.data?.message || e.message));
-        }
+            setRefreshKey(prev => prev + 1);
+        } catch (e) { alert("Issue Failed: " + (e.response?.data?.message || e.message)); }
     };
 
-    const handleReturn = async (txnId) => {
-        if (!window.confirm("Confirm return?")) return;
-        try {
-            await returnBook({ transactionId: txnId });
-            insertSystemMessage("Returning book...");
-            loadData();
-        } catch (e) {
-            alert("Return Failed");
-        }
-    };
-
-    const handleRenew = async (txnId) => {
-        try {
-            await renewBook({ transactionId: txnId });
-            loadData();
-        } catch (e) {
-            alert("Renew Failed");
-        }
-    };
-
-    // Email Trigger
     const handleTriggerReminders = async () => {
         setIsTriggering(true);
-        try {
-            await import('../services/api').then(m => m.triggerReminders());
-            alert("✅ Reminders Sent Successfully!");
-        } catch (e) {
-            alert("Trigger Failed: " + e.message);
-        } finally {
-            setIsTriggering(false);
-        }
+        try { await triggerReminders(); alert("✅ Reminders Sent!"); }
+        catch (e) { alert("Trigger Failed: " + e.message); }
+        finally { setIsTriggering(false); }
     };
-
-    // Quick Hack for toast-like behavior if main app toast isn't exposed
-    const insertSystemMessage = (msg) => console.log(msg);
-
-    // Alert Status Modal
-    const [isAlertsOpen, setIsAlertsOpen] = useState(false);
-    const [isTriggering, setIsTriggering] = useState(false);
 
     return (
         <div className="library-container fade-in">
+            {/* HEADER */}
             <div className="report-header">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <h2>📚 Library Management</h2>
-                    <button className="button button-sm" style={{ backgroundColor: '#6366f1', fontSize: '0.8rem' }} onClick={() => setIsAlertsOpen(true)}>
-                        🔔 Email Alerts
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800, letterSpacing: '-0.5px' }}>📚 Library OS</h2>
+                    <button className="button button-sm" style={{ backgroundColor: '#6366f1', color: 'white', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '5px' }} onClick={() => setIsAlertsOpen(true)}>
+                        <span>🔔</span> Email Engine
                     </button>
                 </div>
+
                 <div className="action-buttons">
-                    <button className={`button ${activeTab === 'books' ? 'status-active' : 'button-edit'}`} onClick={() => setActiveTab('books')}>Books Inventory</button>
-                    <button className={`button ${activeTab === 'issued' ? 'status-active' : 'button-edit'}`} onClick={() => setActiveTab('issued')}>Issued Books</button>
-                    <button className={`button ${activeTab === 'history' ? 'status-active' : 'button-edit'}`} onClick={() => setActiveTab('history')}>History</button>
+                    <button className={`button ${activeTab === 'dashboard' ? 'status-active' : 'button-edit'}`} onClick={() => setActiveTab('dashboard')}>📊 Dashboard</button>
+                    <button className={`button ${activeTab === 'books' ? 'status-active' : 'button-edit'}`} onClick={() => setActiveTab('books')}>📖 Inventory</button>
+                    <button className={`button ${activeTab === 'issued' ? 'status-active' : 'button-edit'}`} onClick={() => setActiveTab('issued')}>📨 Active Loans</button>
+                    <button className={`button ${activeTab === 'history' ? 'status-active' : 'button-edit'}`} onClick={() => setActiveTab('history')}>📜 History</button>
+                    <button className={`button ${activeTab === 'logs' ? 'status-active' : 'button-edit'}`} onClick={() => setActiveTab('logs')}>🛡️ Logs</button>
                 </div>
             </div>
 
-            {/* TAB CONTENT */}
+            {/* CONTENT AREA */}
             <div className="workspace-content" style={{ marginTop: '20px' }}>
+
+                {activeTab === 'dashboard' && <LibraryAnalytics />}
 
                 {activeTab === 'books' && (
                     <>
                         <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'flex-end' }}>
                             <button className="button button-submit" onClick={() => { setCurrentBook(null); setIsBookModalOpen(true); }}>+ Add New Book</button>
                         </div>
-                        <div className="table-card">
-                            <table className="student-table sticky-header">
-                                <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Author</th>
-                                        <th>ISBN</th>
-                                        <th>Genre</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {books.map(b => (
-                                        <tr key={b._id}>
-                                            <td style={{ fontWeight: 600 }}>{b.title}</td>
-                                            <td>{b.author}</td>
-                                            <td>{b.isbn}</td>
-                                            <td>{b.genre}</td>
-                                            <td>
-                                                <span className={`status-badge ${b.availableCopies > 0 ? 'status-active' : 'status-suspended'}`}>
-                                                    {b.availableCopies} / {b.totalCopies} Available
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <div className="action-buttons">
-                                                    <button className="button button-edit" onClick={() => openEditBook(b)}>Edit</button>
-                                                    <button className="button button-delete" onClick={() => handleDeleteBook(b._id)}>Delete</button>
-                                                    {b.availableCopies > 0 && (
-                                                        <button
-                                                            className="button button-submit"
-                                                            style={{ padding: '6px 10px' }}
-                                                            onClick={() => { setIssueForm(prev => ({ ...prev, bookId: b._id })); setIsIssueModalOpen(true); }}
-                                                        >Issue</button>
-                                                    )}
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                    {!loading && books.length === 0 && <tr><td colSpan="6" style={{ textAlign: 'center', padding: '20px' }}>No books found.</td></tr>}
-                                </tbody>
-                            </table>
-                        </div>
+                        <BookInventory key={refreshKey} onEdit={openEditBook} onIssue={openIssueBook} />
                     </>
                 )}
 
-                {(activeTab === 'issued' || activeTab === 'history') && (
-                    <div className="table-card">
-                        <table className="student-table sticky-header">
-                            <thead>
-                                <tr>
-                                    <th>Book Title</th>
-                                    <th>Student</th>
-                                    <th>Issue Date</th>
-                                    <th>Due Date</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {transactions.map(t => {
-                                    const isOverdue = new Date() > new Date(t.dueDate) && t.status === 'Issued';
-                                    return (
-                                        <tr key={t._id} style={isOverdue ? { backgroundColor: '#fff1f2' } : {}}>
-                                            <td style={{ fontWeight: 600 }}>{t.book?.title || "Unknown Book"}</td>
-                                            <td>{t.student?.name || "Unknown Student"}</td>
-                                            <td>{new Date(t.issueDate).toLocaleDateString()}</td>
-                                            <td style={isOverdue ? { color: 'red', fontWeight: 'bold' } : {}}>
-                                                {new Date(t.dueDate).toLocaleDateString()} {isOverdue && "(OVERDUE)"}
-                                            </td>
-                                            <td>
-                                                <span className={`status-badge ${t.status === 'Issued' ? 'status-graduated' : 'status-active'}`}>
-                                                    {t.status}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                {t.status === 'Issued' && (
-                                                    <div className="action-buttons">
-                                                        <button className="button button-submit" onClick={() => handleReturn(t._id)}>Return</button>
-                                                        <button className="button button-edit" onClick={() => handleRenew(t._id)}>Renew</button>
-                                                    </div>
-                                                )}
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                                {!loading && transactions.length === 0 && <tr><td colSpan="6" style={{ textAlign: 'center', padding: '20px' }}>No transactions found.</td></tr>}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
+                {activeTab === 'issued' && <TransactionHistory key={refreshKey} isActiveView={true} />}
+
+                {activeTab === 'history' && <TransactionHistory key={refreshKey} isActiveView={false} />}
+
+                {activeTab === 'logs' && <AuditLogs />}
             </div>
+
+            {/* --- MODALS --- */}
 
             {/* ADD/EDIT BOOK MODAL */}
             <Modal
@@ -277,6 +130,18 @@ const Library = ({ students }) => { // Receives students prop for Issue modal
                         <div className="form-group floating-label-group">
                             <input className="floating-input" name="isbn" value={bookForm.isbn} onChange={e => setBookForm({ ...bookForm, isbn: e.target.value })} required placeholder=" " />
                             <label className="floating-label">ISBN</label>
+                        </div>
+                        <div className="form-group floating-label-group">
+                            <select className="floating-input" name="department" value={bookForm.department} onChange={e => setBookForm({ ...bookForm, department: e.target.value })} required>
+                                <option value="General">General</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Electrical">Electrical</option>
+                                <option value="Mechanical">Mechanical</option>
+                                <option value="Civil">Civil</option>
+                                <option value="Business">Business</option>
+                                <option value="Literature">Literature</option>
+                            </select>
+                            <label className="floating-label" style={{ top: '6px', fontSize: '0.75rem', color: 'var(--primary)' }}>Department</label>
                         </div>
                         <div className="form-group floating-label-group">
                             <input className="floating-input" name="genre" value={bookForm.genre} onChange={e => setBookForm({ ...bookForm, genre: e.target.value })} placeholder=" " />
@@ -306,8 +171,6 @@ const Library = ({ students }) => { // Receives students prop for Issue modal
                     <button className="button-icon" onClick={() => setIsIssueModalOpen(false)}>✕</button>
                 </div>
                 <form onSubmit={handleIssueSubmit} className="modal-content-scroll form">
-                    <p>Issuing <strong>{books.find(b => b._id === issueForm.bookId)?.title}</strong></p>
-
                     <div className="form-group floating-label-group" style={{ marginTop: '20px' }}>
                         <select
                             className="floating-input"
@@ -363,13 +226,13 @@ const Library = ({ students }) => { // Receives students prop for Issue modal
                             <span>Scheduler Active (Daily 08:00 AM)</span>
                         </div>
                         <p style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '5px' }}>
-                            System automatically scans for overdue books and sends email notifications via <strong>NodeMailer</strong>.
+                            System automatically scans for overdue books and sends email notifications via <strong>NodeMailer</strong> (HTML Templates supported).
                         </p>
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                         <label style={{ fontWeight: 600 }}>Manual Override</label>
-                        <p style={{ fontSize: '0.85rem', margin: 0 }}>Force run the daily check now. This may take a few seconds.</p>
+                        <p style={{ fontSize: '0.85rem', margin: 0 }}>Force run the daily check now.</p>
                         <button
                             className="button button-submit"
                             style={{ width: '100%', marginTop: '10px', opacity: isTriggering ? 0.7 : 1 }}
@@ -384,7 +247,7 @@ const Library = ({ students }) => { // Receives students prop for Issue modal
                     <button type="button" className="button button-cancel" onClick={() => setIsAlertsOpen(false)}>Close</button>
                 </div>
             </Modal>
-        </div>
+        </div >
     );
 };
 

@@ -15,9 +15,14 @@ const HybridSelect = ({
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [filter, setFilter] = useState("");
+    // eslint-disable-next-line no-unused-vars
     const [isCustom, setIsCustom] = useState(false);
     const wrapperRef = useRef(null);
     const inputRef = useRef(null);
+    // const [highlightIndex, setHighlightIndex] = useState(-1); // Unused for now
+
+    // Safety check for options
+    // const safeOptions = Array.isArray(options) ? options : []; 
 
     // Initialize internal state based on props
     useEffect(() => {

@@ -41,21 +41,91 @@ const generateBooks = (count) => {
     return books;
 };
 
+// ... imports
+const Student = require('../models/Student');
+const Transaction = require('../models/Transaction');
+
+// ... generateBooks function stays same ...
+
+const seedTransactions = async (books) => {
+    console.log("   > Generating Transactions for defined Popularity...");
+    const students = await Student.find().limit(50); // Get some students
+    if (students.length === 0) {
+        console.warn("   ! No students found. Skipping transaction seeding.");
+        return;
+    }
+
+    // Pick 5-8 random books to be "Popular"
+    const popularBooks = [];
+    for (let i = 0; i < 8; i++) {
+        popularBooks.push(books[Math.floor(Math.random() * books.length)]);
+    }
+
+    const transactions = [];
+
+    // For each popular book, create 5-15 transactions
+    for (const book of popularBooks) {
+        const txCount = Math.floor(Math.random() * 10) + 5;
+        console.log(`     - Ref: ${book.title} will have ${txCount} issues.`);
+
+        for (let j = 0; j < txCount; j++) {
+            const student = students[Math.floor(Math.random() * students.length)];
+            const isReturned = Math.random() > 0.3; // 70% returned
+
+            const issueDate = new Date();
+            issueDate.setDate(issueDate.getDate() - Math.floor(Math.random() * 60) - 1); // 1-60 days ago
+
+            const dueDate = new Date(issueDate);
+            dueDate.setDate(dueDate.getDate() + 14);
+
+            const tx = {
+                book: book._id,
+                student: student._id,
+                issueDate: issueDate,
+                dueDate: dueDate,
+                status: isReturned ? 'Returned' : 'Issued',
+                returnDate: isReturned ? new Date(dueDate.getTime() + (Math.random() * 86400000 * 5 * (Math.random() > 0.5 ? 1 : -1))) : null,
+                fine: 0,
+                renewalCount: Math.floor(Math.random() * 2)
+            };
+            transactions.push(tx);
+        }
+    }
+
+    if (transactions.length > 0) {
+        await Transaction.insertMany(transactions);
+        console.log(`   + Seeded ${transactions.length} Transactions.`);
+    }
+};
+
 const seedBooks = async () => {
     try {
         await mongoose.connect(DB_URI);
         console.log("Connected to DB for Seeding...");
 
+        // Strategy: Append if existing, or fill if empty.
         const count = await Book.countDocuments();
-        if (count > 50 && process.argv[2] !== '--force') {
-            console.log(`Database already has ${count} books. Skipping seed. Use --force to overwrite/append.`);
-            process.exit(0);
+        let createdBooks = [];
+
+        if (count > 600 && process.argv[2] !== '--force') {
+            console.log(`Database has ${count} books. Adding 100 more...`);
+            const newBooks = generateBooks(100);
+            createdBooks = await Book.insertMany(newBooks);
+            console.log(`✅ Added 100 new books.`);
+        } else if (count <= 600) {
+            console.log("Seeding base ~200 books...");
+            const books = generateBooks(200);
+            createdBooks = await Book.insertMany(books);
+            console.log(`✅ Seeded ${books.length} books.`);
         }
 
-        const books = generateBooks(500);
-        await Book.insertMany(books);
+        // Always seed transactions for popularity if we added books OR if force used
+        // To be safe, let's just fetch ALL books now and pick some for transactions 
+        // ensuring we use valid IDs from DB
+        const allBooks = await Book.find().limit(500);
+        await seedTransactions(allBooks);
 
-        console.log(`✅ Successfully seeded ${books.length} books!`);
+        console.log("✅ Seeding Logic Complete.");
         process.exit(0);
     } catch (err) {
         console.error("Seeding Failed:", err);

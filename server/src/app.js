@@ -27,6 +27,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/v1/students', studentsRouter);
 app.use('/api/v1/library', require('./routes/library'));
 
+// Root Handler for API Check
+app.get('/', (req, res) => {
+  res.status(200).json({ status: 'success', message: 'Student DB API is running' });
+});
+
 // SCHEDULER
 try {
   const { initScheduler } = require('./utils/scheduler');

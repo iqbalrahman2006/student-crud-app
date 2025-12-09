@@ -45,6 +45,10 @@ const bookSchema = new mongoose.Schema({
     addedDate: {
         type: Date,
         default: Date.now
+    },
+    autoTags: {
+        type: [String],
+        default: []
     }
 });
 

@@ -6,36 +6,43 @@ const Student = require('../src/models/Student');
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/studentdb';
 const SHOULD_SEED = process.argv.includes('--force') || process.env.SEED_DB === 'true';
 
+// Data Arrays for Random Generation
+const firstNames = ["James", "Mary", "John", "Patricia", "Robert", "Jennifer", "Michael", "Linda", "William", "Elizabeth", "David", "Barbara", "Richard", "Susan", "Joseph", "Jessica", "Thomas", "Sarah", "Charles", "Karen", "Christopher", "Nancy", "Daniel", "Lisa", "Matthew", "Margaret", "Anthony", "Betty", "Donald", "Sandra"];
+const lastNames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin"];
+const courses = ["Computer Science", "Electrical Engineering", "Mechanical Engineering", "Civil Engineering", "Physics", "Mathematics", "Business", "Economics", "Psychology", "History", "Biology", "Chemistry", "Political Science", "Sociology", "Philosophy"];
+const cities = [
+    { city: "New York", country: "USA" }, { city: "London", country: "UK" }, { city: "Mumbai", country: "India" },
+    { city: "Sydney", country: "Australia" }, { city: "Toronto", country: "Canada" }, { city: "Berlin", country: "Germany" },
+    { city: "Paris", country: "France" }, { city: "Tokyo", country: "Japan" }, { city: "Dubai", country: "UAE" },
+    { city: "Singapore", country: "Singapore" }, { city: "Seoul", country: "South Korea" }, { city: "Shanghai", country: "China" }
+];
+
+const generateRandomStudents = (count) => {
+    const students = [];
+    for (let i = 0; i < count; i++) {
+        const fName = firstNames[Math.floor(Math.random() * firstNames.length)];
+        const lName = lastNames[Math.floor(Math.random() * lastNames.length)];
+        const loc = cities[Math.floor(Math.random() * cities.length)];
+
+        students.push({
+            name: `${fName} ${lName}`,
+            email: `${fName.toLowerCase()}.${lName.toLowerCase()}${Math.floor(Math.random() * 9999)}@example.com`,
+            course: courses[Math.floor(Math.random() * courses.length)],
+            gpa: parseFloat((Math.random() * 4 + 6).toFixed(1)), // 6.0 - 10.0
+            status: Math.random() > 0.1 ? "Active" : ["Inactive", "Suspended", "Graduated"][Math.floor(Math.random() * 3)],
+            country: loc.country,
+            city: loc.city,
+            transportMode: ["Bus", "Walk", "Private", "Subway"][Math.floor(Math.random() * 4)],
+            studentCategory: Math.random() > 0.3 ? "Local" : "International"
+        });
+    }
+    return students;
+};
+
 const sampleStudents = [
-    // Engineering - CS
+    // Keep a few static ones for deterministic testing if needed
     { name: "Rahul Sharma", email: "rahul.sharma@example.com", course: "Computer Science", gpa: 8.5, status: "Active", country: "India", city: "Mumbai", transportMode: "Bus", studentCategory: "Local" },
-    { name: "Emily Watson", email: "emily.w@example.com", course: "Computer Science", gpa: 9.1, status: "Active", country: "UK", city: "London", transportMode: "Bus", studentCategory: "International" },
-    { name: "Carlos Menendez", email: "carlos.m@example.com", course: "Computer Science", gpa: 7.4, status: "Active", country: "Spain", city: "Madrid", transportMode: "Walk", studentCategory: "International" },
-
-    // Engineering - Electrical
-    { name: "Hans Muller", email: "hans.m@example.com", course: "Electrical Engineering", gpa: 7.2, status: "Inactive", country: "Germany", city: "Berlin", transportMode: "Walk", studentCategory: "International" },
-    { name: "Sarah Jenkins", email: "sarah.j@example.com", course: "Electrical Engineering", gpa: 3.8, status: "Active", country: "USA", city: "New York", transportMode: "Private", studentCategory: "International" },
-
-    // Engineering - Mechanical
-    { name: "Ahmed Al-Sayed", email: "ahmed.a@example.com", course: "Mechanical Engineering", gpa: 8.0, status: "Graduated", country: "UAE", city: "Dubai", transportMode: "Private", studentCategory: "International" },
-    { name: "John Smith", email: "john.smith@example.com", course: "Mechanical Engineering", gpa: 2.5, status: "Suspended", country: "USA", city: "Chicago", transportMode: "Private", studentCategory: "Local" },
-
-    // Science - Physics
-    { name: "Priya Patel", email: "priya.p@example.com", course: "Physics", gpa: 7.8, status: "Active", country: "India", city: "Ahmedabad", transportMode: "Bus", studentCategory: "Local" },
-    { name: "Yuki Tanaka", email: "yuki.t@example.com", course: "Physics", gpa: 9.5, status: "Active", country: "Japan", city: "Tokyo", transportMode: "Subway", studentCategory: "International" },
-
-    // Science - Mathematics
-    { name: "Chen Wei", email: "chen.wei@example.com", course: "Mathematics", gpa: 6.5, status: "Graduated", country: "China", city: "Shanghai", transportMode: "Private", studentCategory: "Exchange" },
-    { name: "Alice Dubois", email: "alice.d@example.com", course: "Mathematics", gpa: 8.9, status: "Active", country: "France", city: "Paris", transportMode: "Walk", studentCategory: "International" },
-
-    // Business
-    { name: "Fatima Hassan", email: "fatima.h@example.com", course: "Business", gpa: 8.2, status: "Active", country: "Egypt", city: "Cairo", transportMode: "Car", studentCategory: "International" },
-    { name: "Robert Brown", email: "robert.b@example.com", course: "Business", gpa: 5.5, status: "Inactive", country: "USA", city: "Seattle", transportMode: "Bus", studentCategory: "Local" },
-    { name: "Sofia Rossi", email: "sofia.r@example.com", course: "Business", gpa: 9.0, status: "Active", country: "Italy", city: "Rome", transportMode: "Scooter", studentCategory: "International" },
-
-    // Arts
-    { name: "Liam O'Connor", email: "liam.o@example.com", course: "Arts", gpa: 7.5, status: "Active", country: "Ireland", city: "Dublin", transportMode: "Walk", studentCategory: "International" },
-    { name: "Kim Min-ji", email: "kim.m@example.com", course: "Arts", gpa: 8.8, status: "Active", country: "South Korea", city: "Seoul", transportMode: "Subway", studentCategory: "Exchange" }
+    ...generateRandomStudents(75) // Generate 75 random students
 ];
 
 const seedData = async () => {
