@@ -74,7 +74,7 @@ function StudentForm({ isOpen, onRequestClose, onSubmit, student, submitting }) 
       case "gpa":
         if (value) {
           const num = parseFloat(value);
-          if (isNaN(num) || num < 0 || num > 4.0) error = "GPA must be between 0.0 and 4.0";
+          if (isNaN(num) || num < 0 || num > 10.0) error = "GPA must be between 0.0 and 10.0";
         }
         break;
 
@@ -274,7 +274,7 @@ function StudentForm({ isOpen, onRequestClose, onSubmit, student, submitting }) 
           {activeSection === 2 && (
             <div className="accordion-content message-grid fade-in">
               {renderFloatingInput("course", "Assigned Course", "text")}
-              {renderFloatingInput("gpa", "Current GPA", "number", false, { min: "0", max: "4", step: "0.01" })}
+              {renderFloatingInput("gpa", "Current GPA", "number", false, { min: "0", max: "10", step: "0.01" })}
 
               {/* Status */}
               <div className="form-group floating-label-group">
