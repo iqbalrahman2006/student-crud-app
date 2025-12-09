@@ -18,6 +18,7 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
     const navItems = [
         { id: 'dashboard', label: 'Dashboard', icon: '📊' },
         { id: 'students', label: 'Students', icon: '👥' },
+        { id: 'library', label: 'Library', icon: '📚' },
         { id: 'reports', label: 'Reports', icon: '📈' },
         { id: 'settings', label: 'Settings', icon: '⚙️' }
     ];

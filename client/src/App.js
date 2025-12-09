@@ -7,6 +7,7 @@ import StudentList from "./components/StudentList";
 import StudentForm from "./components/StudentForm";
 import Toast from "./components/Toast";
 import Reports from "./components/Reports";
+import Library from "./components/Library";
 import Settings from "./components/Settings";
 import { getStudents, addStudent, updateStudent, deleteStudent } from "./services/api";
 import "./App.css";
@@ -230,6 +231,9 @@ function App() {
 
             case 'reports':
                 return <Reports students={students} />;
+
+            case 'library':
+                return <Library students={students} />;
 
             case 'settings':
                 return (

@@ -25,6 +25,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ROUTES
 app.use('/api/v1/students', studentsRouter);
+app.use('/api/v1/library', require('./routes/library'));
+
+// SCHEDULER
+try {
+  const { initScheduler } = require('./utils/scheduler');
+  initScheduler();
+} catch (e) {
+  console.warn("Scheduler failed to start:", e.message);
+}
 
 // Health check
 app.get('/api/v1/health', (req, res) => {

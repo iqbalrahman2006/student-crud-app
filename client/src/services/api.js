@@ -38,3 +38,14 @@ export const updateStudent = (id, student) => safeRequest('PUT', `/students/${id
 
 export const deleteStudent = (id) => safeRequest('DELETE', `/students/${id}`);
 
+// --- LIBRARY SERVICES ---
+export const getBooks = () => safeRequest('GET', '/library/books');
+export const addBook = (book) => safeRequest('POST', '/library/books', book);
+export const updateBook = (id, book) => safeRequest('PATCH', `/library/books/${id}`, book);
+export const deleteBook = (id) => safeRequest('DELETE', `/library/books/${id}`);
+export const issueBook = (data) => safeRequest('POST', '/library/issue', data);
+export const returnBook = (data) => safeRequest('POST', '/library/return', data);
+export const renewBook = (data) => safeRequest('POST', '/library/renew', data);
+export const getTransactions = (status) => safeRequest('GET', `/library/transactions${status ? `?status=${status}` : ''}`);
+export const triggerReminders = () => safeRequest('POST', '/library/trigger-reminders');
+

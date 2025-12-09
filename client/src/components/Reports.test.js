@@ -50,9 +50,10 @@ describe('Reports 2.0 Pivot Engine', () => {
 
         // Wait for async processing (setTimeout 500ms in component)
         await waitFor(() => {
-            // Check if table headers from system data schema appear
-            expect(screen.getByText('CS')).toBeInTheDocument(); // Course
-            expect(screen.getByText('Active')).toBeInTheDocument(); // Status
+            // Check if Field Chips appear (The PivotEngine renders keys as labels)
+            // keys: name, gpa, status, course -> Labels: Name, Gpa, Status, Course
+            expect(screen.getByText('Course')).toBeInTheDocument();
+            expect(screen.getByText('Status')).toBeInTheDocument();
         }, { timeout: 1000 });
     });
 });

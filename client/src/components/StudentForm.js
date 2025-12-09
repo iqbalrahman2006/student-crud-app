@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Modal from "react-modal";
 import { GLOBAL_LOCATIONS, getCountries, getCities } from "../data/locations";
+import HybridSelect from "./HybridSelect";
 import "../App.css";
 
 try {
@@ -111,6 +112,12 @@ function StudentForm({ isOpen, onRequestClose, onSubmit, student, submitting }) 
   // --- HANDLERS ---
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    // Auto-Detect Country from City
+    if (name === 'city' && !formData.country && value.length > 2) {
+      // Requires importing getCountryByCity - assuming we added it to imports
+      // We'll handle the import in a separate tool call if needed or just use standard import at top
+    }
+
     const finalValue = type === 'checkbox' ? checked : value;
 
     let updatedData = { ...formData, [name]: finalValue };
@@ -129,6 +136,19 @@ function StudentForm({ isOpen, onRequestClose, onSubmit, student, submitting }) 
       setErrors(prev => ({ ...prev, [name]: error }));
     }
   };
+
+  // Effect for Auto-Detect Country
+  // Using effect instead of handleChange for smoother typing
+  useEffect(() => {
+    if (formData.city && !formData.country) {
+      // Dynamic import or assume imported
+      const { getCountryByCity } = require("../data/locations");
+      const country = getCountryByCity(formData.city);
+      if (country) {
+        setFormData(prev => ({ ...prev, country: country }));
+      }
+    }
+  }, [formData.city, formData.country]);
 
   const handleBlur = (e) => {
     const { name, value } = e.target;
@@ -323,26 +343,29 @@ function StudentForm({ isOpen, onRequestClose, onSubmit, student, submitting }) 
           </div>
           {activeSection === 3 && (
             <div className="accordion-content message-grid fade-in">
-              {/* Country */}
-              <div className="form-group floating-label-group">
-                <select id="country" name="country" className="floating-input" value={formData.country} onChange={handleChange} onBlur={handleBlur} required>
-                  <option value="">Select Country...</option>
-                  {getCountries().map(c => <option key={c} value={c}>{c}</option>)}
-                </select>
-                {/* Fixed Overlap: Always float label for Selects since they have placeholder text */}
-                <label className="floating-label" style={{ top: '6px', fontSize: '0.75rem', color: 'var(--primary)' }}>Country *</label>
-                {errors.country && touched.country && <div className="error-text"><span>⚠️</span> {errors.country}</div>}
-              </div>
+              {/* Country & City with Hybrid Select */}
+              <HybridSelect
+                label="Country"
+                name="country"
+                options={getCountries()}
+                value={formData.country}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.country && touched.country ? errors.country : null}
+                required
+              />
 
-              {/* City */}
-              <div className="form-group floating-label-group">
-                <select id="city" name="city" className="floating-input" value={formData.city} onChange={handleChange} disabled={!formData.country} required>
-                  <option value="">{formData.country ? "Select City..." : "Select Country First"}</option>
-                  {availableCities.map(c => <option key={c} value={c}>{c}</option>)}
-                </select>
-                <label className="floating-label" style={{ top: '6px', fontSize: '0.75rem', color: 'var(--primary)' }}>City *</label>
-                {errors.city && touched.city && <div className="error-text"><span>⚠️</span> {errors.city}</div>}
-              </div>
+              <HybridSelect
+                label="City"
+                name="city"
+                options={availableCities}
+                value={formData.city}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                disabled={!formData.country}
+                error={errors.city && touched.city ? errors.city : null}
+                required
+              />
 
               {renderFloatingInput("zipCode", `Zip Code ${zipHint ? `(${zipHint})` : ""}`, "text", false, { disabled: !formData.country })}
               {renderFloatingInput("address", "Street Address", "text", false, { gridSpan: "grid-span-3" })}
