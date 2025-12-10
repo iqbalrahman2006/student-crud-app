@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
+import { getAuditLogs } from '../../services/api';
 
 const AuditLogs = () => {
     const history = useHistory();
@@ -28,15 +28,11 @@ const AuditLogs = () => {
             if (filters.start) params.start = filters.start;
             if (filters.end) params.end = filters.end;
 
-            const query = new URLSearchParams(params).toString();
-
-            const res = await axios.get(`http://localhost:5000/api/v1/library/audit-logs?${query}`, {
-                headers: { 'x-role': 'ADMIN' } // Mock Auth
-            });
+            const res = await getAuditLogs(params);
             setLogs(res.data.data.items);
             setTotal(res.data.data.total);
         } catch (err) {
-            console.error(err);
+            console.error("Failed to fetch logs", err);
         } finally {
             setLoading(false);
         }
