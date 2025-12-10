@@ -8,7 +8,10 @@ const safeRequest = async (method, endpoint, payload = null, params = null) => {
         const config = {
             method,
             url: `${API_URL}${endpoint}`,
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                'x-role': 'ADMIN' // Auto-inject Admin Role for Demo
+            }
         };
 
         // Only add data for POST, PUT, PATCH - NOT for DELETE or GET

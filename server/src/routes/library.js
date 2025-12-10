@@ -362,6 +362,7 @@ router.get('/audit-logs', ensureLibraryRole(['ADMIN', 'AUDITOR']), async (req, r
             if (start) query.timestamp.$gte = new Date(start);
             if (end) {
                 const endDate = new Date(end);
+                // Fix: Set to END of the day to capture all records for that date
                 endDate.setHours(23, 59, 59, 999);
                 query.timestamp.$lte = endDate;
             }

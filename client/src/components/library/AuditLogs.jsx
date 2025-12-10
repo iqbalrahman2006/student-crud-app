@@ -59,8 +59,11 @@ const AuditLogs = () => {
                     <option value="BORROW">Borrow</option>
                     <option value="RETURN">Return</option>
                     <option value="RENEW">Renew</option>
+                    <option value="RESERVE">Reserve</option>
                     <option value="OVERDUE">Overdue</option>
                     <option value="ADD">Add Book</option>
+                    <option value="UPDATE">Update Book</option>
+                    <option value="DELETE">Delete Book</option>
                 </select>
                 <input type="date" name="start" value={filters.start} onChange={handleFilterChange} className="form-control" />
                 <input type="date" name="end" value={filters.end} onChange={handleFilterChange} className="form-control" />

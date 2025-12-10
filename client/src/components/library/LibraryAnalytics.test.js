@@ -29,7 +29,12 @@ describe('LibraryAnalytics Component', () => {
     });
 
     test('renders dashboard stats correctly', async () => {
-        render(<LibraryAnalytics />);
+        const { MemoryRouter } = require('react-router-dom');
+        render(
+            <MemoryRouter>
+                <LibraryAnalytics />
+            </MemoryRouter>
+        );
 
         // Check Loading first
         expect(screen.getByText('Loading Dashboard...')).toBeInTheDocument();
@@ -37,7 +42,7 @@ describe('LibraryAnalytics Component', () => {
         // Wait for data
         await waitFor(() => expect(screen.queryByText('Loading Dashboard...')).not.toBeInTheDocument());
 
-        expect(screen.getByText('Total Books')).toBeInTheDocument();
+        expect(screen.getByText('Total Books (View All)')).toBeInTheDocument();
         expect(screen.getByText('100')).toBeInTheDocument(); // Count
 
         expect(screen.getByText('Borrowed Today')).toBeInTheDocument();
@@ -48,7 +53,12 @@ describe('LibraryAnalytics Component', () => {
     });
 
     test('renders chart sections', async () => {
-        render(<LibraryAnalytics />);
+        const { MemoryRouter } = require('react-router-dom');
+        render(
+            <MemoryRouter>
+                <LibraryAnalytics />
+            </MemoryRouter>
+        );
         await waitFor(() => screen.findByText('Most Popular Books'));
 
         expect(screen.getByText('Holdings by Department')).toBeInTheDocument();

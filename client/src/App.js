@@ -10,6 +10,7 @@ import Reports from "./components/Reports";
 import Library from "./components/Library";
 import Settings from "./components/Settings";
 import { getStudents, addStudent, updateStudent, deleteStudent } from "./services/api";
+import ErrorBoundary from "./components/ErrorBoundary";
 import "./App.css";
 
 function App() {
@@ -251,18 +252,20 @@ function App() {
 
     return (
         <div className="app-container sidebar-layout">
-            {/* Sidebar Navigation */}
-            <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+            <ErrorBoundary>
+                {/* Sidebar Navigation */}
+                <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-            {/* Main Content Area */}
-            <main className="main-content">
-                <TopBar activeTab={activeTab} />
+                {/* Main Content Area */}
+                <main className="main-content">
+                    <TopBar activeTab={activeTab} />
 
-                {/* CORRECTED CLASS: workspace (was content-scrollable which had no height) */}
-                <div className="workspace">
-                    {renderContent()}
-                </div>
-            </main>
+                    {/* CORRECTED CLASS: workspace (was content-scrollable which had no height) */}
+                    <div className="workspace">
+                        {renderContent()}
+                    </div>
+                </main>
+            </ErrorBoundary>
 
             {/* Modals & Toasts */}
             <StudentForm

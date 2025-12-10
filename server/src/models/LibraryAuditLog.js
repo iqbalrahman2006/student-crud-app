@@ -4,7 +4,7 @@ const auditLogSchema = new mongoose.Schema({
     action: {
         type: String,
         required: true,
-        enum: ['BORROW', 'RETURN', 'RENEW', 'ADD', 'UPDATE', 'DELETE', 'OVERDUE']
+        enum: ['BORROW', 'RETURN', 'RENEW', 'ADD', 'UPDATE', 'DELETE', 'OVERDUE', 'RESERVE', 'ARCHIVE']
     },
     bookId: {
         type: mongoose.Schema.Types.ObjectId,
