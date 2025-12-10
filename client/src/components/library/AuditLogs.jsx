@@ -22,22 +22,21 @@ const AuditLogs = () => {
     const fetchLogs = async () => {
         setLoading(true);
         try {
-            // Robustly construct params
             const params = { page, limit: 20 };
             if (filters.action) params.action = filters.action;
             if (filters.start) params.start = filters.start;
             if (filters.end) params.end = filters.end;
 
             const res = await getAuditLogs(params);
-            setLogs(res.data.data.items);
-            setTotal(res.data.data.total);
+            setLogs(res.data?.data?.items || []);
+            setTotal(res.data?.data?.total || 0);
         } catch (err) {
             console.error("Failed to fetch logs", err);
+            setLogs([]);
         } finally {
             setLoading(false);
         }
     };
-
 
     const handleFilterChange = (e) => {
         setFilters({ ...filters, [e.target.name]: e.target.value });
@@ -83,8 +82,8 @@ const AuditLogs = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {logs.map(log => (
-                                    <tr key={log._id} style={{ borderBottom: '1px solid #eee' }}>
+                                {(logs || []).map(log => (
+                                    <tr key={log._id || Math.random()} style={{ borderBottom: '1px solid #eee' }}>
                                         <td style={{ padding: '12px', fontSize: '0.85rem', color: '#64748b' }}>
                                             {new Date(log.timestamp).toLocaleString()}
                                         </td>

@@ -10,12 +10,16 @@ import BookInventory from './library/BookInventory';
 import TransactionHistory from './library/TransactionHistory';
 import AuditLogs from './library/AuditLogs';
 
-Modal.setAppElement('#root');
+// Modal.setAppElement('#root'); // Moved to useEffect
 
 const Library = ({ students = [] }) => {
     const location = useLocation();
     const history = useHistory();
     const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, books, issued, history, logs
+
+    React.useEffect(() => {
+        Modal.setAppElement('#root');
+    }, []);
 
     // SYNC TABS WITH URL
     React.useEffect(() => {
@@ -214,7 +218,7 @@ const Library = ({ students = [] }) => {
                             required
                         >
                             <option value="">Select Student...</option>
-                            {students?.map(s => (
+                            {students?.filter(s => s).map(s => (
                                 <option key={s._id} value={s._id}>{s.name} ({s.course})</option>
                             ))}
                         </select>
