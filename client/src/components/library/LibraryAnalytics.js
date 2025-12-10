@@ -19,7 +19,7 @@ const LibraryAnalytics = () => {
         if (isNavigating) return;
         setIsNavigating(true);
         // Small timeout to prevent immediate re-clicks
-        setTimeout(() => setIsNavigating(false), 1000);
+        setTimeout(() => setIsNavigating(false), 500);
         history.push(path);
     };
 
