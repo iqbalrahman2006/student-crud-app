@@ -360,7 +360,11 @@ router.get('/audit-logs', ensureLibraryRole(['ADMIN', 'AUDITOR']), async (req, r
         if (start || end) {
             query.timestamp = {};
             if (start) query.timestamp.$gte = new Date(start);
-            if (end) query.timestamp.$lte = new Date(end);
+            if (end) {
+                const endDate = new Date(end);
+                endDate.setHours(23, 59, 59, 999);
+                query.timestamp.$lte = endDate;
+            }
         }
 
         const logs = await LibraryAuditLog.find(query)

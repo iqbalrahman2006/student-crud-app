@@ -10,7 +10,7 @@ import BookInventory from './library/BookInventory';
 import TransactionHistory from './library/TransactionHistory';
 import AuditLogs from './library/AuditLogs';
 
-const Library = ({ students }) => {
+const Library = ({ students = [] }) => {
     const location = useLocation();
     const history = useHistory();
     const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, books, issued, history, logs
@@ -212,7 +212,7 @@ const Library = ({ students }) => {
                             required
                         >
                             <option value="">Select Student...</option>
-                            {students.map(s => (
+                            {students?.map(s => (
                                 <option key={s._id} value={s._id}>{s.name} ({s.course})</option>
                             ))}
                         </select>
