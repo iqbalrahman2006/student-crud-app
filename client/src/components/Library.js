@@ -4,6 +4,8 @@ import Modal from 'react-modal';
 import { addBook, updateBook, issueBook, triggerReminders } from '../services/api';
 import '../App.css';
 
+Modal.setAppElement('#root');
+
 // Sub Components
 import LibraryAnalytics from './library/LibraryAnalytics';
 import BookInventory from './library/BookInventory';

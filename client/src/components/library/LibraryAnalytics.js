@@ -107,12 +107,11 @@ const LibraryAnalytics = () => {
                     <div style={{ height: '300px' }}>
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart
-                                data={data.popularBooks}
+                                data={data.popularBooks || []}
                                 layout="vertical"
                                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                                 onClick={(data) => {
                                     if (data && data.activePayload && data.activePayload[0]) {
-                                        // Navigate to top book if needed
                                         history.push(`/library/inventory?open=${data.activePayload[0].payload.title}`);
                                     }
                                 }}
@@ -133,7 +132,7 @@ const LibraryAnalytics = () => {
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
                                 <Pie
-                                    data={data.deptDist}
+                                    data={data.deptDist || []}
                                     cx="50%"
                                     cy="50%"
                                     innerRadius={70}
@@ -147,7 +146,7 @@ const LibraryAnalytics = () => {
                                         }
                                     }}
                                 >
-                                    {data.deptDist.map((entry, index) => (
+                                    {(data.deptDist || []).map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="none" cursor="pointer" />
                                     ))}
                                 </Pie>
@@ -155,7 +154,7 @@ const LibraryAnalytics = () => {
                             </PieChart>
                         </ResponsiveContainer>
                         <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap', marginTop: '10px', maxHeight: '60px', overflowY: 'auto' }}>
-                            {data.deptDist.map((entry, index) => (
+                            {(data.deptDist || []).map((entry, index) => (
                                 <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#475569' }}>
                                     <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: COLORS[index % COLORS.length] }}></span>
                                     {entry._id || 'Uncategorized'} <span style={{ fontWeight: 600 }}>{entry.count}</span>

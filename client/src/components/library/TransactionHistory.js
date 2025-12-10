@@ -92,7 +92,7 @@ const TransactionHistory = ({ isActiveView }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {transactions.map(t => {
+                        {(transactions || []).map(t => {
                             const isOverdue = t.status === 'Issued' && new Date() > new Date(t.dueDate);
                             const isDueToday = t.status === 'Issued' && new Date().toDateString() === new Date(t.dueDate).toDateString();
 

@@ -71,7 +71,7 @@ const BookInventory = ({ onEdit, onIssue }) => {
                     </div>
                     <select className="filter-select" value={deptFilter} onChange={e => setDeptFilter(e.target.value)}>
                         <option value="">All Departments</option>
-                        {departments.map(d => <option key={d} value={d}>{d}</option>)}
+                        {(departments || []).map(d => <option key={d} value={d}>{d}</option>)}
                     </select>
                 </div>
                 <div style={{ display: 'flex', gap: '10px' }}>
