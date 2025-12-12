@@ -97,24 +97,30 @@ const AuditLogs = () => {
                                 {(Array.isArray(logs) ? logs : []).map(log => (
                                     <tr key={log._id || Math.random()} style={{ borderBottom: '1px solid #eee' }}>
                                         <td style={{ padding: '12px', fontSize: '0.85rem', color: '#64748b' }}>
-                                            {new Date(log.timestamp).toLocaleString()}
+                                            {log.timestamp ? new Date(log.timestamp).toLocaleString() : '-'}
                                         </td>
                                         <td style={{ padding: '12px' }}>
                                             <span className={`badge badge-${getActionColor(log.action)}`} style={{ padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem', color: 'white', background: getActionColor(log.action) === 'red' ? '#ef4444' : getActionColor(log.action) === 'green' ? '#10b981' : '#6366f1' }}>
-                                                {log.action}
+                                                {log.action || 'UNKNOWN'}
                                             </span>
                                         </td>
                                         <td
                                             style={{ padding: '12px', cursor: 'pointer', color: '#2563eb', fontWeight: 500 }}
-                                            onClick={() => log.bookId && history.push(`/library/inventory?open=${log.bookId._id}`)}
+                                            onClick={() => log.bookId && log.bookId._id && history.push(`/library/inventory?open=${log.bookId._id}`)}
                                             title="View Book"
                                         >
-                                            {log.bookTitle}
+                                            {log.bookTitle || '-'}
                                         </td>
-                                        <td style={{ padding: '12px' }}>{log.studentName}</td>
-                                        <td style={{ padding: '12px' }}>{log.adminName}</td>
+                                        <td style={{ padding: '12px' }}>{log.studentName || '-'}</td>
+                                        <td style={{ padding: '12px' }}>{log.adminName || '-'}</td>
                                         <td style={{ padding: '12px', fontSize: '0.8rem', color: '#64748b' }}>
-                                            {log.metadata ? JSON.stringify(log.metadata).substring(0, 50) : '-'}
+                                            {(() => {
+                                                try {
+                                                    return log.metadata ? JSON.stringify(log.metadata).substring(0, 50) : '-';
+                                                } catch (e) {
+                                                    return 'Invalid Metadata';
+                                                }
+                                            })()}
                                         </td>
                                     </tr>
                                 ))}

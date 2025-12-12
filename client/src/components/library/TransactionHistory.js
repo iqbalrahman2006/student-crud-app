@@ -72,11 +72,9 @@ const TransactionHistory = ({ isActiveView }) => {
 
     return (
         <div className="transaction-history fade-in">
-            {!isActiveView && (
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '15px' }}>
-                    <button className="button button-edit" onClick={downloadCSV}>📥 Export CSV</button>
-                </div>
-            )}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '15px' }}>
+                <button className="button button-edit" onClick={downloadCSV}>📥 Export {isActiveView ? 'Active Loans' : 'History'} CSV</button>
+            </div>
 
             <div className="table-card">
                 <table className="student-table sticky-header">
