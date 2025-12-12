@@ -1,9 +1,11 @@
-const Student = require('../models/Student');
+const studentService = require('../services/studentService');
 
 exports.getAllStudents = async (req, res, next) => {
     try {
-        const students = await Student.find().sort({ createdAt: -1 });
-        res.status(200).json(students);
+        // Extract filter params
+        const { page, limit, sort, ...filters } = req.query;
+        const result = await studentService.getAll({ page, limit, filter: filters });
+        res.status(200).json(result); // Service returns { data, meta }
     } catch (err) {
         next(err);
     }

@@ -1,16 +1,116 @@
 const express = require('express');
 const router = express.Router();
 const Book = require('../models/Book');
-const Transaction = require('../models/Transaction');
+const Transaction = require('../models/BorrowTransaction');
 const Student = require('../models/Student');
 const LibraryFineLedger = require('../models/LibraryFineLedger');
 const BookReservation = require('../models/BookReservation');
 const LibraryAuditLog = require('../models/LibraryAuditLog');
 
 const ensureLibraryRole = require('../middleware/rbac');
-const calculateFine = require('../utils/fineEngine');
 const autoTagBook = require('../utils/tagger');
-const logLibraryAction = require('../utils/libraryLogger'); // Replacing old auditLogger
+const logLibraryAction = require('../utils/libraryLogger');
+
+// Services
+const bookService = require('../services/bookService');
+const analyticsService = require('../services/analyticsService');
+const calculateFine = require('../utils/fineEngine'); // Still used in helpers? or moved to service?Service imports it.
+
+// --- BOOK ROUTES ---
+
+// --- INVENTORY SUMMARY ENDPOINT ---
+router.get('/inventory/summary', async (req, res) => {
+    try {
+        // Aggregation to get book copies stats
+        const bookStats = await Book.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    totalBooksCount: { $sum: "$totalCopies" }, // This is Total Copies
+                    totalAvailableCopies: { $sum: { $subtract: ["$totalCopies", "$checkedOutCount"] } }, // Recalculate to be sure
+                    totalDistinctBooks: { $sum: 1 }
+                }
+            }
+        ]);
+
+        // Realtime Transaction check for Checked Out count
+        // We trust Transaction count more than book.checkedOutCount sum if there's drift, 
+        // but for now let's stick to the requested "Checked Out" = sum of active loans.
+        const activeLoansCount = await Transaction.countDocuments({ status: 'BORROWED' });
+
+        // Overdue count (Borrowed AND DueDate < Now)
+        const overdueCount = await Transaction.countDocuments({
+            status: 'Issued',
+            dueDate: { $lt: new Date() }
+        });
+
+        const stats = bookStats[0] || { totalBooksCount: 0, totalAvailableCopies: 0, totalDistinctBooks: 0 };
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                totalDistinctBooks: stats.totalDistinctBooks,
+                totalCopies: stats.totalBooksCount,
+                totalAvailableCopies: stats.totalBooksCount - activeLoansCount, // Available = Total - Active Loans (Source of truth)
+                totalCheckedOut: activeLoansCount,
+                overdueCount: overdueCount
+            }
+        });
+    } catch (err) {
+        res.status(500).json({ status: 'error', message: err.message });
+    }
+});
+
+// --- REMINDER CENTER & STATUS ---
+router.get('/reminders/status', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res) => {
+    try {
+        const today = new Date();
+        const sevenDaysLater = new Date(); sevenDaysLater.setDate(today.getDate() + 7);
+        const twoDaysLater = new Date(); twoDaysLater.setDate(today.getDate() + 2);
+
+        // 1. Due in 7 Days (Range: Today < Due <= Today+7)
+        // Actually usually means "Due exactly 7 days from now" or "Within next 7 days". 
+        // User asked: "Due in 7 Days (1-week Reminder)" and "Due in 2 days".
+        // Let's grab everything in the window.
+
+        const dueIn7Days = await Transaction.find({
+            status: 'Issued',
+            dueDate: { $gt: today, $lte: sevenDaysLater }
+        }).populate('student', 'name email').populate('book', 'title department');
+
+        const dueIn2Days = await Transaction.find({
+            status: 'Issued',
+            dueDate: { $gt: today, $lte: twoDaysLater }
+        }).populate('student', 'name email').populate('book', 'title department');
+
+        const overdue = await Transaction.find({
+            status: 'Issued',
+            dueDate: { $lt: today }
+        }).populate('student', 'name email').populate('book', 'title department');
+
+        // Helper to format
+        const formatTxn = (t) => ({
+            id: t._id,
+            studentName: t.student ? t.student.name : 'Unknown',
+            studentEmail: t.student ? t.student.email : 'No Email',
+            bookTitle: t.book ? t.book.title : 'Unknown Title',
+            department: t.book ? t.book.department : 'N/A',
+            dueDate: t.dueDate,
+            emailStatus: 'Pending' // TODO: wire up with audit / scheduler logs if needed
+        });
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                dueIn7Days: dueIn7Days.map(formatTxn),
+                dueIn2Days: dueIn2Days.map(formatTxn),
+                overdue: overdue.map(formatTxn)
+            }
+        });
+    } catch (err) {
+        res.status(500).json({ status: 'error', message: err.message });
+    }
+});
 
 // --- BOOK ROUTES ---
 
@@ -21,13 +121,6 @@ router.get('/books', async (req, res) => {
         let filter = {};
 
         if (overdue === 'true') {
-            // This requires checking Transactions, not just Books directly if we want "Overdue Books" which are usually active loans
-            // BUT the requirement says: "return only overdue loans/books (not returned, dueDate < now)"
-            // This logic usually belongs in /transactions?filter=overdue or needs a join here.
-            // However requirement says "GET /api/library/books... return only overdue loans/books".
-            // This implies we might return BOOK objects that are currently overdue.
-            // Let's implement logic: Find overdue transactions -> get book IDs -> find Books.
-
             const overdueTxns = await Transaction.find({
                 status: 'Issued',
                 dueDate: { $lt: new Date() }
@@ -69,7 +162,14 @@ router.post('/books', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res
         const { title, department, isbn } = req.body;
         const tags = autoTagBook(title, department, isbn);
 
-        const newBook = await Book.create({ ...req.body, autoTags: tags });
+        // Ensure defaults
+        const newBookData = {
+            ...req.body,
+            autoTags: tags,
+            checkedOutCount: 0
+        };
+
+        const newBook = await Book.create(newBookData);
 
         await logLibraryAction('ADD', { bookId: newBook._id, adminId: req.user ? req.user._id : undefined, metadata: { title: newBook.title }, req });
 
@@ -82,8 +182,17 @@ router.post('/books', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res
 // UPDATE Book (RBAC: Admin/Librarian)
 router.patch('/books/:id', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res) => {
     try {
-        const book = await Book.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        // Find first to apply logic if needed
+        const book = await Book.findById(req.params.id);
         if (!book) return res.status(404).json({ status: 'fail', message: 'Book not found' });
+
+        // Update fields
+        Object.keys(req.body).forEach(key => {
+            book[key] = req.body[key];
+        });
+
+        // This will trigger pre-save hook to recalc availableCopies
+        await book.save();
 
         await logLibraryAction('UPDATE', { bookId: book._id, adminId: req.user ? req.user._id : undefined, metadata: req.body, req });
 
@@ -112,7 +221,10 @@ router.post('/issue', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res
         const { bookId, studentId, days = 14 } = req.body;
 
         const book = await Book.findById(bookId);
-        if (!book || book.availableCopies < 1) {
+        // Robust check: Use derived availableCopies
+        const available = book.totalCopies - book.checkedOutCount;
+
+        if (!book || available < 1) {
             return res.status(400).json({ status: 'fail', message: 'Book not available' });
         }
 
@@ -120,21 +232,20 @@ router.post('/issue', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res
         dueDate.setDate(dueDate.getDate() + days);
 
         const transaction = await Transaction.create({
-            book: bookId,
-            student: studentId,
-            issueDate: Date.now(),
+            bookId: bookId,
+            studentId: studentId,
+            issuedAt: Date.now(),
             dueDate: dueDate,
-            status: 'Issued'
+            status: 'BORROWED'
         });
 
-        book.availableCopies -= 1;
-        await book.save();
-
+        // Atomic update preferred, but save hook handles sync
+        book.checkedOutCount += 1;
         await book.save();
 
         await logLibraryAction('BORROW', { bookId, studentId, adminId: req.user ? req.user._id : undefined, req });
 
-        const populated = await Transaction.findById(transaction._id).populate('book').populate('student');
+        const populated = await Transaction.findById(transaction._id).populate('bookId').populate('studentId');
         res.status(201).json({ status: 'success', data: populated });
     } catch (err) {
         res.status(400).json({ status: 'error', message: err.message });
@@ -154,15 +265,16 @@ router.post('/return', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, re
         const fine = await calculateFine(txn, true); // true = finalize
 
         // 2. Update Txn
-        txn.returnDate = Date.now();
-        txn.status = 'Returned';
-        txn.fine = fine;
+        txn.returnedAt = Date.now();
+        txn.status = 'RETURNED';
+        txn.fineAmount = fine;
         await txn.save();
 
         // 3. Update Inventory
-        const book = await Book.findById(txn.book);
+        const book = await Book.findById(txn.bookId);
         if (book) {
-            book.availableCopies += 1;
+            // Decrement checkedOutCount carefully
+            book.checkedOutCount = Math.max(0, book.checkedOutCount - 1);
             await book.save();
 
             // 4. Reservation Check
@@ -189,7 +301,7 @@ router.post('/renew', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res
         const { transactionId, days = 7 } = req.body;
         const txn = await Transaction.findById(transactionId);
 
-        if (!txn || txn.status !== 'Issued') {
+        if (!txn || txn.status !== 'BORROWED') {
             return res.status(400).json({ status: 'fail', message: 'Cannot renew this transaction' });
         }
         if (txn.renewalCount >= 2) {
@@ -206,9 +318,39 @@ router.post('/renew', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res
         txn.renewalCount += 1;
         await txn.save();
 
-        await logLibraryAction('RENEW', { bookId: txn.book, studentId: txn.student, adminId: req.user ? req.user._id : undefined, req });
+        await logLibraryAction('RENEW', { bookId: txn.bookId, studentId: txn.studentId, adminId: req.user ? req.user._id : undefined, req });
 
         res.status(200).json({ status: 'success', data: txn });
+    } catch (err) {
+        res.status(400).json({ status: 'error', message: err.message });
+    }
+});
+
+// ALIAS: BORROW (Same as Issue)
+router.post('/borrow', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res) => {
+    // Reuse Issue Logic - Redirect internally or copy code (Copying for strict separation/safety)
+    try {
+        const { bookId, studentId, days = 14 } = req.body;
+        const book = await Book.findById(bookId);
+        const available = book.totalCopies - book.checkedOutCount;
+
+        if (!book || available < 1) res.status(400).json({ status: 'fail', message: 'Book not available' });
+
+        const dueDate = new Date();
+        dueDate.setDate(dueDate.getDate() + days);
+
+        const transaction = await Transaction.create({
+            bookId, studentId, issuedAt: Date.now(), dueDate, status: 'BORROWED'
+        });
+
+        book.checkedOutCount += 1;
+        await book.save();
+
+        await logLibraryAction('BORROW', { bookId, studentId, adminId: req.user?._id, req });
+
+        // Email Engine Integration Check (Mock call if needed, but Scheduler handles reminders)
+
+        res.status(201).json({ status: 'success', data: transaction });
     } catch (err) {
         res.status(400).json({ status: 'error', message: err.message });
     }
@@ -217,44 +359,8 @@ router.post('/renew', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res
 // --- ANALYTICS ENHANCED ---
 router.get('/analytics', async (req, res) => {
     try {
-        const totalBooks = await Book.countDocuments();
-        const startOfDay = new Date(); startOfDay.setHours(0, 0, 0, 0);
-
-        const borrowedToday = await Transaction.countDocuments({ status: 'Issued', issueDate: { $gte: startOfDay } });
-        const overdueCount = await Transaction.countDocuments({ status: 'Issued', dueDate: { $lt: new Date() } });
-
-        const popularBooks = await Transaction.aggregate([
-            { $group: { _id: "$book", count: { $sum: 1 } } },
-            { $sort: { count: -1 } },
-            { $limit: 5 },
-            { $lookup: { from: 'books', localField: '_id', foreignField: '_id', as: 'bookDetails' } },
-            { $unwind: "$bookDetails" },
-            { $project: { title: "$bookDetails.title", count: 1 } }
-        ]);
-
-        const deptDist = await Book.aggregate([
-            { $group: { _id: "$department", count: { $sum: 1 } } }
-        ]);
-
-        // New Metrics
-        const fineRevenue = await LibraryFineLedger.aggregate([{ $group: { _id: null, total: { $sum: "$amount" } } }]);
-        const totalFine = fineRevenue.length > 0 ? fineRevenue[0].total : 0;
-
-        const reservationQueue = await BookReservation.countDocuments({ status: 'Active' });
-
-        res.status(200).json({
-            status: 'success',
-            data: {
-                totalBooks,
-                borrowedToday,
-                overdueCount,
-                popularBooks,
-                deptDist,
-                totalFine,
-                reservationQueue
-            }
-        });
-
+        const data = await analyticsService.getDashboardStats();
+        res.status(200).json({ status: 'success', data });
     } catch (err) {
         res.status(500).json({ status: 'error', message: err.message });
     }
@@ -265,8 +371,8 @@ router.get('/profile/:studentId', async (req, res) => {
     try {
         const { studentId } = req.params;
 
-        const activeLoans = await Transaction.find({ student: studentId, status: 'Issued' }).populate('book');
-        const pastLoans = await Transaction.find({ student: studentId, status: 'Returned' }).sort({ returnDate: -1 }).limit(10).populate('book');
+        const activeLoans = await Transaction.find({ studentId: studentId, status: 'BORROWED' }).populate('bookId');
+        const pastLoans = await Transaction.find({ studentId: studentId, status: 'RETURNED' }).sort({ returnedAt: -1 }).limit(10).populate('bookId');
         const fines = await LibraryFineLedger.find({ student: studentId }).sort({ timestamp: -1 });
         const reservations = await BookReservation.find({ student: studentId, status: 'Active' }).populate('book');
         const auditLogs = await LibraryAuditLog.find({ studentId: studentId }).sort({ timestamp: -1 }).limit(20);
@@ -289,27 +395,24 @@ router.get('/profile/:studentId', async (req, res) => {
 // --- RESERVATIONS ---
 router.post('/reserve', ensureLibraryRole(['ADMIN', 'LIBRARIAN', 'STUDENT']), async (req, res) => {
     try {
-        const { bookId, studentId } = req.body;
-        // Check if book exists
-        const book = await Book.findById(bookId);
-        if (!book) return res.status(404).json({ message: 'Book not found' });
+        const { bookId, studentId, reservedUntil } = req.body;
+        // Basic validation
+        if (!bookId || !studentId) return res.status(400).json({ status: 'fail', message: 'Missing bookId or studentId' });
 
-        // Check if already reserved
-        const existing = await BookReservation.findOne({ book: bookId, student: studentId, status: 'Active' });
-        if (existing) return res.status(400).json({ message: 'Already reserved' });
-
-        const count = await BookReservation.countDocuments({ book: bookId, status: 'Active' });
-
-        const resv = await BookReservation.create({
-            book: bookId,
-            student: studentId,
-            queuePosition: count + 1
-        });
-
-        await logLibraryAction('RESERVE', { bookId, studentId, metadata: { queuePosition: count + 1 } });
-        res.status(201).json({ status: 'success', data: resv });
+        const data = await bookService.reserveBook({ bookId, studentId, reservedUntil }, req.user ? req.user._id : null, req);
+        res.status(201).json({ status: 'success', data });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(400).json({ status: 'error', message: err.message });
+    }
+});
+
+router.get('/reservations', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res) => {
+    try {
+        const { status } = req.query;
+        const data = await bookService.getReservations({ status });
+        res.status(200).json({ status: 'success', data });
+    } catch (err) {
+        res.status(500).json({ status: 'error', message: err.message });
     }
 });
 
@@ -332,19 +435,42 @@ router.get('/transactions', async (req, res) => {
     try {
         const { status } = req.query;
         const filter = status ? { status } : {};
-        const txns = await Transaction.find(filter).populate('book', 'title author').populate('student', 'name email').sort({ issueDate: -1 });
+        const txns = await Transaction.find(filter).populate('bookId', 'title author').populate('studentId', 'name email').sort({ issuedAt: -1 });
         res.status(200).json({ status: 'success', results: txns.length, data: txns });
     } catch (err) {
         res.status(500).json({ status: 'error', message: err.message });
     }
 });
 
-// TRIGGER REMINDERS
-router.post('/trigger-reminders', ensureLibraryRole(['ADMIN']), async (req, res) => {
+// TRIGGER REMINDERS (Alias: compute-overdues)
+router.post(['/trigger-reminders', '/compute-overdues'], ensureLibraryRole(['ADMIN']), async (req, res) => {
     try {
         const { checkOverdueBooks } = require('../utils/scheduler');
         await checkOverdueBooks();
-        res.status(200).json({ status: 'success', message: 'Reminders triggered successfully.' });
+        await logLibraryAction('OVERDUE', { adminId: req.user ? req.user._id : undefined, metadata: { info: "Manual Overdue Calculation Triggered" }, req });
+        res.status(200).json({ status: 'success', message: 'Overdue computation and reminders triggered.' });
+    } catch (err) {
+        res.status(500).json({ status: 'error', message: err.message });
+    }
+});
+
+// DEBUG SAMPLE (Protected by ENV)
+router.get('/debug-sample', ensureLibraryRole(['ADMIN']), async (req, res) => {
+    if (process.env.LIB_ALLOW_DEBUG !== 'true') {
+        return res.status(403).json({ status: 'fail', message: 'Debug mode disabled' });
+    }
+    try {
+        // Return small sample without modifying DB
+        const sampleBooks = await Book.find().limit(5);
+        const sampleStudents = await Student.find().limit(5);
+        res.status(200).json({
+            status: 'success',
+            data: {
+                books: sampleBooks,
+                students: sampleStudents,
+                info: "Non-destructive sample fetch"
+            }
+        });
     } catch (err) {
         res.status(500).json({ status: 'error', message: err.message });
     }

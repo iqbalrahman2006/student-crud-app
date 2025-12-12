@@ -9,7 +9,8 @@ import Toast from "./components/Toast";
 import Reports from "./components/Reports";
 import Library from "./components/Library";
 import Settings from "./components/Settings";
-import { getStudents, addStudent, updateStudent, deleteStudent } from "./services/api";
+import ConsolidatedDashboard from "./components/ConsolidatedDashboard"; // NEW
+import { studentService } from "./services/studentService";
 import ErrorBoundary from "./components/ErrorBoundary";
 import "./App.css";
 
@@ -22,6 +23,7 @@ function App() {
     const [toast, setToast] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [activeTab, setActiveTab] = useState("dashboard");
+    const [viewMode, setViewMode] = useState("detailed"); // 'consolidated' or 'detailed'
     const [sortConfig, setSortConfig] = useState({ key: 'name', direction: 'asc' });
     const [filterConfig, setFilterConfig] = useState({ status: '', course: '' });
 
@@ -38,7 +40,7 @@ function App() {
     const loadStudents = useCallback(async (silent = false) => {
         if (!silent) setLoading(true);
         try {
-            const response = await getStudents();
+            const response = await studentService.getAll();
             // Handle different API response structures robustly
             const data = response.data || response;
             const studentList = Array.isArray(data) ? data : (data.data || []);
@@ -67,7 +69,7 @@ function App() {
     const handleAddStudent = async (studentData) => {
         setSubmitting(true);
         try {
-            await addStudent(studentData);
+            await studentService.create(studentData);
             await loadStudents();
             setModalOpen(false);
             showToast("Student created successfully", "success");
@@ -82,7 +84,7 @@ function App() {
         setSubmitting(true);
         try {
             if (!editingStudent) return;
-            await updateStudent(editingStudent._id, studentData);
+            await studentService.update(editingStudent._id, studentData);
             await loadStudents();
             setModalOpen(false);
             setEditingStudent(null);
@@ -101,7 +103,7 @@ function App() {
 
         if (!window.confirm(`Are you sure you want to delete ${student.name}?`)) return;
         try {
-            await deleteStudent(id); // API handles logic, but UI expects removal
+            await studentService.delete(id); // API handles logic, but UI expects removal
             await loadStudents();
             showToast(isSoftDelete ? "Student archived (Soft Delete)" : "Student deleted successfully", "success");
         } catch (error) {
@@ -202,7 +204,7 @@ function App() {
 
             case 'students':
                 return (
-                    <>
+                    <div className="fade-in">
                         <Controls
                             search={searchTerm}
                             setSearch={setSearchTerm}
@@ -215,26 +217,24 @@ function App() {
                             students={students}
                             onAddClick={openAddModal}
                         />
-                        {loading ? (
-                            <div className="loading-state">Loading students...</div>
-                        ) : (
-                            <div className="table-card">
-                                <StudentList
-                                    students={processedStudents}
-                                    onEdit={openEditModal}
-                                    onDelete={handleDeleteStudent}
-                                    density={density}
-                                />
-                            </div>
-                        )}
-                    </>
+                        <div className="table-card">
+                            <StudentList
+                                students={processedStudents}
+                                onEdit={(student) => { setEditingStudent(student); setModalOpen(true); }}
+                                onDelete={handleDeleteStudent}
+                                isLoading={loading}
+                                density={viewMode === 'consolidated' ? 'compact' : 'normal'}
+                                viewMode={viewMode}
+                            />
+                        </div>
+                    </div>
                 );
 
             case 'reports':
                 return <Reports students={students} />;
 
             case 'library':
-                return <Library students={students} />;
+                return <Library students={students} viewMode={viewMode} />;
 
             case 'settings':
                 return (
@@ -257,12 +257,22 @@ function App() {
                 <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
                 {/* Main Content Area */}
+                {/* Main Content Area */}
                 <main className="main-content">
-                    <TopBar activeTab={activeTab} />
+                    <TopBar activeTab={activeTab} viewMode={viewMode} setViewMode={setViewMode} />
 
                     {/* CORRECTED CLASS: workspace (was content-scrollable which had no height) */}
                     <div className="workspace">
-                        {renderContent()}
+                        {/* 
+                          GLOBAL VIEW MODE:
+                          If mode is 'consolidated' AND we are on 'dashboard', show the summary Dashboard.
+                          Otherwise, if we are on 'students' or 'library', pass viewMode down for Table Density control.
+                        */}
+                        {activeTab === 'dashboard' && viewMode === 'consolidated' ? (
+                            <ConsolidatedDashboard students={students} />
+                        ) : (
+                            renderContent()
+                        )}
                     </div>
                 </main>
             </ErrorBoundary>

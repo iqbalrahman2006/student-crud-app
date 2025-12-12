@@ -2,34 +2,34 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import TransactionHistory from './TransactionHistory';
-import * as api from '../../services/api';
+import { bookService } from '../../services/bookService';
 
-jest.mock('../../services/api');
+jest.mock('../../services/bookService');
 
 const mockTxns = [
     {
         _id: 't1',
-        book: { title: 'Clean Code' },
-        student: { name: 'John Doe', email: 'john@test.com' },
-        issueDate: '2023-01-01',
+        bookId: { title: 'Clean Code' },
+        studentId: { name: 'John Doe', email: 'john@test.com' },
+        issuedAt: '2023-01-01',
         dueDate: '2023-01-15',
-        status: 'Issued',
-        fine: 0
+        status: 'BORROWED',
+        fineAmount: 0 // Renamed fine -> fineAmount to match schema
     },
     {
         _id: 't2',
-        book: { title: 'Legacy Code' },
-        student: { name: 'Jane Doe', email: 'jane@test.com' },
-        issueDate: '2023-01-01',
+        bookId: { title: 'Legacy Code' },
+        studentId: { name: 'Jane Doe', email: 'jane@test.com' },
+        issuedAt: '2023-01-01',
         dueDate: '2023-01-05',
-        status: 'Issued',
-        fine: 10 // Overdue fine
+        status: 'BORROWED',
+        fineAmount: 10
     }
 ];
 
 describe('TransactionHistory Component', () => {
     beforeEach(() => {
-        api.getTransactions.mockResolvedValue({ data: { data: mockTxns } });
+        bookService.getTransactions.mockResolvedValue({ data: { data: mockTxns } });
     });
 
     test('renders history table with data', async () => {
@@ -49,15 +49,23 @@ describe('TransactionHistory Component', () => {
         render(<TransactionHistory isActiveView={true} />);
         await screen.findByText('Clean Code');
 
-        // Should show overdue warning for the second book
-        // Note: The component logic: const isOverdue = new Date() > new Date(t.dueDate);
-        // Since test env date is 2025, 2023 due date is overdue.
-        const warnings = await screen.findAllByText(/OVERDUE/i);
-        expect(warnings.length).toBeGreaterThan(0);
+        // Should show overdue warning (Red color on Due Date)
+        // Find the Due Date cell for the overdue item (2023-01-05)
+        // Should show overdue warning (Red color on Due Date)
+        // Find ALL cells with 2023 (Issue and Due dates)
+        const dateCells = screen.getAllByText(/2023/);
+
+        // Find the one with red color
+        const overdueCell = dateCells.find(cell => {
+            const style = window.getComputedStyle(cell.closest('td') || cell);
+            return style.color === 'rgb(239, 68, 68)' || style.color === '#ef4444';
+        });
+
+        expect(overdueCell).toBeDefined();
     });
 
     test('calls return API on button click', async () => {
-        api.returnBook.mockResolvedValue({});
+        bookService.return.mockResolvedValue({});
         window.confirm = jest.fn(() => true); // Mock confirm
 
         render(<TransactionHistory isActiveView={true} />);
@@ -67,6 +75,6 @@ describe('TransactionHistory Component', () => {
         fireEvent.click(returnButtons[0]);
 
         expect(window.confirm).toHaveBeenCalled();
-        await waitFor(() => expect(api.returnBook).toHaveBeenCalledWith({ transactionId: 't1' }));
+        await waitFor(() => expect(bookService.return).toHaveBeenCalledWith({ transactionId: 't1' }));
     });
 });

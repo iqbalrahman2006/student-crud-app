@@ -7,7 +7,7 @@ import StudentItem from "./StudentItem";
  * Renders the main data table for the student directory.
  * Handles the "Empty State" if no data is provided.
  */
-function StudentList({ students, onEdit, onDelete, isLoading, density }) {
+function StudentList({ students, onEdit, onDelete, isLoading, density, viewMode }) {
   if (!students || !students.length) return (
     <div className="table-container">
       <div style={{ padding: "60px", textAlign: "center", color: "var(--gray-text)" }}>
@@ -18,18 +18,21 @@ function StudentList({ students, onEdit, onDelete, isLoading, density }) {
     </div>
   );
 
+  const isConsolidated = viewMode === 'consolidated';
+
   return (
-    <div className="table-container">
-      <table className="student-table">
+    <div className="table-container" style={{ overflowX: isConsolidated ? 'hidden' : 'auto' }}>
+      <table className="student-table" style={{ width: isConsolidated ? '100%' : '1200px' /* Force scroll width for detailed */ }}>
         <thead className="sticky-header">
           <tr>
-            <th width="20%">Name</th>
-            <th width="20%">Email</th>
-            <th width="15%">Course</th>
-            <th width="10%">GPA</th>
-            <th width="15%">Enrolled</th>
-            <th width="10%">Status</th>
-            <th width="10%">Actions</th>
+            <th width={isConsolidated ? "30%" : "15%"}>Name</th>
+            {!isConsolidated && <th width="20%">Email</th>}
+            <th width={isConsolidated ? "40%" : "15%"}>Department</th>
+            {!isConsolidated && <th width="10%">GPA</th>}
+            {!isConsolidated && <th width="10%">Borrowed</th>}
+            {!isConsolidated && <th width="15%">Last Active</th>}
+            <th width={isConsolidated ? "30%" : "10%"}>Status</th>
+            {!isConsolidated && <th width="10%">Actions</th>}
           </tr>
         </thead>
         <tbody>
@@ -41,6 +44,7 @@ function StudentList({ students, onEdit, onDelete, isLoading, density }) {
               onDelete={onDelete}
               isLoading={isLoading}
               density={density}
+              viewMode={viewMode} // Pass to Item
             />
           ))}
         </tbody>

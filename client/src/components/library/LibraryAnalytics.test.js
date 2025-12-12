@@ -2,10 +2,10 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import LibraryAnalytics from './LibraryAnalytics';
-import * as api from '../../services/api';
+import { analyticsService } from '../../services/analyticsService';
 
 // Mock API
-jest.mock('../../services/api');
+jest.mock('../../services/analyticsService');
 // Mock Recharts (Canvas context issue in JSDOM)
 jest.mock('recharts', () => {
     const OriginalModule = jest.requireActual('recharts');
@@ -25,7 +25,8 @@ const mockStats = {
 
 describe('LibraryAnalytics Component', () => {
     beforeEach(() => {
-        api.getLibraryAnalytics.mockResolvedValue({ data: { data: mockStats } });
+        analyticsService.getLibraryAnalytics.mockResolvedValue({ data: { data: mockStats } });
+        analyticsService.getInventorySummary.mockResolvedValue({ data: { data: { totalCopies: 100, totalCheckedOut: 15, overdueCount: 3, ...mockStats } } });
     });
 
     test('renders dashboard stats correctly', async () => {

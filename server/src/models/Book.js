@@ -23,7 +23,7 @@ const bookSchema = new mongoose.Schema({
     },
     department: {
         type: String,
-        enum: ['Computer Science', 'Electrical', 'Mechanical', 'Civil', 'General', 'Business'],
+        enum: ['Computer Science', 'Electrical', 'Mechanical', 'Civil', 'General', 'Business', 'Fiction', 'Philosophy', 'Science', 'History', 'Management', 'Mathematics', 'AI / ML'],
         default: 'General'
     },
     totalCopies: {
@@ -31,6 +31,21 @@ const bookSchema = new mongoose.Schema({
         default: 1,
         min: 0
     },
+    // New fields for robust tracking
+    checkedOutCount: {
+        type: Number,
+        default: 0,
+        min: 0
+    },
+    lastAvailabilityUpdatedAt: {
+        type: Date,
+        default: Date.now
+    },
+    overdueFlag: {
+        type: Boolean,
+        default: false
+    },
+    // Derived/Legacy field - kept for backward compatibility but re-calculated
     availableCopies: {
         type: Number,
         default: 1,
@@ -52,14 +67,17 @@ const bookSchema = new mongoose.Schema({
     }
 });
 
-// Auto-update status based on copies
+// Auto-update status based on copies logic
 bookSchema.pre('save', function (next) {
+    // Recalculate availableCopies
+    this.availableCopies = Math.max(0, this.totalCopies - this.checkedOutCount);
+
     if (this.availableCopies <= 0) {
         this.status = 'Out of Stock';
-        this.availableCopies = 0; // Safety clamp
     } else {
         this.status = 'Available';
     }
+    this.lastAvailabilityUpdatedAt = new Date();
     next();
 });
 

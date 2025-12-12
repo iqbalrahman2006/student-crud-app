@@ -1,5 +1,6 @@
 import React from 'react';
 import '../App.css';
+import ViewToggle from './ViewToggle';
 
 /**
  * TopBar Component
@@ -8,7 +9,7 @@ import '../App.css';
  * Displays the dynamic page title based on the active context.
  * Shows the user profile/avatar section.
  */
-const TopBar = ({ activeTab }) => {
+const TopBar = ({ activeTab, viewMode, setViewMode }) => {
 
     // Helper to determine the display title
     const getPageTitle = (tab) => {
@@ -35,7 +36,14 @@ const TopBar = ({ activeTab }) => {
                 </div>
             </div>
 
-            <div className="top-bar-actions">
+            {/* View Toggle Integration */}
+            {viewMode && setViewMode && (
+                <div style={{ marginLeft: 'auto', marginRight: '20px' }}>
+                    <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
+                </div>
+            )}
+
+            <div className="top-bar-actions" style={{ marginLeft: '0' }}>
                 <div className="user-profile">
                     <div className="user-info">
                         <span className="user-name">Admin User</span>

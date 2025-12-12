@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getTransactions, returnBook, renewBook } from '../../services/api';
+import { bookService } from '../../services/bookService';
 
 const TransactionHistory = ({ isActiveView }) => {
     const [transactions, setTransactions] = useState([]);
@@ -18,7 +18,7 @@ const TransactionHistory = ({ isActiveView }) => {
             // For now, let's fetch "Issued" if active, else "Returned" 
             // OR fetch ALL and filter locally to support better history
             const status = isActiveView ? 'Issued' : '';
-            const res = await getTransactions(status);
+            const res = await bookService.getTransactions(status);
             setTransactions(res.data.data || []);
         } catch (e) {
             console.error("Load failed");
@@ -30,7 +30,7 @@ const TransactionHistory = ({ isActiveView }) => {
     const handleReturn = async (txnId) => {
         if (!window.confirm("Confirm return?")) return;
         try {
-            await returnBook({ transactionId: txnId });
+            await bookService.return({ transactionId: txnId });
             loadData();
         } catch (e) {
             alert("Return Failed");
@@ -39,7 +39,7 @@ const TransactionHistory = ({ isActiveView }) => {
 
     const handleRenew = async (txnId) => {
         try {
-            await renewBook({ transactionId: txnId });
+            await bookService.renew({ transactionId: txnId });
             alert("Renewed for 7 days!");
             loadData();
         } catch (e) {
@@ -58,7 +58,7 @@ const TransactionHistory = ({ isActiveView }) => {
                 new Date(t.dueDate).toLocaleDateString(),
                 t.returnDate ? new Date(t.returnDate).toLocaleDateString() : '-',
                 t.status,
-                t.fine || 0
+                t.fineAmount || 0
             ].join(",");
         });
 
@@ -93,35 +93,44 @@ const TransactionHistory = ({ isActiveView }) => {
                     </thead>
                     <tbody>
                         {(transactions || []).map(t => {
-                            const isOverdue = t.status === 'Issued' && new Date() > new Date(t.dueDate);
-                            const isDueToday = t.status === 'Issued' && new Date().toDateString() === new Date(t.dueDate).toDateString();
+                            // Mongoose populates 'bookId' and 'studentId'.
+                            // Schema uses 'issuedAt', 'returnedAt'.
+                            const book = t.bookId || t.book || {};
+                            const student = t.studentId || t.student || {};
+                            // Use correct date fields
+                            const issueDate = t.issuedAt || t.issueDate;
+                            const dueDate = t.dueDate; // same
+                            const returnDate = t.returnedAt || t.returnDate;
+
+                            const isOverdue = t.status === 'BORROWED' && new Date() > new Date(dueDate); // Status matches Schema
+                            const isDueToday = t.status === 'BORROWED' && new Date().toDateString() === new Date(dueDate).toDateString();
 
                             let rowStyle = {};
-                            if (isOverdue) rowStyle = { backgroundColor: '#fef2f2' }; // Red Tint
-                            else if (isDueToday) rowStyle = { backgroundColor: '#fffbeb' }; // Yellow Tint
+                            if (isOverdue) rowStyle = { backgroundColor: '#fef2f2' };
+                            else if (isDueToday) rowStyle = { backgroundColor: '#fffbeb' };
 
                             return (
                                 <tr key={t._id} style={rowStyle}>
-                                    <td style={{ fontWeight: 600 }}>{t.book?.title || "Unknown Book"}</td>
+                                    <td style={{ fontWeight: 600 }}>{book.title || "Unknown Book"}</td>
                                     <td>
-                                        <div>{t.student?.name || "Unknown"}</div>
-                                        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{t.student?.email}</div>
+                                        <div>{student.name || "Unknown"}</div>
+                                        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{student.email}</div>
                                     </td>
-                                    <td>{new Date(t.issueDate).toLocaleDateString()}</td>
+                                    <td>{issueDate ? new Date(issueDate).toLocaleDateString() : '-'}</td>
                                     <td style={isOverdue ? { color: '#ef4444', fontWeight: 'bold' } : {}}>
-                                        {new Date(t.dueDate).toLocaleDateString()}
+                                        {dueDate ? new Date(dueDate).toLocaleDateString() : '-'}
                                         {isOverdue && <span style={{ fontSize: '0.7rem', display: 'block' }}>⚠ OVERDUE</span>}
                                     </td>
                                     <td>
-                                        <span className={`status-badge ${t.status === 'Issued' ? 'status-graduated' : t.status === 'Returned' ? 'status-active' : 'status-suspended'}`}>
+                                        <span className={`status-badge ${t.status === 'BORROWED' ? 'status-graduated' : t.status === 'RETURNED' ? 'status-active' : 'status-suspended'}`}>
                                             {t.status}
                                         </span>
                                     </td>
-                                    <td style={{ color: t.fine > 0 ? '#ef4444' : 'inherit', fontWeight: t.fine > 0 ? 700 : 400 }}>
-                                        {t.fine ? `$${t.fine}` : '-'}
+                                    <td style={{ color: t.fineAmount > 0 ? '#ef4444' : 'inherit', fontWeight: t.fineAmount > 0 ? 700 : 400 }}>
+                                        {t.fineAmount ? `$${t.fineAmount}` : '-'}
                                     </td>
                                     <td>
-                                        {t.status === 'Issued' && (
+                                        {(t.status === 'Issued' || t.status === 'BORROWED') && (
                                             <div className="action-buttons">
                                                 <button className="button button-submit" onClick={() => handleReturn(t._id)}>Return</button>
                                                 <button className="button button-edit" onClick={() => handleRenew(t._id)}>Renew</button>

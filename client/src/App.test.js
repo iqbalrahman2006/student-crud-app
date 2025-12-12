@@ -1,13 +1,15 @@
 import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
 import App from './App';
-import * as api from './services/api';
+import { studentService } from './services/studentService';
 
-// Mock API with explicit spyable functions
-jest.mock('./services/api', () => ({
-    getStudents: jest.fn(),
-    deleteStudent: jest.fn(),
-    createStudent: jest.fn(),
-    updateStudent: jest.fn()
+// Mock Student Service
+jest.mock('./services/studentService', () => ({
+    studentService: {
+        getAll: jest.fn(),
+        delete: jest.fn(),
+        create: jest.fn(),
+        update: jest.fn()
+    }
 }));
 
 // MOCK LOCATION DATA (Prevent OOM)
@@ -20,8 +22,8 @@ jest.mock('./data/locations', () => ({
 
 describe('Enterprise App Integration', () => {
     beforeEach(() => {
-        api.getStudents.mockResolvedValue([
-            { _id: '1', name: 'Test Student', status: 'Active', country: 'USA', city: 'New York' }
+        studentService.getAll.mockResolvedValue([
+            { _id: '1', name: 'Emily Chen', status: 'Active', country: 'USA', city: 'New York' }
         ]);
         jest.clearAllMocks();
     });
@@ -70,6 +72,6 @@ describe('Enterprise App Integration', () => {
         fireEvent.click(studentLinks[0]);
 
         // Wait for students to load (searching for our specific test student)
-        expect(await screen.findByText('Test Student')).toBeInTheDocument();
+        expect(await screen.findByText('Emily Chen')).toBeInTheDocument();
     });
 });

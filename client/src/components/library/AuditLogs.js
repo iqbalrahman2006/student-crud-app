@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { getAuditLogs } from '../../services/api';
+import { analyticsService } from '../../services/analyticsService';
+import DailyActivityLog from './DailyActivityLog'; // NEW
 
 const AuditLogs = () => {
     const history = useHistory();
@@ -27,7 +28,7 @@ const AuditLogs = () => {
             if (filters.start) params.start = filters.start;
             if (filters.end) params.end = filters.end;
 
-            const res = await getAuditLogs(params);
+            const res = await analyticsService.getAuditLogs(params);
             setLogs(res.data?.data?.items || []);
             setTotal(res.data?.data?.total || 0);
         } catch (err) {
@@ -43,6 +44,11 @@ const AuditLogs = () => {
         setPage(1);
     };
 
+    const handleReset = () => {
+        setFilters({ action: '', start: '', end: '' });
+        setPage(1);
+    };
+
     const getActionColor = (action) => {
         const colors = {
             BORROW: 'blue', RETURN: 'green', OVERDUE: 'red',
@@ -53,6 +59,9 @@ const AuditLogs = () => {
 
     return (
         <div className="audit-logs-container fade-in" style={{ padding: '20px' }}>
+            {/* Daily Activity Summary */}
+            <DailyActivityLog />
+
             <div className="filter-bar" style={{ display: 'flex', gap: '15px', marginBottom: '20px', alignItems: 'center', background: 'white', padding: '15px', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
                 <select name="action" value={filters.action} onChange={handleFilterChange} className="form-control" style={{ maxWidth: '150px' }}>
                     <option value="">All Actions</option>
@@ -67,7 +76,7 @@ const AuditLogs = () => {
                 </select>
                 <input type="date" name="start" value={filters.start} onChange={handleFilterChange} className="form-control" />
                 <input type="date" name="end" value={filters.end} onChange={handleFilterChange} className="form-control" />
-                <button className="button button-outline" onClick={() => setFilters({ action: '', start: '', end: '' })}>Reset</button>
+                <button className="button button-outline" onClick={handleReset}>Reset</button>
             </div>
 
             {loading ? <div style={{ textAlign: 'center', padding: '20px' }}>Loading Logs...</div> : (

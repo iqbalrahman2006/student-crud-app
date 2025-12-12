@@ -1,9 +1,23 @@
 const LibraryAuditLog = require('../models/LibraryAuditLog');
 
-const logLibraryAction = async (action, { bookId, studentId, adminId, metadata, req }) => {
+/**
+ * Logs a library action to the database.
+ * @param {string} action - The action type (BORROW, RETURN, etc.)
+ * @param {object} params - { bookId, studentId, adminId, metadata, req }
+ */
+const logLibraryAction = async (action, { bookId, studentId, adminId, metadata = {}, req = null }) => {
     try {
-        const ipAddress = req ? (req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip) : undefined;
-        const userAgent = req ? req.headers['user-agent'] : undefined;
+        let ipAddress = '';
+        let userAgent = '';
+
+        if (req) {
+            ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+            userAgent = req.headers['user-agent'];
+            // Auto-populate adminId from req.user if not provided explicitly
+            if (!adminId && req.user) {
+                adminId = req.user._id;
+            }
+        }
 
         await LibraryAuditLog.create({
             action,
@@ -14,11 +28,11 @@ const logLibraryAction = async (action, { bookId, studentId, adminId, metadata, 
             ipAddress,
             userAgent
         });
-        // Console log for debug
-        // console.log(`[AUDIT] ${action}: ${bookId || 'N/A'} - ${studentId || 'N/A'}`);
     } catch (err) {
-        console.error("Library Audit Log Failure:", err.message);
-        // Never throw, just log failure
+        console.error("Failed to log library action:", err.message);
+        // Do not throw, logging failure should not block main flow/transaction?
+        // Ideally prompt says "Call it only after... succeeds". 
+        // We log error but don't crash app.
     }
 };
 

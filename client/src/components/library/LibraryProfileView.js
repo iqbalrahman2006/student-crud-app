@@ -1,17 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import { getStudentLibraryProfile } from '../../services/api';
+import React, { useState, useEffect } from 'react';
+import { bookService } from '../../services/bookService';
 
 const LibraryProfileView = ({ studentId }) => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    const [refresh, setRefresh] = useState(0);
+
     useEffect(() => {
         if (!studentId) return;
-        getStudentLibraryProfile(studentId)
+        bookService.getStudentProfile(studentId)
             .then(res => setData(res.data.data))
             .catch(err => console.error(err))
             .finally(() => setLoading(false));
-    }, [studentId]);
+    }, [studentId, refresh]);
+
+    const handleReturn = async (loanId) => {
+        if (!window.confirm("Confirm Return? Fine calculation will apply.")) return;
+        try {
+            const res = await bookService.return({ transactionId: loanId });
+            // Show fine if any
+            if (res.data.fineApplied > 0) alert(`Returned! Fine Applied: $${res.data.fineApplied}`);
+            else alert("Book Returned Successfully.");
+            setRefresh(p => p + 1);
+        } catch (e) { alert("Return Failed: " + e.message); }
+    };
+
+    const handleRenew = async (loanId) => {
+        if (!window.confirm("Renew for 7 days?")) return;
+        try {
+            await bookService.renew({ transactionId: loanId, days: 7 });
+            alert("Book Renewed Successfully.");
+            setRefresh(p => p + 1);
+        } catch (e) { alert("Renew Failed: " + e.message); }
+    };
 
     if (loading) return <div>Loading Library Profile...</div>;
     if (!data) return <div>No data available.</div>;
@@ -24,13 +46,17 @@ const LibraryProfileView = ({ studentId }) => {
             <h4 className="section-subtitle">Active Loans ({activeLoans.length})</h4>
             {activeLoans.length === 0 ? <p className="text-muted">No active loans.</p> : (
                 <table className="data-table">
-                    <thead><tr><th>Book</th><th>Due</th><th>Status</th></tr></thead>
+                    <thead><tr><th>Book</th><th>Due</th><th>Status</th><th>Actions</th></tr></thead>
                     <tbody>
                         {activeLoans.map(loan => (
-                            <tr key={loan.id}>
-                                <td>{loan.book?.title}</td>
+                            <tr key={loan._id}>
+                                <td>{loan.bookId?.title || 'Unknown Book'}</td>
                                 <td>{new Date(loan.dueDate).toLocaleDateString()}</td>
-                                <td><span className="badge badge-warning">Issued</span></td>
+                                <td><span className={`badge badge-${loan.status === 'BORROWED' ? 'warning' : 'success'}`}>{loan.status}</span></td>
+                                <td>
+                                    <button className="button button-sm button-edit" style={{ marginRight: '5px' }} onClick={() => handleRenew(loan._id)}>Renew</button>
+                                    <button className="button button-sm button-delete" onClick={() => handleReturn(loan._id)}>Return</button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>

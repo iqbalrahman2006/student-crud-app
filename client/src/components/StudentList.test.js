@@ -6,8 +6,8 @@ import StudentList from './StudentList';
 describe('StudentList Component', () => {
 
     const mockStudents = [
-        { _id: '1', name: 'John Doe', email: 'john@example.com', course: 'CS', gpa: 3.5, status: 'Active' },
-        { _id: '2', name: 'Jane Smith', email: 'jane@example.com', course: 'Math', gpa: 4.0, status: 'Inactive' }
+        { _id: '1', name: 'James Anderson', email: 'james.anderson@university.edu', course: 'CS', gpa: 3.5, status: 'Active' },
+        { _id: '2', name: 'Sarah Williams', email: 'sarah.williams@university.edu', course: 'Math', gpa: 4.0, status: 'Inactive' }
     ];
 
     const mockEdit = jest.fn();
@@ -22,8 +22,8 @@ describe('StudentList Component', () => {
     test('renders table with student data', () => {
         render(<StudentList students={mockStudents} onEdit={mockEdit} onDelete={mockDelete} />);
 
-        expect(screen.getByText('John Doe')).toBeInTheDocument();
-        expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+        expect(screen.getByText('James Anderson')).toBeInTheDocument();
+        expect(screen.getByText('Sarah Williams')).toBeInTheDocument();
         expect(screen.getByText('CS')).toBeInTheDocument();
         expect(screen.getByText('Math')).toBeInTheDocument();
     });

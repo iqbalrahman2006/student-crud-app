@@ -13,7 +13,7 @@ const app = express();
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'x-role']
 }));
 
 // Body parser
@@ -35,9 +35,11 @@ app.get('/', (req, res) => {
 // SCHEDULER
 try {
   const { initScheduler } = require('./utils/scheduler');
+  const { initLibraryJob } = require('./utils/libraryJob');
   initScheduler();
+  initLibraryJob();
 } catch (e) {
-  console.warn("Scheduler failed to start:", e.message);
+  console.warn("Scheduler/Job failed to start:", e.message);
 }
 
 // Health check

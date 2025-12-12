@@ -23,9 +23,16 @@ const reservationSchema = new mongoose.Schema({
     expiryDate: {
         type: Date, // If fulfilled, how long held?
     },
+    fulfilledAt: {
+        type: Date
+    },
     timestamp: {
         type: Date,
         default: Date.now
+    },
+    demo: {
+        type: Boolean,
+        default: false
     }
 });
 

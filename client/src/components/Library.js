@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import Modal from 'react-modal';
-import { addBook, updateBook, issueBook, triggerReminders } from '../services/api';
+import { bookService } from '../services/bookService';
+import { analyticsService } from '../services/analyticsService';
 import '../App.css';
 
 // Sub Components
@@ -9,13 +10,13 @@ import LibraryAnalytics from './library/LibraryAnalytics';
 import BookInventory from './library/BookInventory';
 import TransactionHistory from './library/TransactionHistory';
 import AuditLogs from './library/AuditLogs';
+import ReminderCenter from './library/ReminderCenter';
+import LibraryReservations from './library/LibraryReservations';
 
-// Modal.setAppElement('#root'); // Moved to useEffect
-
-const Library = ({ students = [] }) => {
+const Library = ({ students = [], viewMode }) => {
     const location = useLocation();
     const history = useHistory();
-    const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, books, issued, history, logs
+    const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, books, issued, history, logs, reminders
 
     React.useEffect(() => {
         Modal.setAppElement('#root');
@@ -35,6 +36,10 @@ const Library = ({ students = [] }) => {
             tab = 'history';
         } else if (location.pathname.includes('/logs')) {
             tab = 'logs';
+        } else if (location.pathname.includes('/reservations')) {
+            tab = 'reservations';
+        } else if (location.pathname.includes('/reminders')) {
+            tab = 'reminders';
         }
 
         setActiveTab(tab);
@@ -49,7 +54,7 @@ const Library = ({ students = [] }) => {
         setActiveTab(tabName);
     };
 
-    // 2. Issue Handlers (Re-added state and handlers that were hidden/lost)
+    // 2. Issue Handlers
     const [isBookModalOpen, setIsBookModalOpen] = useState(false);
     const [isIssueModalOpen, setIsIssueModalOpen] = useState(false);
     const [isAlertsOpen, setIsAlertsOpen] = useState(false);
@@ -62,8 +67,8 @@ const Library = ({ students = [] }) => {
     const handleBookSubmit = async (e) => {
         e.preventDefault();
         try {
-            if (currentBook) await updateBook(currentBook._id, bookForm);
-            else await addBook(bookForm);
+            if (currentBook) await bookService.update(currentBook._id, bookForm);
+            else await bookService.create(bookForm);
             setIsBookModalOpen(false);
             setBookForm({ title: '', author: '', isbn: '', genre: '', department: 'General', totalCopies: 1 });
             setCurrentBook(null);
@@ -85,7 +90,7 @@ const Library = ({ students = [] }) => {
     const handleIssueSubmit = async (e) => {
         e.preventDefault();
         try {
-            await issueBook(issueForm);
+            await bookService.issue(issueForm);
             setIsIssueModalOpen(false);
             setIssueForm({ bookId: '', studentId: '', days: 14 });
             setActiveTab('issued');
@@ -95,7 +100,7 @@ const Library = ({ students = [] }) => {
 
     const handleTriggerReminders = async () => {
         setIsTriggering(true);
-        try { await triggerReminders(); alert("✅ Reminders Sent!"); }
+        try { await analyticsService.triggerReminders(); alert("✅ Reminders Sent!"); }
         catch (e) { alert("Trigger Failed: " + e.message); }
         finally { setIsTriggering(false); }
     };
@@ -116,8 +121,10 @@ const Library = ({ students = [] }) => {
                         <button className={`button ${activeTab === 'dashboard' ? 'status-active' : 'button-edit'}`} onClick={() => switchTab('dashboard')}>📊 Dashboard</button>
                         <button className={`button ${activeTab === 'books' ? 'status-active' : 'button-edit'}`} onClick={() => switchTab('books')}>📖 Inventory</button>
                         <button className={`button ${activeTab === 'issued' ? 'status-active' : 'button-edit'}`} onClick={() => switchTab('issued')}>📨 Active Loans</button>
+                        <button className={`button ${activeTab === 'reservations' ? 'status-active' : 'button-edit'}`} onClick={() => switchTab('reservations')}>📅 Reservations</button>
                         <button className={`button ${activeTab === 'history' ? 'status-active' : 'button-edit'}`} onClick={() => switchTab('history')}>📜 History</button>
                         <button className={`button ${activeTab === 'logs' ? 'status-active' : 'button-edit'}`} onClick={() => switchTab('logs')}>🛡️ Logs</button>
+                        <button className={`button ${activeTab === 'reminders' ? 'status-active' : 'button-edit'}`} onClick={() => switchTab('reminders')}>⚠️ Reminders</button>
                     </div>
                 </div>
             </div>
@@ -132,15 +139,19 @@ const Library = ({ students = [] }) => {
                         <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'flex-end' }}>
                             <button className="button button-submit" onClick={() => { setCurrentBook(null); setIsBookModalOpen(true); }}>+ Add New Book</button>
                         </div>
-                        <BookInventory key={refreshKey} onEdit={openEditBook} onIssue={openIssueBook} />
+                        <BookInventory key={refreshKey} onEdit={openEditBook} onIssue={openIssueBook} viewMode={viewMode} />
                     </>
                 )}
 
                 {activeTab === 'issued' && <TransactionHistory key={refreshKey} isActiveView={true} />}
 
+                {activeTab === 'reservations' && <LibraryReservations />}
+
                 {activeTab === 'history' && <TransactionHistory key={refreshKey} isActiveView={false} />}
 
                 {activeTab === 'logs' && <AuditLogs />}
+
+                {activeTab === 'reminders' && <ReminderCenter />}
             </div>
 
             {/* --- MODALS --- */}
@@ -190,6 +201,44 @@ const Library = ({ students = [] }) => {
                             <input type="number" className="floating-input" name="totalCopies" value={bookForm.totalCopies} onChange={e => setBookForm({ ...bookForm, totalCopies: e.target.value })} required min="1" placeholder=" " />
                             <label className="floating-label">Total Copies</label>
                         </div>
+                        {/* Requirement G: Reservation Info Tooltip (UI Only) */}
+                        <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
+                            <label style={{ fontSize: '0.9rem', color: '#334155', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                <input type="checkbox" defaultChecked disabled title="Feature coming soon" /> Allow Reservations
+                            </label>
+                            <div className="tooltip-container" title="Reservation allows student to queue for the book when all copies are borrowed. You may enable/disable reservation per title.">
+                                <span style={{ cursor: 'help', fontSize: '0.9rem' }}>❓</span>
+                            </div>
+                        </div>
+
+                        {/* PART 4: CIRCULATION PANEL */}
+                        {currentBook && (
+                            <div className="form-group" style={{ marginTop: '20px', padding: '15px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                                <label style={{ fontWeight: 600, color: '#334155', display: 'block', marginBottom: '10px' }}>⚡ Circulation Actions</label>
+                                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                                    <button
+                                        type="button"
+                                        className="button button-submit"
+                                        onClick={() => { setIsBookModalOpen(false); openIssueBook(currentBook); }}
+                                        disabled={currentBook.availableCopies < 1}
+                                        style={{ opacity: currentBook.availableCopies < 1 ? 0.5 : 1 }}
+                                    >
+                                        {currentBook.availableCopies > 0 ? "📤 Issue Copy" : "🚫 Unavailable"}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="button button-edit"
+                                        onClick={() => { setIsBookModalOpen(false); switchTab('issued'); }}
+                                    >
+                                        📨 View Active Loans
+                                    </button>
+                                </div>
+                                <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '8px' }}>
+                                    To Return or Renew, please find the specific transaction in the "Active Loans" tab or the Student's Profile.
+                                </p>
+                            </div>
+                        )}
+
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="button button-cancel" onClick={() => setIsBookModalOpen(false)}>Cancel</button>

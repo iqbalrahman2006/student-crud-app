@@ -5,7 +5,8 @@
     "dev": "npx kill-port 3000 5000 && npx concurrently \"npm run client\" \"npm run server\"",
     "client": "npm start --prefix client",
     "server": "npm run dev --prefix server",
-    "setup": "npm install --prefix client && npm install --prefix server"
+    "setup": "npm install --prefix client && npm install --prefix server",
+    "test:library": "concurrently \"npm test --prefix server tests/libraryBackend.test.js\" \"npm test --prefix client -- src/components/library/libraryFrontend.test.js\""
   },
   "devDependencies": {
     "kill-port": "^2.0.1",

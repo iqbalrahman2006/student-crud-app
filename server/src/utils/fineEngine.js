@@ -22,7 +22,7 @@ const calculateFine = async (transaction, isReturnAction = false) => {
     if (isReturnAction && fineAmount > 0) {
         // Create Ledger Entry
         await LibraryFineLedger.create({
-            student: transaction.student,
+            student: transaction.studentId,
             transaction: transaction._id,
             amount: fineAmount,
             reason: `Overdue by ${diffDays} days`,
@@ -30,8 +30,8 @@ const calculateFine = async (transaction, isReturnAction = false) => {
         });
 
         await logLibraryAction('OVERDUE', {
-            studentId: transaction.student,
-            bookId: transaction.book,
+            studentId: transaction.studentId,
+            bookId: transaction.bookId,
             metadata: { fineAmount, info: `Fine of $${fineAmount} applied` }
         });
     }
