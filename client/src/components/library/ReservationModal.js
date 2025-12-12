@@ -13,7 +13,7 @@ const ReservationModal = ({ book, onClose, onConfirm }) => {
                 // We need a simple list, maybe search based?
                 // For now, fetch top 20 active or specific search
                 const res = await studentService.getAll({ limit: 100 });
-                setStudents(res.data || []);
+                setStudents(res.data.data || []);
             } catch (err) {
                 console.error("Failed to load students for modal", err);
             }
