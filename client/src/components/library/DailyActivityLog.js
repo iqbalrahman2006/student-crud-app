@@ -14,7 +14,7 @@ const DailyActivityLog = () => {
         try {
             setLoading(true);
             const res = await analyticsService.getAuditLogs({ limit: 100 }); // Fetch recent logs
-            const allLogs = res.data.data || [];
+            const allLogs = res.data?.data?.items || [];
 
             // Filter for "Today" (simulated or real)
             const today = new Date().toDateString();
