@@ -54,6 +54,12 @@ This module handles book inventory and student loan transactions.
 6.  **`server/src/utils/mailer.js`** (Communication)
     *   **Tech:** `nodemailer`.
     *   **Logic:** Sends emails via SMTP. Includes a *fallback logger* (`server/logs/emails.log`) if SMTP credentials are missing, ensuring the app never crashes.
+7.  **`client/src/components/library/LibraryReservations.js`** (Reservations)
+    *   **Tech:** React Component, `bookService`.
+    *   **Logic:** Displays queue of students for out-of-stock books. Auto-fulfillment logic resides in `bookService.returnBook`.
+8.  **`client/src/components/library/AuditLogs.js`** (Audit Trail)
+    *   **Tech:** React Component.
+    *   **Logic:** Fetches and displays immutable history of all `ISSUE`, `RETURN`, `RESERVE` actions with metadata (Admin ID, timestamp).
 
 ### **Module 2: Pivot Reporting Engine**
 A client-side analytics tool for slicing and dicing student data.

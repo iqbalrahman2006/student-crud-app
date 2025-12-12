@@ -15,9 +15,9 @@ const TransactionHistory = ({ isActiveView }) => {
         try {
             // If active view, get Issued, else get all (or Returned)
             // Ideally backend supports 'all' or no filter
-            // For now, let's fetch "Issued" if active, else "Returned" 
+            // For now, let's fetch "BORROWED" if active, else "RETURNED" 
             // OR fetch ALL and filter locally to support better history
-            const status = isActiveView ? 'Issued' : '';
+            const status = isActiveView ? 'BORROWED' : 'RETURNED';
             const res = await bookService.getTransactions(status);
             setTransactions(res.data.data || []);
         } catch (e) {

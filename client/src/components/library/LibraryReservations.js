@@ -11,7 +11,7 @@ const LibraryReservations = () => {
 
     const loadReservations = async () => {
         try {
-            const res = await bookService.getReservations({ status: 'Active' });
+            const res = await bookService.getReservations('Active');
             // Fix: res.data is the axios body. res.data.data is the array.
             setReservations(res.data.data || []);
         } catch (e) {

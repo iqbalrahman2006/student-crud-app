@@ -434,7 +434,14 @@ router.post('/import', ensureLibraryRole(['ADMIN']), async (req, res) => {
 router.get('/transactions', async (req, res) => {
     try {
         const { status } = req.query;
-        const filter = status ? { status } : {};
+        let filter = {};
+        if (status) {
+            // Support query params like 'Issued' or 'BORROWED'
+            // If status is 'Issued', we might need to search for 'BORROWED' too if we standardized?
+            // But existing code seems to trust the query param.
+            // Let's assume the frontend sends the correct string.
+            filter.status = status;
+        }
         const txns = await Transaction.find(filter).populate('bookId', 'title author').populate('studentId', 'name email').sort({ issuedAt: -1 });
         res.status(200).json({ status: 'success', results: txns.length, data: txns });
     } catch (err) {
