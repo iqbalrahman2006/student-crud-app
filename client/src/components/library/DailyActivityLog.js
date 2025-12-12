@@ -18,13 +18,14 @@ const DailyActivityLog = () => {
 
             // Filter for "Today" (simulated or real)
             const today = new Date().toDateString();
-            const todaysLogs = allLogs.filter(l => new Date(l.timestamp).toDateString() === today);
+            const safeLogs = Array.isArray(allLogs) ? allLogs : [];
+            const todaysLogs = safeLogs.filter(l => l.timestamp && new Date(l.timestamp).toDateString() === today);
 
-            // Calculate Stats
+            // Calculate Stats (Fix: Action is BORROW not ISSUE in Schema)
             const newStats = {
-                borrowed: todaysLogs.filter(l => l.action === 'ISSUE').length,
+                borrowed: todaysLogs.filter(l => l.action === 'BORROW').length,
                 returned: todaysLogs.filter(l => l.action === 'RETURN').length,
-                overdue: todaysLogs.filter(l => l.action === 'OVERDUE_TRIGGER').length,
+                overdue: todaysLogs.filter(l => l.action === 'OVERDUE').length, // Consistent with Schema?
                 emails: todaysLogs.filter(l => l.action === 'EMAIL_SENT').length
             };
 
@@ -71,7 +72,7 @@ const DailyActivityLog = () => {
                                 <span style={{ fontSize: '0.75rem', color: '#94a3b8', minWidth: '60px' }}>
                                     {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </span>
-                                <span className={`status-badge ${log.action === 'ISSUE' ? 'status-active' : log.action === 'RETURN' ? 'status-success' : 'status-inactive'}`} style={{ fontSize: '0.7rem', padding: '2px 6px' }}>
+                                <span className={`status-badge ${log.action === 'BORROW' ? 'status-active' : log.action === 'RETURN' ? 'status-success' : 'status-inactive'}`} style={{ fontSize: '0.7rem', padding: '2px 6px' }}>
                                     {log.action}
                                 </span>
                                 <span style={{ fontSize: '0.85rem', color: '#334155' }}>

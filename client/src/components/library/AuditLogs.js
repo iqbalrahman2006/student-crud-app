@@ -94,7 +94,7 @@ const AuditLogs = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {(logs || []).map(log => (
+                                {(Array.isArray(logs) ? logs : []).map(log => (
                                     <tr key={log._id || Math.random()} style={{ borderBottom: '1px solid #eee' }}>
                                         <td style={{ padding: '12px', fontSize: '0.85rem', color: '#64748b' }}>
                                             {new Date(log.timestamp).toLocaleString()}
