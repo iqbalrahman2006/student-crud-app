@@ -122,7 +122,6 @@ const Library = ({ students = [], viewMode }) => {
                         <button className={`button ${activeTab === 'books' ? 'status-active' : 'button-edit'}`} onClick={() => switchTab('books')}>📖 Inventory</button>
                         <button className={`button ${activeTab === 'issued' ? 'status-active' : 'button-edit'}`} onClick={() => switchTab('issued')}>📨 Active Loans</button>
                         <button className={`button ${activeTab === 'reservations' ? 'status-active' : 'button-edit'}`} onClick={() => switchTab('reservations')}>📅 Reservations</button>
-                        <button className={`button ${activeTab === 'history' ? 'status-active' : 'button-edit'}`} onClick={() => switchTab('history')}>📜 History</button>
                         <button className={`button ${activeTab === 'logs' ? 'status-active' : 'button-edit'}`} onClick={() => switchTab('logs')}>🛡️ Logs</button>
                         <button className={`button ${activeTab === 'reminders' ? 'status-active' : 'button-edit'}`} onClick={() => switchTab('reminders')}>⚠️ Reminders</button>
                     </div>

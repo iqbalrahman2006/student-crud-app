@@ -124,8 +124,8 @@ const TransactionHistory = ({ isActiveView }) => {
                                             {t.status}
                                         </span>
                                     </td>
-                                    <td style={{ color: t.fineAmount > 0 ? '#ef4444' : 'inherit', fontWeight: t.fineAmount > 0 ? 700 : 400 }}>
-                                        {t.fineAmount ? `$${t.fineAmount}` : '-'}
+                                    <td style={{ color: ((t.fineAmount > 0) || (isOverdue && !t.returnDate)) ? '#ef4444' : 'inherit', fontWeight: ((t.fineAmount > 0) || (isOverdue && !t.returnDate)) ? 700 : 400 }}>
+                                        {t.fineAmount ? `$${t.fineAmount}` : (isOverdue ? `$${Math.ceil((new Date() - new Date(dueDate)) / (1000 * 60 * 60 * 24)) * 5}` : '-')}
                                     </td>
                                     <td>
                                         {(t.status === 'Issued' || t.status === 'BORROWED') && (
