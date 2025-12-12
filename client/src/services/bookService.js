@@ -14,5 +14,6 @@ export const bookService = {
 
     // Profile & Reservation
     getStudentProfile: (id) => request('GET', `/library/profile/${id}`),
-    reserve: (data) => request('POST', '/library/reserve', data)
+    reserve: (data) => request('POST', '/library/reserve', data),
+    getReservations: (status) => request('GET', `/library/reservations${status ? `?status=${status}` : ''}`)
 };

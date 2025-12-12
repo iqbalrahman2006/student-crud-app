@@ -9,7 +9,7 @@ import '../App.css';
 import LibraryAnalytics from './library/LibraryAnalytics';
 import BookInventory from './library/BookInventory';
 import TransactionHistory from './library/TransactionHistory';
-import AuditLogs from './library/AuditLogs';
+import AuditLogs from './library/AuditLogs'; // Re-trigger build
 import ReminderCenter from './library/ReminderCenter';
 import LibraryReservations from './library/LibraryReservations';
 
@@ -204,10 +204,10 @@ const Library = ({ students = [], viewMode }) => {
                         {/* Requirement G: Reservation Info Tooltip (UI Only) */}
                         <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
                             <label style={{ fontSize: '0.9rem', color: '#334155', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                                <input type="checkbox" defaultChecked disabled title="Feature coming soon" /> Allow Reservations
+                                <input type="checkbox" defaultChecked title="Enable reservations for this book" /> Allow Reservations
                             </label>
-                            <div className="tooltip-container" title="Reservation allows student to queue for the book when all copies are borrowed. You may enable/disable reservation per title.">
-                                <span style={{ cursor: 'help', fontSize: '0.9rem' }}>❓</span>
+                            <div className="tooltip-container" title="Reservation allows student to queue for the book when all copies are borrowed.">
+                                <span style={{ cursor: 'help', fontSize: '0.9rem' }}>ℹ️</span>
                             </div>
                         </div>
 

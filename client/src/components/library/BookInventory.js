@@ -49,7 +49,7 @@ const BookInventory = ({ onEdit, onIssue, viewMode }) => {
 
     const handleReserve = async (data) => {
         try {
-            await bookService.reserveBook(data);
+            await bookService.reserve(data);
             alert("Reservation Successful! Added to queue.");
             loadBooks(); // Reflect any status changes?
         } catch (err) {
