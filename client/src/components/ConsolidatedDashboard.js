@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { analyticsService } from '../services/analyticsService';
+import { useHistory } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 const ConsolidatedDashboard = ({ students }) => { // Accept students prop
@@ -39,6 +40,45 @@ const ConsolidatedDashboard = ({ students }) => { // Accept students prop
 
         if (students) fetchData();
     }, [students]); // Re-run when students change (e.g. after add/delete)
+
+    const history = useHistory();
+
+    const handleWeeklyReport = async () => {
+        try {
+            // Check auth (Optional: Frontend auth check, assuming generic request handles token)
+            // We use direct window.open or blob. For auth headers, we might need axios.
+            // Using analyticsService.request to fetch blob
+            const response = await analyticsService.request('GET', '/reports/weekly', null, null, { responseType: 'blob' });
+
+            // Create download link
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `Weekly_Report_${new Date().toISOString().split('T')[0]}.txt`);
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+        } catch (e) {
+            alert("Failed to generate report: " + (e.message || "Server Error"));
+        }
+    };
+
+    const handleBlastEmail = async () => {
+        if (!window.confirm("Are you sure you want to send an email to ALL active students?")) return;
+        try {
+            const res = await analyticsService.request('POST', '/notifications/blast', {
+                subject: "Important Announcement",
+                message: "This is a test broadcast from the Library System."
+            });
+            alert(`✅ Broadcast Sent! (Sent: ${res.data.sent}, Failed: ${res.data.failed})`);
+        } catch (e) {
+            alert("Failed to send broadcast: " + e.message);
+        }
+    };
+
+    const handleAuditLog = () => {
+        history.push('/library/logs');
+    };
 
     const calculateDeptDist = (students) => {
         const counts = {};
@@ -123,9 +163,9 @@ const ConsolidatedDashboard = ({ students }) => { // Accept students prop
                 <div className="table-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                     <h3 style={{ marginTop: 0, fontSize: '1rem', color: '#64748b' }}>Quick Actions</h3>
                     <div style={{ display: 'grid', gap: '10px' }}>
-                        <button className="button button-outline" style={{ justifyContent: 'center' }}>📥 Generate Weekly Report</button>
-                        <button className="button button-outline" style={{ justifyContent: 'center' }}>✉️ Blast Email to All Active</button>
-                        <button className="button button-outline" style={{ justifyContent: 'center' }}>🛡️ System Audit Log</button>
+                        <button className="button button-outline" style={{ justifyContent: 'center' }} onClick={handleWeeklyReport}>📥 Generate Weekly Report</button>
+                        <button className="button button-outline" style={{ justifyContent: 'center' }} onClick={handleBlastEmail}>✉️ Blast Email to All Active</button>
+                        <button className="button button-outline" style={{ justifyContent: 'center' }} onClick={handleAuditLog}>🛡️ System Audit Log</button>
                     </div>
                     <div style={{ marginTop: '20px', padding: '15px', background: '#f8fafc', borderRadius: '8px', fontSize: '0.85rem', color: '#64748b' }}>
                         <strong>💡 Pro Tip:</strong> Switch to "Detailed Mode" (Top Right) for granular control over individual student records and book inventory management.

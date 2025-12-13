@@ -64,7 +64,21 @@ const DailyActivityLog = () => {
             <div className="log-list-container" style={{ maxHeight: '300px', overflowY: 'auto' }}>
                 <h4 style={{ margin: '0 0 10px 0', color: '#475569' }}>Detailed Activity Feed</h4>
                 {logs.length === 0 ? (
-                    <p style={{ fontStyle: 'italic', color: '#94a3b8' }}>No activity recorded today.</p>
+                    <div style={{ textAlign: 'center', padding: '20px', color: '#94a3b8' }}>
+                        <p style={{ fontStyle: 'italic', marginBottom: '10px' }}>No activity recorded today.</p>
+                        <button
+                            className="button button-edit"
+                            style={{ fontSize: '0.8rem' }}
+                            onClick={async () => {
+                                try {
+                                    await analyticsService.request('/library/debug/seed-logs', 'POST');
+                                    window.location.reload();
+                                } catch (e) { alert("Seed Failed"); }
+                            }}
+                        >
+                            🛠️ Generate Test Data
+                        </button>
+                    </div>
                 ) : (
                     <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                         {logs.map(log => (

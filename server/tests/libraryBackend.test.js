@@ -93,10 +93,13 @@ describe('Library Backend & Inventory Engine', () => {
         await Book.create({ title: 'A', author: 'A', isbn: '1', totalCopies: 10, checkedOutCount: 2, availableCopies: 8 });
         await Book.create({ title: 'B', author: 'B', isbn: '2', totalCopies: 5, checkedOutCount: 5, availableCopies: 0 });
 
+        await Book.create({ title: 'A', author: 'A', isbn: '1', totalCopies: 10, checkedOutCount: 2, availableCopies: 8 });
+        await Book.create({ title: 'B', author: 'B', isbn: '2', totalCopies: 5, checkedOutCount: 5, availableCopies: 0 });
+
         const res = await request(app).get('/api/v1/library/inventory/summary');
 
         expect(res.status).toBe(200);
-        expect(res.body.data.totalBooksCount).toBe(15);
+        expect(res.body.data.totalCopies).toBe(15);
         expect(res.body.data.totalAvailableCopies).toBe(8);
         expect(res.body.data.totalDistinctBooks).toBe(2);
     });

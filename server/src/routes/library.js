@@ -528,4 +528,52 @@ router.get('/audit-logs', ensureLibraryRole(['ADMIN', 'AUDITOR']), async (req, r
     }
 });
 
+// --- DEBUG / SEED ROUTES (Dev Only) ---
+
+router.post('/debug/seed-overdue', async (req, res) => {
+    try {
+        const book = await Book.findOne();
+        const student = await Student.findOne();
+        if (!book || !student) return res.status(400).json({ status: 'fail', message: 'Need 1 book and 1 student to seed.' });
+
+        // Overdue by 5 days
+        const issueDate = new Date();
+        issueDate.setDate(issueDate.getDate() - 20); // Issued 20 days ago
+        const dueDate = new Date();
+        dueDate.setDate(dueDate.getDate() - 5); // Due 5 days ago
+
+        await Transaction.create({
+            bookId: book._id,
+            studentId: student._id,
+            issuedAt: issueDate,
+            dueDate: dueDate,
+            status: 'BORROWED'
+        });
+
+        // Also log it
+        await logLibraryAction('OVERDUE', { bookId: book._id, studentId: student._id, metadata: { info: "Manual Debug Seed" } });
+
+        res.json({ status: 'success', message: 'Seeded Overdue Transaction' });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+router.post('/debug/seed-logs', async (req, res) => {
+    try {
+        const book = await Book.findOne();
+        const student = await Student.findOne();
+        const userId = req.user ? req.user._id : (await Student.findOne())._id; // Fallback
+
+        // Create 3 logs for today
+        await logLibraryAction('BORROW', { bookId: book?._id, studentId: student?._id, adminId: userId, metadata: { title: "Debug Book" } });
+        await logLibraryAction('RETURN', { bookId: book?._id, studentId: student?._id, adminId: userId, metadata: { fine: 5 } });
+        await logLibraryAction('EMAIL_SENT', { studentId: student?._id, metadata: { subject: "Overdue Notice" } });
+
+        res.json({ status: 'success', message: 'Seeded Audit Logs' });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
 module.exports = router;

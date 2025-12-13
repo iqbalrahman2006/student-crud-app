@@ -1,0 +1,39 @@
+const express = require('express');
+const router = express.Router();
+const Student = require('../models/Student');
+const Book = require('../models/Book');
+const Transaction = require('../models/BorrowTransaction');
+const ensureLibraryRole = require('../middleware/rbac');
+
+// Generate Weekly Report
+router.get('/weekly', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res) => {
+    try {
+        const oneWeekAgo = new Date();
+        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+        const newStudents = await Student.countDocuments({ createdAt: { $gte: oneWeekAgo } });
+        const newBooks = await Book.countDocuments({ createdAt: { $gte: oneWeekAgo } });
+        const activeLoans = await Transaction.countDocuments({ status: 'BORROWED' });
+        const overdueLoans = await Transaction.countDocuments({ status: 'BORROWED', dueDate: { $lt: new Date() } });
+
+        const reportData = `
+WEEKLY UNIVERSITY REPORT
+Generated: ${new Date().toLocaleString()}
+-----------------------------------
+New Students Enrolled: ${newStudents}
+New Books Added:       ${newBooks}
+Active Loans:          ${activeLoans}
+Overdue Loans:         ${overdueLoans}
+-----------------------------------
+System Status: Nominal
+        `.trim();
+
+        res.setHeader('Content-Type', 'text/plain');
+        res.setHeader('Content-Disposition', 'attachment; filename=weekly_report.txt');
+        res.send(reportData);
+    } catch (err) {
+        res.status(500).json({ status: 'error', message: err.message });
+    }
+});
+
+module.exports = router;

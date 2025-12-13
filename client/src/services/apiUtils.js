@@ -47,13 +47,14 @@ apiClient.interceptors.response.use(null, async (error) => {
 });
 
 // Standardized Request Wrapper
-export const request = async (method, url, data = null, params = null) => {
+export const request = async (method, url, data = null, params = null, config = {}) => {
     try {
         const response = await apiClient({
             method,
             url,
             data,
             params,
+            ...config, // Merge custom config (e.g. responseType)
             retry: method === 'GET' // Only retry GET requests by default
         });
         return response;

@@ -17,9 +17,10 @@ describe('Analytics Service', () => {
         await Transaction.deleteMany({});
 
         // Seed
-        const book = await Book.create({ title: 'Test Book', totalCopies: 5, checkedOutCount: 1 });
+        const book = await Book.create({ title: 'Test Book', author: 'Test Author', isbn: 'TEST-123', totalCopies: 5, checkedOutCount: 1 });
         await Transaction.create({
             bookId: book._id,
+            studentId: new mongoose.Types.ObjectId(),
             status: 'BORROWED',
             dueDate: new Date(Date.now() - 10000), // Overdue
             issuedAt: new Date()

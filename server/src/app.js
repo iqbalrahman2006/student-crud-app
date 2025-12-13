@@ -2,6 +2,7 @@ require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
+require('./models/User'); // Register User Model for Populate
 
 // Import routes
 const studentsRouter = require('./routes/students');
@@ -26,6 +27,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // ROUTES
 app.use('/api/v1/students', studentsRouter);
 app.use('/api/v1/library', require('./routes/library'));
+app.use('/api/v1/notifications', require('./routes/notifications'));
+app.use('/api/v1/reports', require('./routes/reports'));
 
 // Root Handler for API Check
 app.get('/', (req, res) => {

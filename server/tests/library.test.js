@@ -94,7 +94,8 @@ describe('Library API Tests', () => {
                 student: new mongoose.Types.ObjectId(),
                 issueDate: new Date(Date.now() - 86400000 * 15),
                 dueDate: yesterday,
-                status: 'Issued'
+                dueDate: yesterday,
+                status: 'BORROWED'
             });
 
             // Create Normal Txn (tomorrow)
@@ -104,7 +105,7 @@ describe('Library API Tests', () => {
                 student: new mongoose.Types.ObjectId(),
                 issueDate: new Date(),
                 dueDate: tomorrow,
-                status: 'Issued'
+                status: 'BORROWED'
             });
 
             // Test ?overdue=true

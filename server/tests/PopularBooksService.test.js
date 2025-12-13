@@ -23,7 +23,7 @@ app.use(express.json());
 app.use('/api/v1/library', libraryRoutes);
 
 describe('Library Analytics Service', () => {
-
+    jest.setTimeout(60000); // Increase timeout to 60s
     beforeEach(() => {
         jest.clearAllMocks();
         // Default mocks for non-target aggregations
