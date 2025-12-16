@@ -13,7 +13,10 @@ const ReservationModal = ({ book, onClose, onConfirm }) => {
                 // We need a simple list, maybe search based?
                 // For now, fetch top 20 active or specific search
                 const res = await studentService.getAll({ limit: 100 });
-                setStudents(res.data.data || []);
+                // Handle various response structures safely
+                const list = Array.isArray(res.data) ? res.data :
+                    (res.data && Array.isArray(res.data.data)) ? res.data.data : [];
+                setStudents(list);
             } catch (err) {
                 console.error("Failed to load students for modal", err);
             }
@@ -46,8 +49,8 @@ const ReservationModal = ({ book, onClose, onConfirm }) => {
     if (!book) return null;
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-content">
+        <div className="overlay">
+            <div className="modal">
                 <h3>Reserve Book</h3>
                 <p><strong>{book.title}</strong></p>
                 <form onSubmit={handleSubmit}>

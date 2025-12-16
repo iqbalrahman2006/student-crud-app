@@ -21,6 +21,17 @@ const LibraryReservations = () => {
         }
     };
 
+    const handleAction = async (reservationId, actionType) => {
+        if (!window.confirm(`Are you sure you want to ${actionType} this reservation?`)) return;
+        try {
+            await bookService.manageReservation({ reservationId, action: actionType });
+            loadReservations(); // Refresh
+            alert("Action Successful");
+        } catch (e) {
+            alert(e.message || "Action Failed");
+        }
+    };
+
     if (loading) return <div>Loading...</div>;
 
     return (
@@ -70,13 +81,23 @@ const LibraryReservations = () => {
                                         </span>
                                     </td>
                                     <td>
-                                        <button
-                                            className="button button-outline"
-                                            onClick={() => alert('Fulfill Feature Coming Soon')}
-                                            disabled // Minimal scope: just view for now
-                                        >
-                                            Fulfill
-                                        </button>
+                                        <div className="action-buttons">
+                                            <button
+                                                className="button"
+                                                style={{ background: '#dcfce7', color: '#166534', border: '1px solid #bbf7d0' }}
+                                                onClick={() => handleAction(r._id, 'FULFILL')}
+                                                title="Issue Book Now"
+                                            >
+                                                Issue
+                                            </button>
+                                            <button
+                                                className="button button-delete"
+                                                onClick={() => handleAction(r._id, 'CANCEL')}
+                                                title="Cancel Reservation"
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

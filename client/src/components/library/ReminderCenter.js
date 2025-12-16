@@ -97,11 +97,53 @@ const ReminderCenter = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td style={{ color: '#64748b', fontStyle: 'italic' }} colSpan="4">
-                                    Queue is currently empty. Next schedule run: Tomorrow 08:00 AM.
-                                </td>
-                            </tr>
+                            {/* Dynamic Queue Generation */}
+                            {stats.overdue.map(item => (
+                                <tr key={`email-overdue-${item.id}`}>
+                                    <td>
+                                        <div style={{ fontWeight: 600 }}>{item.studentName}</div>
+                                        <div style={{ fontSize: '0.8rem', color: '#64748b' }}>{item.studentEmail}</div>
+                                    </td>
+                                    <td><span className="status-badge status-suspended">OVERDUE NOTICE</span></td>
+                                    <td>Immediate (Daily Retry)</td>
+                                    <td><span style={{ color: '#f59e0b', fontWeight: 600 }}>Pending Retry</span></td>
+                                </tr>
+                            ))}
+                            {stats.dueIn2Days.map(item => (
+                                <tr key={`email-urgent-${item.id}`}>
+                                    <td>
+                                        <div style={{ fontWeight: 600 }}>{item.studentName}</div>
+                                        <div style={{ fontSize: '0.8rem', color: '#64748b' }}>{item.studentEmail}</div>
+                                    </td>
+                                    <td><span className="status-badge status-inactive">URGENT REMINDER</span></td>
+                                    <td>Tomorrow 09:00 AM</td>
+                                    <td><span style={{ color: '#3b82f6', fontWeight: 600 }}>Scheduled</span></td>
+                                </tr>
+                            ))}
+                            {stats.dueIn7Days.map(item => {
+                                const sendDate = new Date(item.dueDate);
+                                sendDate.setDate(sendDate.getDate() - 3); // 3 days before
+                                return (
+                                    <tr key={`email-gentle-${item.id}`}>
+                                        <td>
+                                            <div style={{ fontWeight: 600 }}>{item.studentName}</div>
+                                            <div style={{ fontSize: '0.8rem', color: '#64748b' }}>{item.studentEmail}</div>
+                                        </td>
+                                        <td><span className="status-badge status-active">GENTLE REMINDER</span></td>
+                                        <td>{sendDate.toLocaleDateString()} 09:00 AM</td>
+                                        <td><span style={{ color: '#10b981', fontWeight: 600 }}>Optimized</span></td>
+                                    </tr>
+                                );
+                            })}
+
+                            {/* Empty State */}
+                            {stats.overdue.length === 0 && stats.dueIn2Days.length === 0 && stats.dueIn7Days.length === 0 && (
+                                <tr>
+                                    <td style={{ color: '#64748b', fontStyle: 'italic', textAlign: 'center' }} colSpan="4">
+                                        Queue is currently empty. No active reminder tasks.
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>

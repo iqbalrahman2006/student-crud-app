@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../src/app');
 const Book = require('../src/models/Book');
-const Transaction = require('../src/models/Transaction');
+const Transaction = require('../src/models/BorrowTransaction');
 const LibraryAuditLog = require('../src/models/LibraryAuditLog');
 
 describe('Library API Tests', () => {
@@ -90,8 +90,8 @@ describe('Library API Tests', () => {
             // Create Overdue Txn (yesterday)
             const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
             await Transaction.create({
-                book: bookOverdue._id,
-                student: new mongoose.Types.ObjectId(),
+                bookId: bookOverdue._id,
+                studentId: new mongoose.Types.ObjectId(),
                 issueDate: new Date(Date.now() - 86400000 * 15),
                 dueDate: yesterday,
                 dueDate: yesterday,
@@ -101,8 +101,8 @@ describe('Library API Tests', () => {
             // Create Normal Txn (tomorrow)
             const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
             await Transaction.create({
-                book: bookNormal._id,
-                student: new mongoose.Types.ObjectId(),
+                bookId: bookNormal._id,
+                studentId: new mongoose.Types.ObjectId(),
                 issueDate: new Date(),
                 dueDate: tomorrow,
                 status: 'BORROWED'

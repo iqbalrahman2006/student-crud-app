@@ -40,7 +40,7 @@ router.get('/inventory/summary', async (req, res) => {
 
         // Overdue count (Borrowed AND DueDate < Now)
         const overdueCount = await Transaction.countDocuments({
-            status: 'Issued',
+            status: 'BORROWED',
             dueDate: { $lt: new Date() }
         });
 
@@ -74,27 +74,27 @@ router.get('/reminders/status', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async
         // Let's grab everything in the window.
 
         const dueIn7Days = await Transaction.find({
-            status: 'Issued',
+            status: 'BORROWED',
             dueDate: { $gt: today, $lte: sevenDaysLater }
-        }).populate('student', 'name email').populate('book', 'title department');
+        }).populate('studentId', 'name email').populate('bookId', 'title department');
 
         const dueIn2Days = await Transaction.find({
-            status: 'Issued',
+            status: 'BORROWED',
             dueDate: { $gt: today, $lte: twoDaysLater }
-        }).populate('student', 'name email').populate('book', 'title department');
+        }).populate('studentId', 'name email').populate('bookId', 'title department');
 
         const overdue = await Transaction.find({
-            status: 'Issued',
+            status: 'BORROWED',
             dueDate: { $lt: today }
-        }).populate('student', 'name email').populate('book', 'title department');
+        }).populate('studentId', 'name email').populate('bookId', 'title department');
 
         // Helper to format
         const formatTxn = (t) => ({
             id: t._id,
-            studentName: t.student ? t.student.name : 'Unknown',
-            studentEmail: t.student ? t.student.email : 'No Email',
-            bookTitle: t.book ? t.book.title : 'Unknown Title',
-            department: t.book ? t.book.department : 'N/A',
+            studentName: t.studentId ? t.studentId.name : 'Unknown',
+            studentEmail: t.studentId ? t.studentId.email : 'No Email',
+            bookTitle: t.bookId ? t.bookId.title : 'Unknown Title',
+            department: t.bookId ? t.bookId.department : 'N/A',
             dueDate: t.dueDate,
             emailStatus: 'Pending' // TODO: wire up with audit / scheduler logs if needed
         });
@@ -117,16 +117,25 @@ router.get('/reminders/status', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async
 // GET All Books (Supports ?overdue=true)
 router.get('/books', async (req, res) => {
     try {
-        const { overdue } = req.query;
+        const { overdue, search } = req.query;
         let filter = {};
 
         if (overdue === 'true') {
             const overdueTxns = await Transaction.find({
-                status: 'Issued',
+                status: 'BORROWED',
                 dueDate: { $lt: new Date() }
-            }).distinct('book');
+            }).distinct('bookId');
 
             filter = { _id: { $in: overdueTxns } };
+        }
+
+        if (search) {
+            const searchRegex = new RegExp(search, 'i');
+            filter.$or = [
+                { title: searchRegex },
+                { author: searchRegex },
+                { isbn: searchRegex }
+            ];
         }
 
         // Pagination Logic
@@ -287,7 +296,7 @@ router.post('/return', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, re
             }
         }
 
-        await logLibraryAction('RETURN', { bookId: txn.book, studentId: txn.student, adminId: req.user ? req.user._id : undefined, metadata: { fine }, req });
+        await logLibraryAction('RETURN', { bookId: txn.bookId, studentId: txn.studentId, adminId: req.user ? req.user._id : undefined, metadata: { fine }, req });
 
         res.status(200).json({ status: 'success', data: txn, fineApplied: fine });
     } catch (err) {
@@ -411,6 +420,54 @@ router.get('/reservations', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (re
         const { status } = req.query;
         const data = await bookService.getReservations({ status });
         res.status(200).json({ status: 'success', data });
+    } catch (err) {
+        res.status(500).json({ status: 'error', message: err.message });
+    }
+});
+
+router.post('/reserve/action', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res) => {
+    try {
+        const { reservationId, action } = req.body;
+        const reservation = await BookReservation.findById(reservationId);
+        if (!reservation) return res.status(404).json({ status: 'fail', message: 'Reservation not found' });
+
+        if (action === 'CANCEL') {
+            reservation.status = 'Cancelled';
+            await reservation.save();
+            return res.status(200).json({ status: 'success', message: 'Reservation Cancelled' });
+        }
+
+        if (action === 'FULFILL') {
+            const book = await Book.findById(reservation.book);
+            // Issue logic (Manual invocation or service reuse)
+            // We use the Issue logic from Transaction Routes but encapsulated
+            const available = book.totalCopies - book.checkedOutCount;
+            if (available < 1) return res.status(400).json({ status: 'fail', message: 'Book not available for issue' });
+
+            const dueDate = new Date();
+            dueDate.setDate(dueDate.getDate() + 14); // Default 14 days
+
+            await Transaction.create({
+                bookId: reservation.book,
+                studentId: reservation.student,
+                issuedAt: Date.now(),
+                dueDate: dueDate,
+                status: 'BORROWED'
+            });
+
+            book.checkedOutCount += 1;
+            await book.save();
+
+            reservation.status = 'Fulfilled';
+            reservation.fulfilledAt = Date.now();
+            await reservation.save();
+
+            await logLibraryAction('BORROW', { bookId: book._id, studentId: reservation.student, adminId: req.user?._id, metadata: { info: 'reservation fulfilled' }, req });
+
+            return res.status(200).json({ status: 'success', message: 'Book Issued and Reservation Fulfilled' });
+        }
+
+        res.status(400).json({ status: 'fail', message: 'Invalid Action' });
     } catch (err) {
         res.status(500).json({ status: 'error', message: err.message });
     }

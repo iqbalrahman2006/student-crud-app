@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { analyticsService } from '../../services/analyticsService';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import { useHistory } from 'react-router-dom';
 
 const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
@@ -129,7 +129,7 @@ const LibraryAnalytics = () => {
                                 <BarChart
                                     data={data.popularBooks}
                                     layout="vertical"
-                                    margin={{ top: 5, right: 30, left: 40, bottom: 5 }}
+                                    margin={{ top: 5, right: 30, left: 10, bottom: 5 }}
                                     onClick={(data) => {
                                         if (data && data.activePayload && data.activePayload[0]) {
                                             history.push(`/library/inventory?open=${data.activePayload[0].payload.title}`);
@@ -146,7 +146,7 @@ const LibraryAnalytics = () => {
                                     <YAxis
                                         type="category"
                                         dataKey="title"
-                                        width={150}
+                                        width={220}
                                         tick={{ fontSize: 11, fill: '#475569', fontWeight: 500 }}
                                         style={{ cursor: 'pointer' }}
                                     />
@@ -193,13 +193,13 @@ const LibraryAnalytics = () => {
                                     cx="50%"
                                     cy="50%"
                                     innerRadius={70}
-                                    outerRadius={95}
+                                    outerRadius={80}
                                     paddingAngle={2}
                                     dataKey="count"
                                     nameKey="_id"
                                     onClick={(data) => {
                                         if (data && data._id) {
-                                            history.push(`/library/inventory?department=${encodeURIComponent(data._id)}`); // Fixed
+                                            history.push(`/library/inventory?department=${encodeURIComponent(data._id)}`);
                                         }
                                     }}
                                 >
@@ -208,6 +208,7 @@ const LibraryAnalytics = () => {
                                     ))}
                                 </Pie>
                                 <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
+                                <Legend wrapperStyle={{ fontSize: '11px', marginTop: '10px' }} />
                             </PieChart>
                         </ResponsiveContainer>
                         <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap', marginTop: '10px', maxHeight: '60px', overflowY: 'auto' }}>

@@ -4,6 +4,7 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 const app = require('../src/app');
 const Book = require('../src/models/Book');
 const LibraryAuditLog = require('../src/models/LibraryAuditLog');
+const Transaction = require('../src/models/BorrowTransaction');
 
 let mongoServer;
 
@@ -22,6 +23,7 @@ afterAll(async () => {
 beforeEach(async () => {
     await Book.deleteMany({});
     await LibraryAuditLog.deleteMany({});
+    await Transaction.deleteMany({});
 });
 
 describe('Library Backend & Inventory Engine', () => {
@@ -90,11 +92,14 @@ describe('Library Backend & Inventory Engine', () => {
     });
 
     test('Inventory Summary Endpoint', async () => {
-        await Book.create({ title: 'A', author: 'A', isbn: '1', totalCopies: 10, checkedOutCount: 2, availableCopies: 8 });
-        await Book.create({ title: 'B', author: 'B', isbn: '2', totalCopies: 5, checkedOutCount: 5, availableCopies: 0 });
+        const bookA = await Book.create({ title: 'A', author: 'A', isbn: '1', totalCopies: 10, checkedOutCount: 2, availableCopies: 8 });
+        const bookB = await Book.create({ title: 'B', author: 'B', isbn: '2', totalCopies: 5, checkedOutCount: 5, availableCopies: 0 });
 
-        await Book.create({ title: 'A', author: 'A', isbn: '1', totalCopies: 10, checkedOutCount: 2, availableCopies: 8 });
-        await Book.create({ title: 'B', author: 'B', isbn: '2', totalCopies: 5, checkedOutCount: 5, availableCopies: 0 });
+        // Create transactions to match checkedOutCount since service relies on Transaction count
+        const txns = [];
+        for (let i = 0; i < 2; i++) txns.push({ bookId: bookA._id, studentId: new mongoose.Types.ObjectId(), status: 'BORROWED' });
+        for (let i = 0; i < 5; i++) txns.push({ bookId: bookB._id, studentId: new mongoose.Types.ObjectId(), status: 'BORROWED' });
+        await Transaction.insertMany(txns);
 
         const res = await request(app).get('/api/v1/library/inventory/summary');
 

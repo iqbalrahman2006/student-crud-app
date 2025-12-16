@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { analyticsService } from '../../services/analyticsService';
-import DailyActivityLog from './DailyActivityLog'; // NEW
+import DailyActivityLog from './DailyActivityLog';
+import { Table, Icon, Label, Segment, Header, Form, Button } from 'semantic-ui-react';
 
 const AuditLogs = () => {
     const history = useHistory();
@@ -39,8 +40,8 @@ const AuditLogs = () => {
         }
     };
 
-    const handleFilterChange = (e) => {
-        setFilters({ ...filters, [e.target.name]: e.target.value });
+    const handleFilterChange = (e, { name, value }) => {
+        setFilters({ ...filters, [name]: value });
         setPage(1);
     };
 
@@ -52,91 +53,154 @@ const AuditLogs = () => {
     const getActionColor = (action) => {
         const colors = {
             BORROW: 'blue', RETURN: 'green', OVERDUE: 'red',
-            ADD: 'purple', DELETE: 'red', UPDATE: 'orange', RENEW: 'teal'
+            ADD: 'purple', DELETE: 'red', UPDATE: 'orange', RENEW: 'teal',
+            RESERVE: 'violet'
         };
-        return colors[action] || 'gray';
+        return colors[action] || 'grey';
     };
 
+    const options = [
+        { key: 'all', text: 'All Actions', value: '' },
+        { key: 'borrow', text: 'Borrow', value: 'BORROW' },
+        { key: 'return', text: 'Return', value: 'RETURN' },
+        { key: 'renew', text: 'Renew', value: 'RENEW' },
+        { key: 'overdue', text: 'Overdue', value: 'OVERDUE' },
+        { key: 'add', text: 'Add Book', value: 'ADD' },
+        { key: 'update', text: 'Update Book', value: 'UPDATE' },
+        { key: 'delete', text: 'Delete Book', value: 'DELETE' },
+    ];
+
     return (
-        <div className="audit-logs-container fade-in" style={{ padding: '20px' }}>
-            {/* Daily Activity Summary */}
+        <div className="audit-logs-container fade-in" style={{ padding: '0 10px' }}>
             <DailyActivityLog />
 
-            <div className="filter-bar" style={{ display: 'flex', gap: '15px', marginBottom: '20px', alignItems: 'center', background: 'white', padding: '15px', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
-                <select name="action" value={filters.action} onChange={handleFilterChange} className="form-control" style={{ maxWidth: '150px' }}>
-                    <option value="">All Actions</option>
-                    <option value="BORROW">Borrow</option>
-                    <option value="RETURN">Return</option>
-                    <option value="RENEW">Renew</option>
-                    <option value="RESERVE">Reserve</option>
-                    <option value="OVERDUE">Overdue</option>
-                    <option value="ADD">Add Book</option>
-                    <option value="UPDATE">Update Book</option>
-                    <option value="DELETE">Delete Book</option>
-                </select>
-                <input type="date" name="start" value={filters.start} onChange={handleFilterChange} className="form-control" />
-                <input type="date" name="end" value={filters.end} onChange={handleFilterChange} className="form-control" />
-                <button className="button button-outline" onClick={handleReset}>Reset</button>
-            </div>
+            <Segment>
+                <Header as='h4'>
+                    <Icon name='filter' />
+                    <Header.Content>Filter Logs</Header.Content>
+                </Header>
+                <Form>
+                    <Form.Group widths='equal'>
+                        <Form.Select
+                            fluid
+                            label='Action Type'
+                            options={options}
+                            name="action"
+                            value={filters.action}
+                            onChange={handleFilterChange}
+                        />
+                        <Form.Input
+                            fluid
+                            label='Start Date'
+                            type="date"
+                            name="start"
+                            value={filters.start}
+                            onChange={handleFilterChange}
+                        />
+                        <Form.Input
+                            fluid
+                            label='End Date'
+                            type="date"
+                            name="end"
+                            value={filters.end}
+                            onChange={handleFilterChange}
+                        />
+                        <Form.Button label='&nbsp;' fluid icon labelPosition='left' onClick={handleReset}>
+                            <Icon name='undo' /> Reset
+                        </Form.Button>
+                    </Form.Group>
+                </Form>
+            </Segment>
 
-            {loading ? <div style={{ textAlign: 'center', padding: '20px' }}>Loading Logs...</div> : (
-                <>
-                    <div className="table-responsive" style={{ background: 'white', borderRadius: '10px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
-                        <table className="table" style={{ width: '100%', borderCollapse: 'collapse' }}>
-                            <thead>
-                                <tr style={{ background: '#f8fafc', textAlign: 'left' }}>
-                                    <th style={{ padding: '12px' }}>Timestamp</th>
-                                    <th style={{ padding: '12px' }}>Action</th>
-                                    <th style={{ padding: '12px' }}>Book</th>
-                                    <th style={{ padding: '12px' }}>Student</th>
-                                    <th style={{ padding: '12px' }}>Admin</th>
-                                    <th style={{ padding: '12px' }}>Metadata</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {(Array.isArray(logs) ? logs : []).map(log => (
-                                    <tr key={log._id || Math.random()} style={{ borderBottom: '1px solid #eee' }}>
-                                        <td style={{ padding: '12px', fontSize: '0.85rem', color: '#64748b' }}>
-                                            {log.timestamp ? new Date(log.timestamp).toLocaleString() : '-'}
-                                        </td>
-                                        <td style={{ padding: '12px' }}>
-                                            <span className={`badge badge-${getActionColor(log.action)}`} style={{ padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem', color: 'white', background: getActionColor(log.action) === 'red' ? '#ef4444' : getActionColor(log.action) === 'green' ? '#10b981' : '#6366f1' }}>
-                                                {log.action || 'UNKNOWN'}
-                                            </span>
-                                        </td>
-                                        <td
-                                            style={{ padding: '12px', cursor: 'pointer', color: '#2563eb', fontWeight: 500 }}
-                                            onClick={() => log.bookId && log.bookId._id && history.push(`/library/inventory?open=${log.bookId._id}`)}
-                                            title="View Book"
-                                        >
-                                            {log.bookTitle || '-'}
-                                        </td>
-                                        <td style={{ padding: '12px' }}>{log.studentName || '-'}</td>
-                                        <td style={{ padding: '12px' }}>{log.adminName || '-'}</td>
-                                        <td style={{ padding: '12px', fontSize: '0.8rem', color: '#64748b' }}>
-                                            {(() => {
-                                                try {
-                                                    return log.metadata ? JSON.stringify(log.metadata).substring(0, 50) : '-';
-                                                } catch (e) {
-                                                    return 'Invalid Metadata';
-                                                }
-                                            })()}
-                                        </td>
-                                    </tr>
-                                ))}
-                                {logs.length === 0 && <tr><td colSpan="6" style={{ textAlign: 'center', padding: '20px' }}>No records found</td></tr>}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <button className="button button-outline" disabled={page === 1} onClick={() => setPage(p => p - 1)}>Previous</button>
-                        <span>Page {page} of {Math.ceil(total / 20)}</span>
-                        <button className="button button-outline" disabled={page * 20 >= total} onClick={() => setPage(p => p + 1)}>Next</button>
-                    </div>
-                </>
-            )}
+            <Segment raised loading={loading}>
+                <Table celled striped selectableSortable color='teal'>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell width={5}><Icon name='book' /> Book Title</Table.HeaderCell>
+                            <Table.HeaderCell width={5}><Icon name='user circle' /> Student</Table.HeaderCell>
+                            <Table.HeaderCell width={3} textAlign='right'><Icon name='tag' /> Action</Table.HeaderCell>
+                            <Table.HeaderCell width={2} textAlign='right'><Icon name='dollar' /> Fine</Table.HeaderCell>
+                            <Table.HeaderCell width={3} textAlign='right'><Icon name='clock' /> Timestamp</Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
+
+                    <Table.Body>
+                        {(Array.isArray(logs) ? logs : []).map(log => (
+                            <Table.Row key={log._id || Math.random()}>
+                                <Table.Cell
+                                    style={{ cursor: log.bookId ? 'pointer' : 'default' }}
+                                    onClick={() => {
+                                        if (log.bookId && log.bookTitle) {
+                                            history.push(`/library/inventory?search=${encodeURIComponent(log.bookTitle)}`);
+                                        }
+                                    }}
+                                >
+                                    <Header as='h5'>
+                                        <Header.Content>
+                                            {log.bookTitle !== 'N/A'
+                                                ? log.bookTitle
+                                                : (log.action === 'OVERDUE' ? 'System Batch Run' : 'N/A')}
+                                            {log.bookId && <Header.Subheader>Click to View</Header.Subheader>}
+                                        </Header.Content>
+                                    </Header>
+                                </Table.Cell>
+                                <Table.Cell>
+                                    <Header as='h5' image>
+                                        <Icon name={log.studentName === 'N/A' ? 'server' : 'user circle'} color='grey' />
+                                        <Header.Content>
+                                            {log.studentName !== 'N/A'
+                                                ? log.studentName
+                                                : (log.action === 'OVERDUE' ? 'System Task' : 'N/A')}
+                                            {log.adminName && <Header.Subheader>By: {log.adminName}</Header.Subheader>}
+                                        </Header.Content>
+                                    </Header>
+                                </Table.Cell>
+                                <Table.Cell textAlign='right'>
+                                    <Label color={getActionColor(log.action)} horizontal>
+                                        {log.action || 'UNKNOWN'}
+                                    </Label>
+                                </Table.Cell>
+                                <Table.Cell textAlign='right'>
+                                    <strong>{log.metadata && log.metadata.fine ? `$${log.metadata.fine}` : '$0'}</strong>
+                                </Table.Cell>
+                                <Table.Cell textAlign='right' style={{ color: '#666', fontSize: '0.9em' }}>
+                                    {log.timestamp ? new Date(log.timestamp).toLocaleString(undefined, {
+                                        month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                                    }) : '-'}
+                                </Table.Cell>
+                            </Table.Row>
+                        ))}
+                        {logs.length === 0 && !loading && (
+                            <Table.Row>
+                                <Table.Cell colSpan="4" textAlign='center'>
+                                    <div style={{ padding: '20px', color: '#999' }}>
+                                        <Icon name='search' size='large' />
+                                        <p>No records found matching your filters.</p>
+                                    </div>
+                                </Table.Cell>
+                            </Table.Row>
+                        )}
+                    </Table.Body>
+
+                    <Table.Footer>
+                        <Table.Row>
+                            <Table.HeaderCell colSpan='4'>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <span>Total: {total} records</span>
+                                    <Button.Group size='small'>
+                                        <Button icon='chevron left' disabled={page === 1} onClick={() => setPage(p => p - 1)} />
+                                        <Button disabled style={{ color: '#333', fontWeight: 'bold' }}>
+                                            Page {page} of {Math.ceil(total / 20) || 1}
+                                        </Button>
+                                        <Button icon='chevron right' disabled={page * 20 >= total} onClick={() => setPage(p => p + 1)} />
+                                    </Button.Group>
+                                </div>
+                            </Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Footer>
+                </Table>
+            </Segment>
         </div>
     );
 };
-
 export default AuditLogs;

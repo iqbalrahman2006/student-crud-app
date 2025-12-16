@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import TopBar from "./components/TopBar";
 import StatsGrid from "./components/StatsGrid";
@@ -7,235 +8,198 @@ import StudentList from "./components/StudentList";
 import StudentForm from "./components/StudentForm";
 import Toast from "./components/Toast";
 import Reports from "./components/Reports";
+import LibraryLogin from "./components/LibraryLogin";
 import Library from "./components/Library";
 import Settings from "./components/Settings";
-import ConsolidatedDashboard from "./components/ConsolidatedDashboard"; // NEW
+import ConsolidatedDashboard from "./components/ConsolidatedDashboard";
 import { studentService } from "./services/studentService";
-import ErrorBoundary from "./components/ErrorBoundary";
 import "./App.css";
 
 function App() {
+    // Data State
     const [students, setStudents] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [isLibrarian, setIsLibrarian] = useState(false);
+
+    // UI State
+    const [activeTab, setActiveTab] = useState('dashboard');
+    const [viewMode, setViewMode] = useState('list'); // 'list', 'grid', 'consolidated'
     const [modalOpen, setModalOpen] = useState(false);
     const [editingStudent, setEditingStudent] = useState(null);
     const [submitting, setSubmitting] = useState(false);
     const [toast, setToast] = useState(null);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [activeTab, setActiveTab] = useState("dashboard");
-    const [viewMode, setViewMode] = useState("detailed"); // 'consolidated' or 'detailed'
-    const [sortConfig, setSortConfig] = useState({ key: 'name', direction: 'asc' });
-    const [filterConfig, setFilterConfig] = useState({ status: '', course: '' });
+
+    // Filter & Sort State
+    const [search, setSearch] = useState('');
+    const [sortBy, setSortBy] = useState('');
+    const [filterStatus, setFilterStatus] = useState('');
+    const [filterCourse, setFilterCourse] = useState('');
 
     // Settings State
-    const [theme, setTheme] = useState(localStorage.getItem('app_theme') || 'light');
-    const [density, setDensity] = useState(localStorage.getItem('app_density') || 'comfortable');
-    const [refreshInterval, setRefreshInterval] = useState(parseInt(localStorage.getItem('app_refresh') || '0'));
+    const [theme, setTheme] = useState('light');
+    const [density, setDensity] = useState('comfortable');
+    const [refreshInterval, setRefreshInterval] = useState(0);
 
-    // Apply Theme Effect
+    // URL Synchronization
+    const history = useHistory();
+    const location = useLocation();
+
+    // Sync URL -> State
     useEffect(() => {
-        document.documentElement.setAttribute('data-theme', theme);
-    }, [theme]);
+        const path = location.pathname.substring(1) || 'dashboard'; // remove leading /
+        // handle sub-routes like /library/inventory
+        const tab = path.split('/')[0] || 'dashboard';
 
-    const loadStudents = useCallback(async (silent = false) => {
-        if (!silent) setLoading(true);
+        if (['dashboard', 'students', 'library', 'reports', 'settings'].includes(tab)) {
+            setActiveTab(tab);
+        }
+    }, [location]);
+
+    // Update History when Tab Selection changes (wrapped handler)
+    const handleTabChange = (tabId) => {
+        history.push(`/${tabId}`);
+    };
+
+    const fetchStudents = useCallback(async () => {
         try {
             const response = await studentService.getAll();
-            // Handle different API response structures robustly
-            const data = response.data || response;
-            const studentList = Array.isArray(data) ? data : (data.data || []);
-            setStudents(studentList);
+            // Handle various response structures safely
+            const studentArray = Array.isArray(response.data) ? response.data :
+                (response.data && Array.isArray(response.data.data)) ? response.data.data : [];
+            setStudents(studentArray);
         } catch (error) {
-            showToast("Failed to fetch students", "error");
-        } finally {
-            if (!silent) setLoading(false);
+            console.error("Failed to fetch students", error);
+            setToast({ type: 'error', message: 'Failed to load students' });
         }
-    }, []); // Stable dependency
+    }, []);
 
     useEffect(() => {
-        loadStudents();
+        fetchStudents();
+        const interval = refreshInterval > 0 ? setInterval(fetchStudents, refreshInterval) : null;
+        return () => interval && clearInterval(interval);
+    }, [fetchStudents, refreshInterval]);
 
-        // Auto-Refresh Logic
-        let intervalId;
-        if (refreshInterval > 0) {
-            intervalId = setInterval(() => {
-                loadStudents(true); // Silent refresh
-            }, refreshInterval);
+    // Derived Data (Filtering & Sorting)
+    const processedStudents = useMemo(() => {
+        let result = [...students];
+
+        // 1. Filter by Search (Name/Email)
+        if (search) {
+            const lowerQuery = search.toLowerCase();
+            result = result.filter(s =>
+                (s.name && s.name.toLowerCase().includes(lowerQuery)) ||
+                (s.email && s.email.toLowerCase().includes(lowerQuery))
+            );
         }
-        return () => clearInterval(intervalId);
-    }, [refreshInterval, loadStudents]);
 
+        // 2. Filter by Status
+        if (filterStatus) {
+            result = result.filter(s => s.status === filterStatus);
+        }
 
+        // 3. Filter by Course
+        if (filterCourse) {
+            result = result.filter(s => s.course === filterCourse);
+        }
+
+        // 4. Sort
+        if (sortBy) {
+            result.sort((a, b) => {
+                switch (sortBy) {
+                    case 'name': return (a.name || '').localeCompare(b.name || '');
+                    case 'gpa-desc': return (b.gpa || 0) - (a.gpa || 0);
+                    case 'gpa-asc': return (a.gpa || 0) - (b.gpa || 0);
+                    case 'status': return (a.status || '').localeCompare(b.status || '');
+                    case 'course': return (a.course || '').localeCompare(b.course || '');
+                    case 'date-desc': return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+                    case 'date-asc': return new Date(a.createdAt || 0) - new Date(b.createdAt || 0);
+                    default: return 0;
+                }
+            });
+        }
+
+        return result;
+    }, [students, search, sortBy, filterStatus, filterCourse]);
+
+    // Handlers
     const handleAddStudent = async (studentData) => {
         setSubmitting(true);
         try {
             await studentService.create(studentData);
-            await loadStudents();
+            setToast({ type: 'success', message: 'Student added successfully' });
             setModalOpen(false);
-            showToast("Student created successfully", "success");
+            fetchStudents();
         } catch (error) {
-            showToast("Failed to create student", "error");
+            setToast({ type: 'error', message: 'Failed to add student' });
         } finally {
             setSubmitting(false);
         }
     };
 
     const handleUpdateStudent = async (studentData) => {
+        if (!editingStudent) return;
         setSubmitting(true);
         try {
-            if (!editingStudent) return;
             await studentService.update(editingStudent._id, studentData);
-            await loadStudents();
+            setToast({ type: 'success', message: 'Student updated successfully' });
             setModalOpen(false);
             setEditingStudent(null);
-            showToast("Student updated successfully", "success");
+            fetchStudents();
         } catch (error) {
-            showToast("Failed to update student", "error");
+            setToast({ type: 'error', message: 'Failed to update student' });
         } finally {
             setSubmitting(false);
         }
     };
 
-    const handleDeleteStudent = async (student) => {
-        const id = student._id;
-        // Check for 'Soft Delete' preference
-        const isSoftDelete = localStorage.getItem('app_softDelete') === 'true';
-
-        if (!window.confirm(`Are you sure you want to delete ${student.name}?`)) return;
-        try {
-            await studentService.delete(id); // API handles logic, but UI expects removal
-            await loadStudents();
-            showToast(isSoftDelete ? "Student archived (Soft Delete)" : "Student deleted successfully", "success");
-        } catch (error) {
-            showToast("Failed to delete student", "error");
+    const handleDeleteStudent = async (id) => {
+        if (window.confirm("Are you sure you want to delete this student?")) {
+            try {
+                await studentService.delete(id);
+                setToast({ type: 'success', message: 'Student deleted successfully' });
+                fetchStudents();
+            } catch (error) {
+                setToast({ type: 'error', message: 'Failed to delete student' });
+            }
         }
     };
 
-    const openAddModal = () => {
-        setEditingStudent(null);
-        setModalOpen(true);
-    };
-
-    const openEditModal = (student) => {
+    const handleEditClick = (student) => {
         setEditingStudent(student);
         setModalOpen(true);
     };
 
-    const showToast = (message, type = "success") => {
-        setToast({ message, type });
-        setTimeout(() => setToast(null), 3000);
-    };
-
-    // --- SORTING & FILTERING ENGINE ---
-    const processedStudents = useMemo(() => {
-        let result = [...students];
-
-        // 1. Filtering
-        if (searchTerm) {
-            const lowerSearch = searchTerm.toLowerCase();
-            result = result.filter(s =>
-                (s.name || "").toLowerCase().includes(lowerSearch) ||
-                (s.email || "").toLowerCase().includes(lowerSearch) ||
-                (s.city && s.city.toLowerCase().includes(lowerSearch))
-            );
-        }
-        if (filterConfig.status) {
-            result = result.filter(s => s.status === filterConfig.status);
-        }
-        if (filterConfig.course) {
-            result = result.filter(s => s.course === filterConfig.course);
-        }
-
-        // 2. Sorting
-        result.sort((a, b) => {
-            let aValue = a[sortConfig.key] || "";
-            let bValue = b[sortConfig.key] || "";
-
-            // Specific handling for dates and numbers
-            if (sortConfig.key === 'gpa') {
-                aValue = parseFloat(aValue) || 0;
-                bValue = parseFloat(bValue) || 0;
-            }
-
-            if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
-            if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
-            return 0;
-        });
-
-        return result;
-    }, [students, searchTerm, sortConfig, filterConfig]);
-
-    // --- RENDER CONTENT BASED ON TAB ---
     const renderContent = () => {
         switch (activeTab) {
             case 'dashboard':
+            case 'students': // Treating dashboard and students similarly for basic view unless consolidated
                 return (
-                    <div className="dashboard-view">
+                    <>
                         <StatsGrid students={students} />
-
-                        <div className="section-header">
-                            <h3 style={{ marginBottom: '16px' }}>Quick Actions</h3>
-                        </div>
-                        <div style={{ display: 'flex', gap: '16px', marginBottom: '40px' }}>
-                            <button className="add-btn" onClick={() => setActiveTab('students')}>
-                                <span className="btn-content">👥 View All Students</span>
-                            </button>
-                            <button className="add-btn" onClick={openAddModal} style={{ background: 'white', color: 'var(--primary)', border: '1px solid var(--border)' }}>
-                                <span className="btn-content">➕ Add New Student</span>
-                            </button>
-                        </div>
-
-                        {/* Recent Activity / Preview could go here */}
-                        <div className="table-card" style={{ maxHeight: '400px' }}>
-                            <div style={{ padding: '20px', borderBottom: '1px solid var(--border)', background: '#f8fafc', fontWeight: 600, color: '#64748b' }}>
-                                RECENTLY ENROLLED
-                            </div>
-                            <div className="table-container">
-                                <StudentList
-                                    students={students.slice(0, 5)}
-                                    onEdit={openEditModal}
-                                    onDelete={handleDeleteStudent}
-                                    density="compact"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                );
-
-            case 'students':
-                return (
-                    <div className="fade-in">
                         <Controls
-                            search={searchTerm}
-                            setSearch={setSearchTerm}
-                            sortBy={sortConfig.key}
-                            setSortBy={(key) => setSortConfig(prev => ({ ...prev, key }))}
-                            filterStatus={filterConfig.status}
-                            setFilterStatus={(status) => setFilterConfig(prev => ({ ...prev, status }))}
-                            filterCourse={filterConfig.course}
-                            setFilterCourse={(course) => setFilterConfig(prev => ({ ...prev, course }))}
+                            search={search} setSearch={setSearch}
+                            sortBy={sortBy} setSortBy={setSortBy}
+                            filterStatus={filterStatus} setFilterStatus={setFilterStatus}
+                            filterCourse={filterCourse} setFilterCourse={setFilterCourse}
                             students={students}
-                            onAddClick={openAddModal}
+                            onAddClick={() => { setEditingStudent(null); setModalOpen(true); }}
                         />
-                        <div className="table-card">
-                            <StudentList
-                                students={processedStudents}
-                                onEdit={(student) => { setEditingStudent(student); setModalOpen(true); }}
-                                onDelete={handleDeleteStudent}
-                                isLoading={loading}
-                                density={viewMode === 'consolidated' ? 'compact' : 'normal'}
-                                viewMode={viewMode}
-                            />
-                        </div>
-                    </div>
+                        <StudentList
+                            students={processedStudents}
+                            onEdit={handleEditClick}
+                            onDelete={handleDeleteStudent}
+                            viewMode={viewMode}
+                            density={density}
+                        />
+                    </>
                 );
-
             case 'reports':
                 return <Reports students={students} />;
-
             case 'library':
-                return <Library students={students} viewMode={viewMode} />;
-
+                return isLibrarian ? (
+                    <Library students={students} viewMode={viewMode} />
+                ) : (
+                    <LibraryLogin onLogin={() => setIsLibrarian(true)} />
+                );
             case 'settings':
                 return (
                     <Settings
@@ -244,48 +208,40 @@ function App() {
                         refreshInterval={refreshInterval} setRefreshInterval={setRefreshInterval}
                     />
                 );
-
             default:
                 return <div>Select a tab</div>;
         }
     };
 
     return (
-        <div className="app-container sidebar-layout">
-            <ErrorBoundary>
-                {/* Sidebar Navigation */}
-                <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+        <div className={`app-container sidebar-layout ${theme}`}>
+            <Sidebar activeTab={activeTab} setActiveTab={handleTabChange} />
+            <main className="main-content">
+                <TopBar activeTab={activeTab} viewMode={viewMode} setViewMode={setViewMode} />
+                <div className="workspace">
+                    {activeTab === 'dashboard' && viewMode === 'consolidated' ? (
+                        <ConsolidatedDashboard students={students} />
+                    ) : (
+                        renderContent()
+                    )}
+                </div>
+            </main>
 
-                {/* Main Content Area */}
-                {/* Main Content Area */}
-                <main className="main-content">
-                    <TopBar activeTab={activeTab} viewMode={viewMode} setViewMode={setViewMode} />
-
-                    {/* CORRECTED CLASS: workspace (was content-scrollable which had no height) */}
-                    <div className="workspace">
-                        {/* 
-                          GLOBAL VIEW MODE:
-                          If mode is 'consolidated' AND we are on 'dashboard', show the summary Dashboard.
-                          Otherwise, if we are on 'students' or 'library', pass viewMode down for Table Density control.
-                        */}
-                        {activeTab === 'dashboard' && viewMode === 'consolidated' ? (
-                            <ConsolidatedDashboard students={students} />
-                        ) : (
-                            renderContent()
-                        )}
-                    </div>
-                </main>
-            </ErrorBoundary>
-
-            {/* Modals & Toasts */}
             <StudentForm
                 isOpen={modalOpen}
-                onRequestClose={() => setModalOpen(false)}
+                onRequestClose={() => { setModalOpen(false); setEditingStudent(null); }}
                 onSubmit={editingStudent ? handleUpdateStudent : handleAddStudent}
                 student={editingStudent}
                 submitting={submitting}
             />
-            {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
         </div>
     );
 }

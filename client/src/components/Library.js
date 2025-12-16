@@ -30,7 +30,7 @@ const Library = ({ students = [], viewMode }) => {
         // Check if path contains specific segments or params
         if (location.pathname.includes('/inventory') || queryParams.get('filter') || queryParams.get('open') || queryParams.get('department')) {
             tab = 'books';
-        } else if (location.pathname.includes('/issued')) {
+        } else if (location.pathname.includes('/issued') || queryParams.get('student')) {
             tab = 'issued';
         } else if (location.pathname.includes('/history')) {
             tab = 'history';

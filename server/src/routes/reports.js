@@ -16,21 +16,18 @@ router.get('/weekly', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res
         const activeLoans = await Transaction.countDocuments({ status: 'BORROWED' });
         const overdueLoans = await Transaction.countDocuments({ status: 'BORROWED', dueDate: { $lt: new Date() } });
 
-        const reportData = `
-WEEKLY UNIVERSITY REPORT
-Generated: ${new Date().toLocaleString()}
------------------------------------
-New Students Enrolled: ${newStudents}
-New Books Added:       ${newBooks}
-Active Loans:          ${activeLoans}
-Overdue Loans:         ${overdueLoans}
------------------------------------
-System Status: Nominal
-        `.trim();
+        const reportData = {
+            generatedAt: new Date().toISOString(),
+            metrics: {
+                "New Students (Last 7 Days)": newStudents,
+                "New Books (Last 7 Days)": newBooks,
+                "Current Active Loans": activeLoans,
+                "Current Overdue Loans": overdueLoans,
+                "System Status": "Nominal"
+            }
+        };
 
-        res.setHeader('Content-Type', 'text/plain');
-        res.setHeader('Content-Disposition', 'attachment; filename=weekly_report.txt');
-        res.send(reportData);
+        res.status(200).json({ status: 'success', data: reportData.metrics, meta: { generatedAt: reportData.generatedAt } });
     } catch (err) {
         res.status(500).json({ status: 'error', message: err.message });
     }

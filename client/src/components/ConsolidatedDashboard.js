@@ -45,20 +45,46 @@ const ConsolidatedDashboard = ({ students }) => { // Accept students prop
 
     const handleWeeklyReport = async () => {
         try {
-            // Check auth (Optional: Frontend auth check, assuming generic request handles token)
-            // We use direct window.open or blob. For auth headers, we might need axios.
-            // Using analyticsService.request to fetch blob
-            const response = await analyticsService.request('GET', '/reports/weekly', null, null, { responseType: 'blob' });
+            const response = await analyticsService.downloadWeeklyReport();
 
-            // Create download link
-            const url = window.URL.createObjectURL(new Blob([response.data]));
+            // Assume response.data is the report object or array
+            // If it's a complex object, we flatten it for CSV
+            const data = response.data.data || response.data;
+
+            // Generate CSV Content
+            let csvContent = "Metric,Value,Notes\n";
+
+            // If data is already a string (CSV from backend endpoint)
+            if (typeof data === 'string') {
+                csvContent = data;
+            }
+            // If data is an array (e.g. JSON data)
+            else if (Array.isArray(data)) {
+                const headers = Object.keys(data[0] || {}).join(",");
+                csvContent = headers + "\n" + data.map(row => Object.values(row).map(v => `"${v}"`).join(",")).join("\n");
+            }
+            // If data is an object (summary report)
+            else if (typeof data === 'object') {
+                Object.entries(data).forEach(([key, value]) => {
+                    const formattedValue = typeof value === 'object' ? JSON.stringify(value) : value;
+                    csvContent += `${key},"${formattedValue}",\n`;
+                });
+            } else {
+                // Fallback
+                csvContent += `Report Data,"${data}"\n`;
+            }
+
+            // Create CSV Blob
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', `Weekly_Report_${new Date().toISOString().split('T')[0]}.txt`);
+            link.setAttribute('download', `Weekly_Report_${new Date().toISOString().split('T')[0]}.csv`);
             document.body.appendChild(link);
             link.click();
             link.parentNode.removeChild(link);
         } catch (e) {
+            console.error("Report Generation Error", e);
             alert("Failed to generate report: " + (e.message || "Server Error"));
         }
     };
@@ -66,7 +92,7 @@ const ConsolidatedDashboard = ({ students }) => { // Accept students prop
     const handleBlastEmail = async () => {
         if (!window.confirm("Are you sure you want to send an email to ALL active students?")) return;
         try {
-            const res = await analyticsService.request('POST', '/notifications/blast', {
+            const res = await analyticsService.sendBlastEmail({
                 subject: "Important Announcement",
                 message: "This is a test broadcast from the Library System."
             });

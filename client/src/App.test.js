@@ -1,4 +1,5 @@
 import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 import { studentService } from './services/studentService';
 
@@ -29,12 +30,12 @@ describe('Enterprise App Integration', () => {
     });
 
     test('renders Dashboard by default', async () => {
-        render(<App />);
+        render(<MemoryRouter><App /></MemoryRouter>);
         expect(await screen.findByText(/Total Students/i)).toBeInTheDocument();
     });
 
     test('navigates to Reports module', async () => {
-        render(<App />);
+        render(<MemoryRouter><App /></MemoryRouter>);
         // Wait for data load
         await screen.findByText(/Total Students/i);
 
@@ -45,7 +46,7 @@ describe('Enterprise App Integration', () => {
     });
 
     test('navigates to Settings module', async () => {
-        render(<App />);
+        render(<MemoryRouter><App /></MemoryRouter>);
         // Wait for data load
         await screen.findByText(/Total Students/i);
 
@@ -56,7 +57,7 @@ describe('Enterprise App Integration', () => {
     });
 
     test('navigates back to Students list', async () => {
-        render(<App />);
+        render(<MemoryRouter><App /></MemoryRouter>);
         // Wait for data load
         await screen.findByText(/Total Students/i);
 

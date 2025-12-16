@@ -1,7 +1,7 @@
 // client/src/components/StudentForm.js
 import React, { useState, useEffect, useMemo } from "react";
 import Modal from "react-modal";
-import { GLOBAL_LOCATIONS, getCountries, getCities } from "../data/locations";
+import { GLOBAL_LOCATIONS, getCountries, getCities, getCountryByCity } from "../data/locations";
 import HybridSelect from "./HybridSelect";
 import LibraryProfileView from "./library/LibraryProfileView";
 import "../App.css";
@@ -140,16 +140,13 @@ function StudentForm({ isOpen, onRequestClose, onSubmit, student, submitting }) 
 
   // Effect for Auto-Detect Country
   // Using effect instead of handleChange for smoother typing
-  useEffect(() => {
-    if (formData.city && !formData.country) {
-      // Dynamic import or assume imported
-      const { getCountryByCity } = require("../data/locations");
-      const country = getCountryByCity(formData.city);
-      if (country) {
-        setFormData(prev => ({ ...prev, country: country }));
-      }
+  if (formData.city && !formData.country) {
+    // Auto-detect country
+    const country = getCountryByCity(formData.city);
+    if (country) {
+      setFormData(prev => ({ ...prev, country: country }));
     }
-  }, [formData.city, formData.country]);
+  }
 
   const handleBlur = (e) => {
     const { name, value } = e.target;
@@ -239,7 +236,7 @@ function StudentForm({ isOpen, onRequestClose, onSubmit, student, submitting }) 
         <button className="button-icon" onClick={onRequestClose} aria-label="Close">✕</button>
       </div>
 
-      <form onSubmit={handleSubmit} className="form modal-content-scroll">
+      <form id="studentForm" onSubmit={handleSubmit} className="form modal-content-scroll">
 
         {/* === SECTION 1: PERSONAL INFORMATION === */}
         <div className={`accordion-section ${activeSection === 1 ? 'active' : ''}`}>
@@ -432,8 +429,8 @@ function StudentForm({ isOpen, onRequestClose, onSubmit, student, submitting }) 
         <button type="button" className="button button-cancel" onClick={onRequestClose}>Cancel</button>
         <button
           type="submit"
+          form="studentForm"
           className="button button-submit"
-          onClick={handleSubmit}
           disabled={submitting}
         >
           {submitting ? "Processing..." : (student ? "Save Records" : "Create Entry")}

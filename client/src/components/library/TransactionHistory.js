@@ -1,29 +1,33 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { bookService } from '../../services/bookService';
+import { Button } from 'semantic-ui-react';
 
 const TransactionHistory = ({ isActiveView }) => {
     const [transactions, setTransactions] = useState([]);
-    // const [loading, setLoading] = useState(true); // Unused
+    const location = useLocation();
 
     useEffect(() => {
         loadData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isActiveView]);
+    }, [isActiveView, location.search]);
 
     const loadData = async () => {
-        // setLoading(true);
         try {
-            // If active view, get Issued, else get all (or Returned)
-            // Ideally backend supports 'all' or no filter
-            // For now, let's fetch "BORROWED" if active, else "RETURNED" 
-            // OR fetch ALL and filter locally to support better history
             const status = isActiveView ? 'BORROWED' : 'RETURNED';
             const res = await bookService.getTransactions(status);
-            setTransactions(res.data.data || []);
+            let data = res.data.data || [];
+
+            // FILTER BY STUDENT ID IF PRESENT IN URL
+            const queryParams = new URLSearchParams(location.search);
+            const studentId = queryParams.get('student');
+            if (studentId) {
+                data = data.filter(t => (t.studentId?._id === studentId || t.student?._id === studentId || t.studentId === studentId));
+            }
+
+            setTransactions(data);
         } catch (e) {
             console.error("Load failed");
-        } finally {
-            // setLoading(false);
         }
     };
 
@@ -72,7 +76,17 @@ const TransactionHistory = ({ isActiveView }) => {
 
     return (
         <div className="transaction-history fade-in">
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '15px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                {new URLSearchParams(location.search).get('student') && (
+                    <div className="filter-badge">
+                        Filtered by Student <button className="button-icon" onClick={() => window.history.pushState({}, '', '/library/issued') || window.dispatchEvent(new PopStateEvent('popstate'))}>✕</button>
+                        {/* Actually, use history.push if possible, or just link. simpler: */}
+                    </div>
+                )}
+                {new URLSearchParams(location.search).get('student') ? (
+                    <button className="button button-cancel" onClick={() => window.location.href = '/library/issued'}>❌ Clear Filter</button>
+                ) : <div></div>}
+
                 <button className="button button-edit" onClick={downloadCSV}>📥 Export {isActiveView ? 'Active Loans' : 'History'} CSV</button>
             </div>
 
@@ -91,21 +105,18 @@ const TransactionHistory = ({ isActiveView }) => {
                     </thead>
                     <tbody>
                         {(transactions || []).map(t => {
-                            // Mongoose populates 'bookId' and 'studentId'.
-                            // Schema uses 'issuedAt', 'returnedAt'.
                             const book = t.bookId || t.book || {};
                             const student = t.studentId || t.student || {};
-                            // Use correct date fields
                             const issueDate = t.issuedAt || t.issueDate;
-                            const dueDate = t.dueDate; // same
-                            const returnDate = t.returnedAt || t.returnDate;
+                            const dueDate = t.dueDate;
 
-                            const isOverdue = t.status === 'BORROWED' && new Date() > new Date(dueDate); // Status matches Schema
+                            const isOverdue = t.status === 'BORROWED' && new Date() > new Date(dueDate);
                             const isDueToday = t.status === 'BORROWED' && new Date().toDateString() === new Date(dueDate).toDateString();
 
+                            // POLISH: Enhanced row styles for Active Loans view
                             let rowStyle = {};
-                            if (isOverdue) rowStyle = { backgroundColor: '#fef2f2' };
-                            else if (isDueToday) rowStyle = { backgroundColor: '#fffbeb' };
+                            if (isOverdue) rowStyle = { backgroundColor: '#fef2f2', borderLeft: '4px solid #ef4444' }; // Red border for overdue
+                            else if (isDueToday) rowStyle = { backgroundColor: '#fffbeb', borderLeft: '4px solid #f59e0b' }; // Orange for due today
 
                             return (
                                 <tr key={t._id} style={rowStyle}>
@@ -114,10 +125,10 @@ const TransactionHistory = ({ isActiveView }) => {
                                         <div>{student.name || "Unknown"}</div>
                                         <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{student.email}</div>
                                     </td>
-                                    <td>{issueDate ? new Date(issueDate).toLocaleDateString() : '-'}</td>
+                                    <td>{issueDate ? new Date(issueDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '-'}</td>
                                     <td style={isOverdue ? { color: '#ef4444', fontWeight: 'bold' } : {}}>
-                                        {dueDate ? new Date(dueDate).toLocaleDateString() : '-'}
-                                        {isOverdue && <span style={{ fontSize: '0.7rem', display: 'block' }}>⚠ OVERDUE</span>}
+                                        {dueDate ? new Date(dueDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '-'}
+                                        {isOverdue && <span style={{ fontSize: '0.7rem', display: 'block', color: '#d32f2f' }}>⚠ OVERDUE</span>}
                                     </td>
                                     <td>
                                         <span className={`status-badge ${t.status === 'BORROWED' ? 'status-graduated' : t.status === 'RETURNED' ? 'status-active' : 'status-suspended'}`}>
@@ -129,9 +140,11 @@ const TransactionHistory = ({ isActiveView }) => {
                                     </td>
                                     <td>
                                         {(t.status === 'Issued' || t.status === 'BORROWED') && (
-                                            <div className="action-buttons">
-                                                <button className="button button-submit" onClick={() => handleReturn(t._id)}>Return</button>
-                                                <button className="button button-edit" onClick={() => handleRenew(t._id)}>Renew</button>
+                                            <div style={{ textAlign: 'center' }}>
+                                                <Button.Group size='mini'>
+                                                    <Button icon='undo' color='violet' title='Return Book' onClick={() => handleReturn(t._id)} />
+                                                    <Button icon='redo' color='blue' title='Renew Book' onClick={() => handleRenew(t._id)} />
+                                                </Button.Group>
                                             </div>
                                         )}
                                     </td>
