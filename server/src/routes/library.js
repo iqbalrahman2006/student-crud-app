@@ -569,12 +569,18 @@ router.get('/audit-logs', ensureLibraryRole(['ADMIN', 'AUDITOR']), async (req, r
         const total = await LibraryAuditLog.countDocuments(query);
 
         // Transform for frontend
-        const items = logs.map(log => ({
-            ...log.toObject(),
-            bookTitle: log.bookId ? log.bookId.title : 'N/A',
-            studentName: log.studentId ? log.studentId.name : 'N/A',
-            adminName: log.adminId ? log.adminId.name : 'System'
-        }));
+        const items = logs.map(log => {
+            const logObj = log.toObject();
+            return {
+                ...logObj,
+                bookId: log.bookId ? log.bookId._id : null, // Flatten to ID string
+                studentId: log.studentId ? log.studentId._id : null, // Flatten to ID string
+                adminId: log.adminId ? log.adminId._id : null, // Flatten to ID string
+                bookTitle: log.bookId ? log.bookId.title : 'Unknown Book',
+                studentName: log.studentId ? log.studentId.name : 'Unknown Student',
+                adminName: log.adminId ? log.adminId.name : 'System'
+            };
+        });
 
         res.status(200).json({
             status: 'success',

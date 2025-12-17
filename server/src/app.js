@@ -7,7 +7,6 @@ require('./models/User'); // Register User Model for Populate
 // Import routes
 const studentsRouter = require('./routes/students');
 
-// Start express app
 const app = express();
 
 // Enable CORS
@@ -29,6 +28,10 @@ app.use('/api/v1/students', studentsRouter);
 app.use('/api/v1/library', require('./routes/library'));
 app.use('/api/v1/notifications', require('./routes/notifications'));
 app.use('/api/v1/reports', require('./routes/reports'));
+app.use('/api/auth', require('./routes/auth.routes'));
+
+// ⭐ ADD THIS LINE — Centralized Auth Route ⭐
+app.use('/api/auth', require('./routes/auth.routes'));
 
 // Root Handler for API Check
 app.get('/', (req, res) => {

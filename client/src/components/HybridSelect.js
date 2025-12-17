@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import '../App.css'; // Ensure we have access to styles
 
 const HybridSelect = ({
@@ -27,13 +27,12 @@ const HybridSelect = ({
     // Initialize internal state based on props
     useEffect(() => {
         // If value is not in options, treat as custom (unless empty)
-        if (value && options.length > 0 && !options.includes(value)) {
-            setFilter(value);
-            setIsCustom(true);
-        } else {
-            setFilter(value || "");
-            setIsCustom(false);
-        }
+        const newFilter = value || "";
+        const newIsCustom = value && options.length > 0 && !options.includes(value);
+
+        // Only update if values actually changed to prevent unnecessary re-renders
+        setFilter(prev => prev !== newFilter ? newFilter : prev);
+        setIsCustom(prev => prev !== newIsCustom ? newIsCustom : prev);
     }, [value, options]);
 
     // Handle outside click to close dropdown
@@ -64,8 +63,12 @@ const HybridSelect = ({
         onChange({ target: { name, value: option } });
     };
 
-    const filteredOptions = options.filter(opt =>
-        opt.toLowerCase().includes(filter.toLowerCase())
+    // Memoize filtered options to prevent recalculation on every render
+    const filteredOptions = useMemo(() =>
+        options.filter(opt =>
+            opt.toLowerCase().includes(filter.toLowerCase())
+        ),
+        [options, filter]
     );
 
     return (
@@ -119,4 +122,14 @@ const HybridSelect = ({
     );
 };
 
-export default HybridSelect;
+// Wrap with React.memo to prevent unnecessary re-renders
+export default React.memo(HybridSelect, (prevProps, nextProps) => {
+    // Custom comparison: only re-render if these props actually changed
+    return (
+        prevProps.value === nextProps.value &&
+        prevProps.error === nextProps.error &&
+        prevProps.disabled === nextProps.disabled &&
+        prevProps.options === nextProps.options &&
+        prevProps.name === nextProps.name
+    );
+});

@@ -192,6 +192,7 @@ const ConsolidatedDashboard = ({ students }) => { // Accept students prop
                         <button className="button button-outline" style={{ justifyContent: 'center' }} onClick={handleWeeklyReport}>📥 Generate Weekly Report</button>
                         <button className="button button-outline" style={{ justifyContent: 'center' }} onClick={handleBlastEmail}>✉️ Blast Email to All Active</button>
                         <button className="button button-outline" style={{ justifyContent: 'center' }} onClick={handleAuditLog}>🛡️ System Audit Log</button>
+                        <button className="button button-primary" style={{ justifyContent: 'center', marginTop: '10px' }} onClick={() => window.dispatchEvent(new CustomEvent('open-add-student'))}>➕ Add New Student</button>
                     </div>
                     <div style={{ marginTop: '20px', padding: '15px', background: '#f8fafc', borderRadius: '8px', fontSize: '0.85rem', color: '#64748b' }}>
                         <strong>💡 Pro Tip:</strong> Switch to "Detailed Mode" (Top Right) for granular control over individual student records and book inventory management.

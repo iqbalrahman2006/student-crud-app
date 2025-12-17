@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { analyticsService } from '../../services/analyticsService';
 import DailyActivityLog from './DailyActivityLog';
 import { Table, Icon, Label, Segment, Header, Form, Button } from 'semantic-ui-react';
+import Toast from '../Toast'; // Check path if needed, assuming in components/Toast
 
 const AuditLogs = () => {
     const history = useHistory();
@@ -10,6 +11,7 @@ const AuditLogs = () => {
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
+    const [toast, setToast] = useState(null); // Add local toast state
     const [filters, setFilters] = useState({
         action: '',
         start: '',
@@ -17,28 +19,32 @@ const AuditLogs = () => {
     });
 
     useEffect(() => {
+        let mounted = true;
+
+        const fetchLogs = async () => {
+            setLoading(true);
+            try {
+                const params = { page, limit: 20 };
+                if (filters.action) params.action = filters.action;
+                if (filters.start) params.start = filters.start;
+                if (filters.end) params.end = filters.end;
+
+                const res = await analyticsService.getAuditLogs(params);
+                if (mounted) {
+                    setLogs(res.data?.data?.items || []);
+                    setTotal(res.data?.data?.total || 0);
+                }
+            } catch (err) {
+                console.error("Failed to fetch logs", err);
+                if (mounted) setLogs([]);
+            } finally {
+                if (mounted) setLoading(false);
+            }
+        };
+
         fetchLogs();
-        // eslint-disable-next-line
+        return () => { mounted = false; };
     }, [page, filters]);
-
-    const fetchLogs = async () => {
-        setLoading(true);
-        try {
-            const params = { page, limit: 20 };
-            if (filters.action) params.action = filters.action;
-            if (filters.start) params.start = filters.start;
-            if (filters.end) params.end = filters.end;
-
-            const res = await analyticsService.getAuditLogs(params);
-            setLogs(res.data?.data?.items || []);
-            setTotal(res.data?.data?.total || 0);
-        } catch (err) {
-            console.error("Failed to fetch logs", err);
-            setLogs([]);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const handleFilterChange = (e, { name, value }) => {
         setFilters({ ...filters, [name]: value });
@@ -59,6 +65,23 @@ const AuditLogs = () => {
         return colors[action] || 'grey';
     };
 
+    // Navigation Click Handlers
+    const handleBookClick = (bookId, bookTitle) => {
+        if (bookId && typeof bookId === 'string' && bookId.length > 0) {
+            history.push(`/library/inventory/${bookId}`);
+        } else {
+            setToast({ message: "Record not linked to a valid book", type: "error" });
+        }
+    };
+
+    const handleStudentClick = (studentId, studentName) => {
+        if (studentId && typeof studentId === 'string' && studentId.length > 0) {
+            history.push(`/students/${studentId}`);
+        } else {
+            setToast({ message: "Record not linked to a valid student", type: "error" });
+        }
+    };
+
     const options = [
         { key: 'all', text: 'All Actions', value: '' },
         { key: 'borrow', text: 'Borrow', value: 'BORROW' },
@@ -73,6 +96,15 @@ const AuditLogs = () => {
     return (
         <div className="audit-logs-container fade-in" style={{ padding: '0 10px' }}>
             <DailyActivityLog />
+
+            {/* Local Toast for AuditLogs validation feedback */}
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
 
             <Segment>
                 <Header as='h4'>
@@ -113,7 +145,7 @@ const AuditLogs = () => {
             </Segment>
 
             <Segment raised loading={loading}>
-                <Table celled striped selectableSortable color='teal'>
+                <Table celled striped color='teal'>
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell width={5}><Icon name='book' /> Book Title</Table.HeaderCell>
@@ -129,11 +161,7 @@ const AuditLogs = () => {
                             <Table.Row key={log._id || Math.random()}>
                                 <Table.Cell
                                     style={{ cursor: log.bookId ? 'pointer' : 'default' }}
-                                    onClick={() => {
-                                        if (log.bookId && log.bookTitle) {
-                                            history.push(`/library/inventory?search=${encodeURIComponent(log.bookTitle)}`);
-                                        }
-                                    }}
+                                    onClick={() => handleBookClick(log.bookId, log.bookTitle)}
                                 >
                                     <Header as='h5'>
                                         <Header.Content>
@@ -144,7 +172,10 @@ const AuditLogs = () => {
                                         </Header.Content>
                                     </Header>
                                 </Table.Cell>
-                                <Table.Cell>
+                                <Table.Cell
+                                    style={{ cursor: log.studentId ? 'pointer' : 'default' }}
+                                    onClick={() => handleStudentClick(log.studentId, log.studentName)}
+                                >
                                     <Header as='h5' image>
                                         <Icon name={log.studentName === 'N/A' ? 'server' : 'user circle'} color='grey' />
                                         <Header.Content>
@@ -152,6 +183,7 @@ const AuditLogs = () => {
                                                 ? log.studentName
                                                 : (log.action === 'OVERDUE' ? 'System Task' : 'N/A')}
                                             {log.adminName && <Header.Subheader>By: {log.adminName}</Header.Subheader>}
+                                            {log.studentId && <Header.Subheader style={{ color: '#2185d0' }}>Click to Profile</Header.Subheader>}
                                         </Header.Content>
                                     </Header>
                                 </Table.Cell>
@@ -172,7 +204,7 @@ const AuditLogs = () => {
                         ))}
                         {logs.length === 0 && !loading && (
                             <Table.Row>
-                                <Table.Cell colSpan="4" textAlign='center'>
+                                <Table.Cell colSpan="5" textAlign='center'>
                                     <div style={{ padding: '20px', color: '#999' }}>
                                         <Icon name='search' size='large' />
                                         <p>No records found matching your filters.</p>
@@ -184,7 +216,7 @@ const AuditLogs = () => {
 
                     <Table.Footer>
                         <Table.Row>
-                            <Table.HeaderCell colSpan='4'>
+                            <Table.HeaderCell colSpan='5'>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <span>Total: {total} records</span>
                                     <Button.Group size='small'>
@@ -202,5 +234,4 @@ const AuditLogs = () => {
             </Segment>
         </div>
     );
-};
-export default AuditLogs;
+}; export default AuditLogs;

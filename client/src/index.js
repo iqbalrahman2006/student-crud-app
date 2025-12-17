@@ -6,12 +6,15 @@ import 'semantic-ui-css/semantic.min.css'; // Added for UI components
 import "./App.css";
 
 import { BrowserRouter as Router } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 
 ReactDOM.render(
-    <Router>
-        <ErrorBoundary>
-            <App />
-        </ErrorBoundary>
-    </Router>,
+    <AuthProvider>
+        <Router>
+            <ErrorBoundary>
+                <App />
+            </ErrorBoundary>
+        </Router>
+    </AuthProvider>,
     document.getElementById("root")
 );

@@ -42,11 +42,11 @@ const StudentItem = ({ student, onEdit, onDelete, onViewActivity, isLoading, den
       {!isConsolidated && (
         <Table.Cell textAlign='center'>
           {student.hasOverdue ? (
-            <Label color='red' basic size='mini' style={{ cursor: 'pointer' }} onClick={() => onViewActivity && onViewActivity(student)}>
+            <Label color='red' basic size='mini' style={{ cursor: 'pointer' }} onClick={() => onViewActivity && onViewActivity(student, 'overdue')}>
               <Icon name='warning' /> Overdue
             </Label>
           ) : student.borrowedBooksCount > 0 ? (
-            <Label color='blue' basic size='mini' style={{ cursor: 'pointer' }} onClick={() => onViewActivity && onViewActivity(student)}>
+            <Label color='blue' basic size='mini' style={{ cursor: 'pointer' }} onClick={() => onViewActivity && onViewActivity(student, 'active')}>
               <Icon name='book' /> {student.borrowedBooksCount} Active
             </Label>
           ) : (
@@ -71,7 +71,7 @@ const StudentItem = ({ student, onEdit, onDelete, onViewActivity, isLoading, den
         <Table.Cell>
           <Button.Group size='mini'>
             <Button icon='edit' basic color='blue' onClick={() => onEdit(student)} disabled={isLoading} />
-            <Button icon='trash' basic color='red' onClick={() => onDelete(student)} disabled={isLoading} loading={isLoading} />
+            <Button icon='trash' basic color='red' onClick={() => onDelete(student._id)} disabled={isLoading} loading={isLoading} />
           </Button.Group>
         </Table.Cell>
       )}

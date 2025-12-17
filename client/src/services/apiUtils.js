@@ -49,14 +49,20 @@ apiClient.interceptors.response.use(null, async (error) => {
 // Standardized Request Wrapper
 export const request = async (method, url, data = null, params = null, config = {}) => {
     try {
-        const response = await apiClient({
+        const requestConfig = {
             method,
             url,
-            data,
             params,
             ...config, // Merge custom config (e.g. responseType)
             retry: method === 'GET' // Only retry GET requests by default
-        });
+        };
+
+        // Only include data if it's not null (important for DELETE requests)
+        if (data !== null) {
+            requestConfig.data = data;
+        }
+
+        const response = await apiClient(requestConfig);
         return response;
     } catch (error) {
         console.warn(`API ${method} ${url} Failed:`, error.message);

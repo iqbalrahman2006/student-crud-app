@@ -1,6 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-const Toast = ({ message, type }) => {
+const Toast = ({ message, type, onClose }) => {
+  // Auto-dismiss after 3 seconds
+  useEffect(() => {
+    if (!message) return;
+
+    const timer = setTimeout(() => {
+      if (onClose) onClose();
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [message, onClose]);
+
   if (!message) return null;
 
   const bgColor = type === 'error' ? '#f8d7da' : '#d1e7dd';

@@ -145,10 +145,15 @@ const Library = ({ students = [], viewMode }) => {
                 {activeTab === 'issued' && (
                     <>
                         <TransactionHistory key={refreshKey} isActiveView={true} />
-                        <div style={{ marginTop: '40px', borderTop: '2px dashed #cbd5e1', paddingTop: '20px' }}>
-                            <h3 style={{ color: '#475569' }}>📜 Transaction History</h3>
-                            <TransactionHistory key={refreshKey} isActiveView={false} />
-                        </div>
+
+                        {/* Only show History if NOT deep linking to a specific active view */}
+                        {!(new URLSearchParams(location.search).get('student') &&
+                            ['active', 'overdue'].includes(new URLSearchParams(location.search).get('status'))) && (
+                                <div style={{ marginTop: '40px', borderTop: '2px dashed #cbd5e1', paddingTop: '20px' }}>
+                                    <h3 style={{ color: '#475569' }}>📜 Transaction History</h3>
+                                    <TransactionHistory key={refreshKey} isActiveView={false} />
+                                </div>
+                            )}
                     </>
                 )}
 

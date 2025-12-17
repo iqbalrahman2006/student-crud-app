@@ -4,7 +4,10 @@ import { bookService } from '../../services/bookService';
 import { Button } from 'semantic-ui-react';
 
 const TransactionHistory = ({ isActiveView }) => {
-    const [transactions, setTransactions] = useState([]);
+    const [rawTransactions, setRawTransactions] = useState([]); // Store fetched data
+    const [transactions, setTransactions] = useState([]); // Store displayed data
+    const [highlightedId, setHighlightedId] = useState(null);
+    const [toast, setToast] = useState(null); // Local toast state
     const location = useLocation();
 
     useEffect(() => {
@@ -12,20 +15,92 @@ const TransactionHistory = ({ isActiveView }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isActiveView, location.search]);
 
+    // SMART SCROLL & HIGHLIGHT LOGIC
+    useEffect(() => {
+        if (rawTransactions.length === 0) {
+            setTransactions([]);
+            return;
+        }
+
+        const query = new URLSearchParams(location.search);
+        const studentId = query.get('student') || query.get('studentId');
+        const bookId = query.get('bookId');
+        const status = query.get('status');
+
+        let filtered = [...rawTransactions];
+        let targetTxn = null;
+
+        if (studentId) {
+            // 1. Try Exact Match (Book + Student)
+            if (bookId) {
+                targetTxn = filtered.find(t =>
+                    (t.studentId?._id === studentId || t.student?._id === studentId || t.studentId === studentId) &&
+                    (t.bookId?._id === bookId || t.book?._id === bookId || t.bookId === bookId)
+                );
+            }
+
+            // 2. If no exact match (or no bookId), try Best Match by Status
+            if (!targetTxn && status) {
+                const relevantTxns = filtered.filter(t =>
+                    (t.studentId?._id === studentId || t.student?._id === studentId || t.studentId === studentId)
+                );
+
+                if (status === 'overdue') {
+                    // Find earliest overdue
+                    const overdueTxns = relevantTxns.filter(t =>
+                        t.status === 'BORROWED' && new Date() > new Date(t.dueDate)
+                    );
+                    overdueTxns.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+                    targetTxn = overdueTxns[0];
+                } else if (status === 'active' || status === 'borrowed') {
+                    // Find most recent active
+                    const activeTxns = relevantTxns.filter(t => t.status === 'BORROWED' || t.status === 'Issued');
+                    activeTxns.sort((a, b) => new Date(b.issuedAt || b.issueDate) - new Date(a.issuedAt || a.issueDate));
+                    targetTxn = activeTxns[0];
+                }
+            }
+        }
+
+        if (targetTxn) {
+            setHighlightedId(targetTxn._id);
+            // STRICT MODE: Show ONLY the matching row
+            setTransactions([targetTxn]);
+
+            // Delay scroll slightly to ensure render
+            setTimeout(() => {
+                const el = document.getElementById(`row-${targetTxn._id}`);
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+
+            // Clear highlight after 2s
+            setTimeout(() => setHighlightedId(null), 2000);
+        } else {
+            // No strict target found, show all raw transactions (already filtered by loadData if studentId was there)
+            setTransactions(filtered);
+
+            if (studentId && (bookId || status) && !toast && filtered.length === 0) {
+                // Nothing found for this student filter at all
+                setToast({ message: "No matching loan found for this student.", type: 'warning' });
+                setTimeout(() => setToast(null), 3000);
+            }
+        }
+    }, [rawTransactions, location.search]); // Depend on RAW data
+
     const loadData = async () => {
         try {
             const status = isActiveView ? 'BORROWED' : 'RETURNED';
             const res = await bookService.getTransactions(status);
             let data = res.data.data || [];
 
-            // FILTER BY STUDENT ID IF PRESENT IN URL
+            // FILTER BY STUDENT ID IF PRESENT IN URL (Base Filter)
             const queryParams = new URLSearchParams(location.search);
-            const studentId = queryParams.get('student');
+            const studentId = queryParams.get('student') || queryParams.get('studentId');
             if (studentId) {
                 data = data.filter(t => (t.studentId?._id === studentId || t.student?._id === studentId || t.studentId === studentId));
             }
 
-            setTransactions(data);
+            setRawTransactions(data);
+            // We do NOT set 'transactions' here, let the Effect handle it to ensure consistent logic
         } catch (e) {
             console.error("Load failed");
         }
@@ -76,11 +151,28 @@ const TransactionHistory = ({ isActiveView }) => {
 
     return (
         <div className="transaction-history fade-in">
+            {toast && (
+                <div style={{
+                    position: 'fixed',
+                    bottom: '20px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    backgroundColor: '#333',
+                    color: '#fff',
+                    padding: '10px 20px',
+                    borderRadius: '25px',
+                    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                    zIndex: 2000,
+                    fontSize: '0.9rem',
+                    animation: 'fadeIn 0.3s ease-in-out'
+                }}>
+                    {toast.message}
+                </div>
+            )}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-                {new URLSearchParams(location.search).get('student') && (
+                {(new URLSearchParams(location.search).get('student') || new URLSearchParams(location.search).get('studentId')) && (
                     <div className="filter-badge">
-                        Filtered by Student <button className="button-icon" onClick={() => window.history.pushState({}, '', '/library/issued') || window.dispatchEvent(new PopStateEvent('popstate'))}>✕</button>
-                        {/* Actually, use history.push if possible, or just link. simpler: */}
+                        Filtered by Student <button className="button-icon" onClick={() => window.location.href = '/library/issued'}>✕</button>
                     </div>
                 )}
                 {new URLSearchParams(location.search).get('student') ? (
@@ -112,14 +204,21 @@ const TransactionHistory = ({ isActiveView }) => {
 
                             const isOverdue = t.status === 'BORROWED' && new Date() > new Date(dueDate);
                             const isDueToday = t.status === 'BORROWED' && new Date().toDateString() === new Date(dueDate).toDateString();
+                            const isHighlighted = highlightedId === t._id;
 
-                            // POLISH: Enhanced row styles for Active Loans view
-                            let rowStyle = {};
-                            if (isOverdue) rowStyle = { backgroundColor: '#fef2f2', borderLeft: '4px solid #ef4444' }; // Red border for overdue
-                            else if (isDueToday) rowStyle = { backgroundColor: '#fffbeb', borderLeft: '4px solid #f59e0b' }; // Orange for due today
+                            // POLISH: Enhanced row styles for Active Loans view AND highlight
+                            let rowStyle = { transition: 'background-color 0.5s ease' };
+
+                            if (isHighlighted) {
+                                rowStyle = { ...rowStyle, backgroundColor: '#dbeafe', borderLeft: '4px solid #3b82f6' }; // Highlight blue
+                            } else if (isOverdue) {
+                                rowStyle = { ...rowStyle, backgroundColor: '#fef2f2', borderLeft: '4px solid #ef4444' };
+                            } else if (isDueToday) {
+                                rowStyle = { ...rowStyle, backgroundColor: '#fffbeb', borderLeft: '4px solid #f59e0b' };
+                            }
 
                             return (
-                                <tr key={t._id} style={rowStyle}>
+                                <tr key={t._id} id={`row-${t._id}`} style={rowStyle}>
                                     <td style={{ fontWeight: 600 }}>{book.title || "Unknown Book"}</td>
                                     <td>
                                         <div>{student.name || "Unknown"}</div>

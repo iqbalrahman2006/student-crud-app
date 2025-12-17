@@ -12,7 +12,9 @@ const LibraryAnalytics = () => {
     const [isNavigating, setIsNavigating] = useState(false);
 
     useEffect(() => {
-        loadStats();
+        let mounted = true;
+        loadStats(mounted);
+        return () => { mounted = false; };
     }, []);
 
     const handleNavigation = (path) => {
@@ -23,11 +25,13 @@ const LibraryAnalytics = () => {
         history.push(path);
     };
 
-    const loadStats = async () => {
+    const loadStats = async (isMounted = true) => {
         try {
             // PART 2: Use new Summary Endpoint for robust data
             const summaryRes = await analyticsService.getInventorySummary();
             const analyticsRes = await analyticsService.getLibraryAnalytics(); // Keep for charts
+
+            if (!isMounted) return;
 
             // Merge Data
             const summary = summaryRes.data.data;
@@ -45,7 +49,7 @@ const LibraryAnalytics = () => {
         } catch (e) {
             console.error("Analytics Load Failed", e);
         } finally {
-            setLoading(false);
+            if (isMounted) setLoading(false);
         }
     };
 

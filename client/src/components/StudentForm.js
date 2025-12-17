@@ -113,15 +113,18 @@ function StudentForm({ isOpen, onRequestClose, onSubmit, student, submitting }) 
   // --- HANDLERS ---
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    // Auto-Detect Country from City
-    if (name === 'city' && !formData.country && value.length > 2) {
-      // Requires importing getCountryByCity - assuming we added it to imports
-      // We'll handle the import in a separate tool call if needed or just use standard import at top
-    }
 
     const finalValue = type === 'checkbox' ? checked : value;
 
     let updatedData = { ...formData, [name]: finalValue };
+
+    // Auto-Detect Country from City (integrated here to prevent infinite loops)
+    if (name === 'city' && !updatedData.country && value.length > 2) {
+      const detectedCountry = getCountryByCity(value);
+      if (detectedCountry) {
+        updatedData.country = detectedCountry;
+      }
+    }
 
     // Strict Location Logic
     if (name === "country") {
@@ -137,16 +140,6 @@ function StudentForm({ isOpen, onRequestClose, onSubmit, student, submitting }) 
       setErrors(prev => ({ ...prev, [name]: error }));
     }
   };
-
-  // Effect for Auto-Detect Country
-  // Using effect instead of handleChange for smoother typing
-  if (formData.city && !formData.country) {
-    // Auto-detect country
-    const country = getCountryByCity(formData.city);
-    if (country) {
-      setFormData(prev => ({ ...prev, country: country }));
-    }
-  }
 
   const handleBlur = (e) => {
     const { name, value } = e.target;
@@ -198,29 +191,35 @@ function StudentForm({ isOpen, onRequestClose, onSubmit, student, submitting }) 
     return formData.country && GLOBAL_LOCATIONS[formData.country] ? GLOBAL_LOCATIONS[formData.country].zipHint : "";
   }, [formData.country]);
 
+  // Memoize Country List to prevent unnecessary re-renders in HybridSelect
+  const countryOptions = useMemo(() => getCountries(), []);
+
   // --- COMPONENT RENDER HELPER ---
-  const renderFloatingInput = (name, label, type = "text", required = false, props = {}) => (
-    <div className={`form-group floating-label-group ${props.gridSpan || ''}`}>
-      <input
-        type={type}
-        id={name}
-        name={name}
-        className={`floating-input ${errors[name] && touched[name] ? 'has-error' : ''}`}
-        placeholder=" "
-        value={formData[name]}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        required={required}
-        {...props}
-      />
-      <label htmlFor={name} className="floating-label">
-        {label} {required && <span className="required-star">*</span>}
-      </label>
-      {errors[name] && touched[name] && (
-        <div className="error-text"><span>⚠️</span> {errors[name]}</div>
-      )}
-    </div>
-  );
+  const renderFloatingInput = (name, label, type = "text", required = false, props = {}) => {
+    const { gridSpan, ...restProps } = props;
+    return (
+      <div className={`form-group floating-label-group ${gridSpan || ''}`}>
+        <input
+          type={type}
+          id={name}
+          name={name}
+          className={`floating-input ${errors[name] && touched[name] ? 'has-error' : ''}`}
+          placeholder=" "
+          value={formData[name]}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          required={required}
+          {...restProps}
+        />
+        <label htmlFor={name} className="floating-label">
+          {label} {required && <span className="required-star">*</span>}
+        </label>
+        {errors[name] && touched[name] && (
+          <div className="error-text"><span>⚠️</span> {errors[name]}</div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <Modal
@@ -231,6 +230,7 @@ function StudentForm({ isOpen, onRequestClose, onSubmit, student, submitting }) 
       overlayClassName="overlay"
       shouldCloseOnOverlayClick={false}
     >
+
       <div className="modal-header">
         <h2>{student ? "Edit Student Profile" : "New Student Entry"}</h2>
         <button className="button-icon" onClick={onRequestClose} aria-label="Close">✕</button>
@@ -345,7 +345,7 @@ function StudentForm({ isOpen, onRequestClose, onSubmit, student, submitting }) 
               <HybridSelect
                 label="Country"
                 name="country"
-                options={getCountries()}
+                options={countryOptions}
                 value={formData.country}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -364,6 +364,7 @@ function StudentForm({ isOpen, onRequestClose, onSubmit, student, submitting }) 
                 error={errors.city && touched.city ? errors.city : null}
                 required
               />
+              {/* <div style={{ padding: '20px', border: '1px solid red' }}>HybridSelect Disabled for Debugging</div> */}
 
               {renderFloatingInput("zipCode", `Zip Code ${zipHint ? `(${zipHint})` : ""}`, "text", false, { disabled: !formData.country })}
               {renderFloatingInput("address", "Street Address", "text", false, { gridSpan: "grid-span-3" })}

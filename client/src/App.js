@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation, Switch, Route } from "react-router-dom";
+import Login from "./pages/Login";
 import Sidebar from "./components/Sidebar";
 import TopBar from "./components/TopBar";
 import StatsGrid from "./components/StatsGrid";
@@ -8,7 +9,7 @@ import StudentList from "./components/StudentList";
 import StudentForm from "./components/StudentForm";
 import Toast from "./components/Toast";
 import Reports from "./components/Reports";
-import LibraryLogin from "./components/LibraryLogin";
+
 import Library from "./components/Library";
 import Settings from "./components/Settings";
 import ConsolidatedDashboard from "./components/ConsolidatedDashboard";
@@ -18,7 +19,6 @@ import "./App.css";
 function App() {
     // Data State
     const [students, setStudents] = useState([]);
-    const [isLibrarian, setIsLibrarian] = useState(false);
 
     // UI State
     const [activeTab, setActiveTab] = useState('dashboard');
@@ -75,7 +75,18 @@ function App() {
     useEffect(() => {
         fetchStudents();
         const interval = refreshInterval > 0 ? setInterval(fetchStudents, refreshInterval) : null;
-        return () => interval && clearInterval(interval);
+
+        // Custom Event Listener for Global "Add Student" Trigger
+        const handleOpenAdd = () => {
+            setEditingStudent(null);
+            setModalOpen(true);
+        };
+        window.addEventListener('open-add-student', handleOpenAdd);
+
+        return () => {
+            if (interval) clearInterval(interval);
+            window.removeEventListener('open-add-student', handleOpenAdd);
+        };
     }, [fetchStudents, refreshInterval]);
 
     // Derived Data (Filtering & Sorting)
@@ -168,6 +179,17 @@ function App() {
         setModalOpen(true);
     };
 
+
+    const handleViewActivity = (student, status) => {
+        setActiveTab('library');
+        // Safe Mode Deep Link: /library/issued?studentId=<ID>&status=<STATUS>&bookId=
+        // bookId is empty here as dashboard doesn't provide it, but TransactionHistory handles "best match"
+        // Using 'studentId' param to match strict requirement, though component supports 'student' alias.
+        // We stick to 'student' as per previous working code or 'studentId' if needed.
+        // The requirement says: studentId=<STUDENT_ID>&bookId=<BOOK_ID>&status=<STATUS>
+        history.push(`/library/issued?studentId=${student._id}&status=${status || 'all'}&bookId=`);
+    };
+
     const renderContent = () => {
         switch (activeTab) {
             case 'dashboard':
@@ -187,6 +209,7 @@ function App() {
                             students={processedStudents}
                             onEdit={handleEditClick}
                             onDelete={handleDeleteStudent}
+                            onViewActivity={handleViewActivity}
                             viewMode={viewMode}
                             density={density}
                         />
@@ -195,11 +218,7 @@ function App() {
             case 'reports':
                 return <Reports students={students} />;
             case 'library':
-                return isLibrarian ? (
-                    <Library students={students} viewMode={viewMode} />
-                ) : (
-                    <LibraryLogin onLogin={() => setIsLibrarian(true)} />
-                );
+                return <Library students={students} viewMode={viewMode} />;
             case 'settings':
                 return (
                     <Settings
@@ -213,36 +232,70 @@ function App() {
         }
     };
 
+    // URL Deep Linking for Student Modal
+    useEffect(() => {
+        if (students.length === 0) return;
+
+        const match = location.pathname.match(/^\/students\/([a-zA-Z0-9]+)$/);
+        if (match) {
+            const studentId = match[1];
+            // Only open if not currently open with this student
+            if (!modalOpen || (editingStudent && editingStudent._id !== studentId)) {
+                const student = students.find(s => s._id === studentId);
+                if (student) {
+                    setEditingStudent(student);
+                    setModalOpen(true);
+                    setActiveTab('students');
+                } else if (!toast) {
+                    setToast({ type: 'error', message: 'Student not found' });
+                    history.push('/students');
+                }
+            }
+        }
+    }, [location.pathname, students]); // Intentionally minimal deps
+
     return (
-        <div className={`app-container sidebar-layout ${theme}`}>
-            <Sidebar activeTab={activeTab} setActiveTab={handleTabChange} />
-            <main className="main-content">
-                <TopBar activeTab={activeTab} viewMode={viewMode} setViewMode={setViewMode} />
-                <div className="workspace">
-                    {activeTab === 'dashboard' && viewMode === 'consolidated' ? (
-                        <ConsolidatedDashboard students={students} />
-                    ) : (
-                        renderContent()
+        <Switch>
+            <Route path="/login" component={Login} />
+            <Route path="/">
+                <div className={`app-container sidebar-layout ${theme}`}>
+                    <Sidebar activeTab={activeTab} setActiveTab={handleTabChange} />
+                    <main className="main-content">
+                        <TopBar activeTab={activeTab} viewMode={viewMode} setViewMode={setViewMode} />
+                        <div className="workspace">
+                            {activeTab === 'dashboard' && viewMode === 'consolidated' ? (
+                                <ConsolidatedDashboard students={students} />
+                            ) : (
+                                renderContent()
+                            )}
+                        </div>
+                    </main>
+
+                    <StudentForm
+                        isOpen={modalOpen}
+                        onRequestClose={() => {
+                            setModalOpen(false);
+                            setEditingStudent(null);
+                            // Clear deep link on close
+                            if (location.pathname.match(/^\/students\/[a-zA-Z0-9]+$/)) {
+                                history.push('/students');
+                            }
+                        }}
+                        onSubmit={editingStudent ? handleUpdateStudent : handleAddStudent}
+                        student={editingStudent}
+                        submitting={submitting}
+                    />
+
+                    {toast && (
+                        <Toast
+                            message={toast.message}
+                            type={toast.type}
+                            onClose={() => setToast(null)}
+                        />
                     )}
                 </div>
-            </main>
-
-            <StudentForm
-                isOpen={modalOpen}
-                onRequestClose={() => { setModalOpen(false); setEditingStudent(null); }}
-                onSubmit={editingStudent ? handleUpdateStudent : handleAddStudent}
-                student={editingStudent}
-                submitting={submitting}
-            />
-
-            {toast && (
-                <Toast
-                    message={toast.message}
-                    type={toast.type}
-                    onClose={() => setToast(null)}
-                />
-            )}
-        </div>
+            </Route>
+        </Switch>
     );
 }
 
