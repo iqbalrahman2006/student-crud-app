@@ -1,56 +1,70 @@
 import React from 'react';
-import { Table, Icon, Label, Button, Header } from 'semantic-ui-react';
+import { Table, Icon, Button, Header, Popup } from 'semantic-ui-react';
 
 const StudentItem = ({ student, onEdit, onDelete, onViewActivity, isLoading, density, viewMode }) => {
   if (!student) return null;
   const isConsolidated = viewMode === 'consolidated';
 
-  const getStatusColor = (status) => {
+  const getStatusClass = (status) => {
     switch (status) {
-      case "Active": return 'green';
-      case "Inactive": return 'grey';
-      case "Graduated": return 'blue';
-      case "Suspended": return 'red';
-      default: return 'yellow';
+      case "Active": return 'status-active';
+      case "Inactive": return 'status-inactive';
+      case "Graduated": return 'status-graduated';
+      case "Suspended": return 'status-suspended';
+      default: return 'status-inactive';
     }
   };
 
   return (
-    <Table.Row>
+    <Table.Row className="student-row">
       <Table.Cell>
         <Header as='h4' image>
-          <Icon name='user circle' size='small' color='blue' />
+          <div className="avatar" style={{ marginRight: '12px' }}>
+            {student.name.charAt(0).toUpperCase()}
+          </div>
           <Header.Content>
             {student.name}
-            <Header.Subheader>{isConsolidated ? student.course : 'Student'}</Header.Subheader>
+            <Header.Subheader style={{ fontSize: '0.8rem', color: '#64748b' }}>
+              {isConsolidated ? student.course : 'Student'}
+            </Header.Subheader>
           </Header.Content>
         </Header>
       </Table.Cell>
 
-      {!isConsolidated && <Table.Cell>{student.email}</Table.Cell>}
+      {!isConsolidated && <Table.Cell style={{ color: '#64748b' }}>{student.email}</Table.Cell>}
 
       <Table.Cell>
         {isConsolidated ? (
-          <Label basic>{student.course}</Label>
+          <span className="course-tag">{student.course}</span>
         ) : (
           student.course || 'N/A'
         )}
       </Table.Cell>
 
-      {!isConsolidated && <Table.Cell>{parseFloat(student.gpa || 0).toFixed(2)}</Table.Cell>}
+      {!isConsolidated && <Table.Cell style={{ fontWeight: 600 }}>{parseFloat(student.gpa || 0).toFixed(2)}</Table.Cell>}
 
       {!isConsolidated && (
         <Table.Cell textAlign='center'>
           {student.hasOverdue ? (
-            <Label color='red' basic size='mini' style={{ cursor: 'pointer' }} onClick={() => onViewActivity && onViewActivity(student, 'overdue')}>
+            <span
+              className="status-badge status-suspended"
+              style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+              onClick={() => onViewActivity && onViewActivity(student, 'overdue')}
+              title="View Overdue Books"
+            >
               <Icon name='warning' /> Overdue
-            </Label>
+            </span>
           ) : student.borrowedBooksCount > 0 ? (
-            <Label color='blue' basic size='mini' style={{ cursor: 'pointer' }} onClick={() => onViewActivity && onViewActivity(student, 'active')}>
+            <span
+              className="status-badge status-active"
+              style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+              onClick={() => onViewActivity && onViewActivity(student, 'active')}
+              title="View Borrowed Books"
+            >
               <Icon name='book' /> {student.borrowedBooksCount} Active
-            </Label>
+            </span>
           ) : (
-            <Icon name='minus' color='grey' disabled />
+            <span style={{ color: '#cbd5e1' }}>-</span>
           )}
         </Table.Cell>
       )}
@@ -62,16 +76,26 @@ const StudentItem = ({ student, onEdit, onDelete, onViewActivity, isLoading, den
       )}
 
       <Table.Cell>
-        <Label color={getStatusColor(student.status)} horizontal>
+        <span className={`status-badge ${getStatusClass(student.status)}`}>
           {student.status}
-        </Label>
+        </span>
       </Table.Cell>
 
       {!isConsolidated && (
         <Table.Cell>
-          <Button.Group size='mini'>
-            <Button icon='edit' basic color='blue' onClick={() => onEdit(student)} disabled={isLoading} />
-            <Button icon='trash' basic color='red' onClick={() => onDelete(student._id)} disabled={isLoading} loading={isLoading} />
+          <Button.Group size='mini' basic>
+            <Popup
+              content='Edit Student Details'
+              trigger={
+                <Button icon='edit' className="action-btn" onClick={() => onEdit(student)} disabled={isLoading} />
+              }
+            />
+            <Popup
+              content='Delete Student Record'
+              trigger={
+                <Button icon='trash' className="action-btn delete" color='red' onClick={() => onDelete(student._id)} disabled={isLoading} loading={isLoading} />
+              }
+            />
           </Button.Group>
         </Table.Cell>
       )}
