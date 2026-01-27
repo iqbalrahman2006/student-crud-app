@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { bookService } from '../../services/bookService';
+import ActionGuard from '../../utils/ActionGuard';
 import { Button } from 'semantic-ui-react';
 
 const TransactionHistory = ({ isActiveView }) => {
@@ -127,12 +128,20 @@ const TransactionHistory = ({ isActiveView }) => {
     };
 
     const downloadCSV = () => {
+        // LAYER 11: Prevention - fail if any transaction has orphan references
+        const orphanTransactions = transactions.filter(t => !t.book || !t.student);
+        if (orphanTransactions.length > 0) {
+            console.error('ERROR: Orphan transaction records detected:', orphanTransactions);
+            this.setState({ toast: { message: 'ERROR: Cannot export - database contains orphan records. Admin must repair.' } });
+            return;
+        }
+
         const headers = ["ID,Book,Student,Issue Date,Due Date,Return Date,Status,Fines\n"];
         const rows = transactions.map(t => {
             return [
                 t._id,
-                `"${t.book?.title || 'Unknown'}"`,
-                `"${t.student?.name || 'Unknown'}"`,
+                `"${t.book.title}"`,
+                `"${t.student.name}"`,
                 new Date(t.issueDate).toLocaleDateString(),
                 new Date(t.dueDate).toLocaleDateString(),
                 t.returnDate ? new Date(t.returnDate).toLocaleDateString() : '-',
@@ -150,49 +159,64 @@ const TransactionHistory = ({ isActiveView }) => {
     };
 
     return (
-        <div className="transaction-history fade-in">
+        <div className="transaction-history fade-in" style={{ paddingBottom: '20px' }}>
             {toast && (
                 <div style={{
-                    position: 'fixed',
-                    bottom: '20px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    backgroundColor: '#333',
-                    color: '#fff',
-                    padding: '10px 20px',
-                    borderRadius: '25px',
-                    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                    zIndex: 2000,
-                    fontSize: '0.9rem',
-                    animation: 'fadeIn 0.3s ease-in-out'
+                    position: 'fixed', bottom: '32px', left: '50%', transform: 'translateX(-50%)',
+                    backgroundColor: '#1e293b', color: '#fff', padding: '12px 24px', borderRadius: '16px',
+                    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                    zIndex: 9999, fontSize: '0.95rem', fontWeight: 600, animation: 'fadeIn 0.3s ease'
                 }}>
                     {toast.message}
                 </div>
             )}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-                {(new URLSearchParams(location.search).get('student') || new URLSearchParams(location.search).get('studentId')) && (
-                    <div className="filter-badge">
-                        Filtered by Student <button className="button-icon" onClick={() => window.location.href = '/library/issued'}>✕</button>
-                    </div>
-                )}
-                {new URLSearchParams(location.search).get('student') ? (
-                    <button className="button button-cancel" onClick={() => window.location.href = '/library/issued'}>❌ Clear Filter</button>
-                ) : <div></div>}
 
-                <button className="button button-edit" onClick={downloadCSV}>📥 Export {isActiveView ? 'Active Loans' : 'History'} CSV</button>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                    {(new URLSearchParams(location.search).get('student') || new URLSearchParams(location.search).get('studentId')) && (
+                        <div style={{
+                            background: '#eff6ff', color: '#1d4ed8', padding: '8px 16px', borderRadius: '12px',
+                            fontSize: '0.9rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px',
+                            border: '1px solid #dbeafe'
+                        }}>
+                            👤 Filtered View
+                            <button
+                                onClick={() => window.location.href = '/library/issued'}
+                                style={{ background: 'none', border: 'none', color: '#1d4ed8', cursor: 'pointer', fontSize: '1.1rem', padding: 0, lineHeight: 1 }}
+                            >✕</button>
+                        </div>
+                    )}
+                </div>
+
+                <button
+                    onClick={downloadCSV}
+                    style={{
+                        padding: '10px 20px', borderRadius: '12px', border: 'none',
+                        background: '#ffffff', color: '#475569', fontWeight: 700, fontSize: '0.9rem',
+                        cursor: 'pointer', transition: 'all 0.2s', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)',
+                        border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '8px'
+                    }}
+                    onMouseEnter={e => e.target.style.background = '#f8fafc'}
+                    onMouseLeave={e => e.target.style.background = '#ffffff'}
+                >
+                    📥 Export CSV
+                </button>
             </div>
 
-            <div className="table-card">
-                <table className="student-table sticky-header">
+            <div style={{
+                background: '#ffffff', borderRadius: '24px', overflow: 'hidden',
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                border: '1px solid #f1f5f9'
+            }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                     <thead>
-                        <tr>
-                            <th>Book Title</th>
-                            <th>Student</th>
-                            <th>Issue Date</th>
-                            <th>Due Date</th>
-                            <th>Status</th>
-                            <th>Fines</th>
-                            <th>Actions</th>
+                        <tr style={{ background: '#f8fafc', borderBottom: '2px solid #f1f5f9' }}>
+                            <th style={{ padding: '20px 24px', fontSize: '0.85rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Book Title</th>
+                            <th style={{ padding: '20px 24px', fontSize: '0.85rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Student</th>
+                            <th style={{ padding: '20px 24px', fontSize: '0.85rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Issue / Due Date</th>
+                            <th style={{ padding: '20px 24px', fontSize: '0.85rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Status</th>
+                            <th style={{ padding: '20px 24px', fontSize: '0.85rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Fines</th>
+                            <th style={{ padding: '20px 24px', fontSize: '0.85rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.5px', textAlign: 'right' }}>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -201,59 +225,83 @@ const TransactionHistory = ({ isActiveView }) => {
                             const student = t.studentId || t.student || {};
                             const issueDate = t.issuedAt || t.issueDate;
                             const dueDate = t.dueDate;
-
                             const isOverdue = t.status === 'BORROWED' && new Date() > new Date(dueDate);
-                            const isDueToday = t.status === 'BORROWED' && new Date().toDateString() === new Date(dueDate).toDateString();
                             const isHighlighted = highlightedId === t._id;
 
-                            // POLISH: Enhanced row styles for Active Loans view AND highlight
-                            let rowStyle = { transition: 'background-color 0.5s ease' };
-
-                            if (isHighlighted) {
-                                rowStyle = { ...rowStyle, backgroundColor: '#dbeafe', borderLeft: '4px solid #3b82f6' }; // Highlight blue
-                            } else if (isOverdue) {
-                                rowStyle = { ...rowStyle, backgroundColor: '#fef2f2', borderLeft: '4px solid #ef4444' };
-                            } else if (isDueToday) {
-                                rowStyle = { ...rowStyle, backgroundColor: '#fffbeb', borderLeft: '4px solid #f59e0b' };
-                            }
-
                             return (
-                                <tr key={t._id} id={`row-${t._id}`} style={rowStyle}>
-                                    <td style={{ fontWeight: 600 }}>{book.title || "Unknown Book"}</td>
-                                    <td>
-                                        <div>{student.name || "Unknown"}</div>
-                                        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{student.email}</div>
+                                <tr
+                                    key={t._id}
+                                    id={`row-${t._id}`}
+                                    style={{
+                                        borderBottom: '1px solid #f1f5f9',
+                                        transition: 'all 0.3s ease',
+                                        background: isHighlighted ? '#eff6ff' : (isOverdue ? '#fff1f2' : 'transparent')
+                                    }}
+                                    className="loan-row"
+                                >
+                                    <td style={{ padding: '20px 24px' }}>
+                                        <div style={{ fontWeight: 700, color: '#1e293b', fontSize: '1rem' }}>{book.title}</div>
                                     </td>
-                                    <td>{issueDate ? new Date(issueDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '-'}</td>
-                                    <td style={isOverdue ? { color: '#ef4444', fontWeight: 'bold' } : {}}>
-                                        {dueDate ? new Date(dueDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '-'}
-                                        {isOverdue && <span style={{ fontSize: '0.7rem', display: 'block', color: '#d32f2f' }}>⚠ OVERDUE</span>}
+                                    <td style={{ padding: '20px 24px' }}>
+                                        <div style={{ fontWeight: 600, color: '#334155' }}>{student.name}</div>
+                                        <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>{student.email}</div>
                                     </td>
-                                    <td>
-                                        <span className={`status-badge ${t.status === 'BORROWED' ? 'status-graduated' : t.status === 'RETURNED' ? 'status-active' : 'status-suspended'}`}>
-                                            {t.status}
+                                    <td style={{ padding: '20px 24px' }}>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                            <div style={{ fontSize: '0.85rem', color: '#64748b' }}>📅 {new Date(issueDate).toLocaleDateString()}</div>
+                                            <div style={{ fontSize: '0.85rem', fontWeight: 700, color: isOverdue ? '#ef4444' : '#6366f1' }}>⏳ {new Date(dueDate).toLocaleDateString()}</div>
+                                        </div>
+                                    </td>
+                                    <td style={{ padding: '20px 24px' }}>
+                                        <span style={{
+                                            padding: '6px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 800,
+                                            background: t.status === 'RETURNED' ? '#dcfce7' : (isOverdue ? '#fee2e2' : '#fef3c7'),
+                                            color: t.status === 'RETURNED' ? '#15803d' : (isOverdue ? '#b91c1c' : '#b45309')
+                                        }}>
+                                            {isOverdue ? 'OVERDUE' : t.status}
                                         </span>
                                     </td>
-                                    <td style={{ color: ((t.fineAmount > 0) || (isOverdue && !t.returnDate)) ? '#ef4444' : 'inherit', fontWeight: ((t.fineAmount > 0) || (isOverdue && !t.returnDate)) ? 700 : 400 }}>
-                                        {t.fineAmount ? `$${t.fineAmount}` : (isOverdue ? `$${Math.ceil((new Date() - new Date(dueDate)) / (1000 * 60 * 60 * 24)) * 5}` : '-')}
+                                    <td style={{ padding: '20px 24px' }}>
+                                        <div style={{ fontWeight: 700, color: t.fineAmount > 0 || isOverdue ? '#ef4444' : '#1e293b' }}>
+                                            {t.fineAmount ? `$${t.fineAmount}` : (isOverdue ? 'Pending' : '-')}
+                                        </div>
                                     </td>
-                                    <td>
-                                        {(t.status === 'Issued' || t.status === 'BORROWED') && (
-                                            <div style={{ textAlign: 'center' }}>
-                                                <Button.Group size='mini'>
-                                                    <Button icon='undo' color='violet' title='Return Book' onClick={() => handleReturn(t._id)} />
-                                                    <Button icon='redo' color='blue' title='Renew Book' onClick={() => handleRenew(t._id)} />
-                                                </Button.Group>
+                                    <td style={{ padding: '20px 24px', textAlign: 'right' }}>
+                                        {(t.status === 'BORROWED' || t.status === 'Issued') && (
+                                            <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                                                <ActionGuard actionKey="BOOK_RETURN" handler={() => handleReturn(t._id)} role="ADMIN">
+                                                    <button
+                                                        style={{ padding: '10px 16px', borderRadius: '10px', border: 'none', background: '#8b5cf6', color: 'white', fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s', boxShadow: '0 4px 6px rgba(139, 92, 246, 0.2)' }}
+                                                        onMouseEnter={e => e.target.style.transform = 'translateY(-2px)'}
+                                                        onMouseLeave={e => e.target.style.transform = 'translateY(0)'}
+                                                    >⟲ RETURN</button>
+                                                </ActionGuard>
+                                                <ActionGuard actionKey="BOOK_RENEW" handler={() => handleRenew(t._id)} role="ADMIN">
+                                                    <button
+                                                        style={{ padding: '10px 16px', borderRadius: '10px', border: 'none', background: '#3b82f6', color: 'white', fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s', boxShadow: '0 4px 6px rgba(59, 130, 246, 0.2)' }}
+                                                        onMouseEnter={e => e.target.style.transform = 'translateY(-2px)'}
+                                                        onMouseLeave={e => e.target.style.transform = 'translateY(0)'}
+                                                    >↻ RENEW</button>
+                                                </ActionGuard>
                                             </div>
                                         )}
                                     </td>
                                 </tr>
                             );
                         })}
-                        {transactions.length === 0 && <tr><td colSpan="7" style={{ textAlign: 'center', padding: '20px' }}>No transactions found.</td></tr>}
+                        {transactions.length === 0 && (
+                            <tr><td colSpan="6" style={{ padding: '60px', textAlign: 'center', color: '#94a3b8', fontSize: '1.1rem', fontWeight: 500 }}>No active loans found.</td></tr>
+                        )}
                     </tbody>
                 </table>
             </div>
+
+            <style>{`
+                .loan-row:hover {
+                    background-color: #f8fafc !important;
+                }
+                @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+            `}</style>
         </div>
     );
 };

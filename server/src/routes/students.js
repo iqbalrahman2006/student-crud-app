@@ -1,15 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const studentController = require('../controllers/studentController');
+const ensureLibraryRole = require('../middleware/rbac');
 
 // Standard CRUD Routes matching Frontend
-// Disabled Auth for restoration stability
-
 router.get('/', studentController.getAllStudents);
-router.post('/', studentController.createStudent);
+router.post('/', ensureLibraryRole(['ADMIN']), studentController.createStudent);
 router.get('/:id', studentController.getStudent);
-router.put('/:id', studentController.updateStudent); // App.js uses PUT or PATCH? Investigated -> App.js uses updateStudent which likely uses PUT logic but api.js uses PUT. Controller had PATCH. Let's support both or just mapped one. api.js uses PUT.
-router.patch('/:id', studentController.updateStudent);
-router.delete('/:id', studentController.deleteStudent);
+router.put('/:id', ensureLibraryRole(['ADMIN']), studentController.updateStudent);
+router.patch('/:id', ensureLibraryRole(['ADMIN']), studentController.updateStudent);
+router.delete('/:id', ensureLibraryRole(['ADMIN']), studentController.deleteStudent);
 
 module.exports = router;

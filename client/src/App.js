@@ -147,7 +147,11 @@ function App() {
     };
 
     const handleUpdateStudent = async (studentData) => {
-        if (!editingStudent) return;
+        if (!editingStudent || !editingStudent._id) {
+            console.error("INTEGRITY ERROR: Attempted update without student ID");
+            setToast({ type: 'error', message: 'Critical Error: Missing Student Identity' });
+            return;
+        }
         setSubmitting(true);
         try {
             await studentService.update(editingStudent._id, studentData);

@@ -62,7 +62,7 @@ router.get('/inventory/summary', async (req, res) => {
 });
 
 // --- REMINDER CENTER & STATUS ---
-router.get('/reminders/status', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res) => {
+router.get('/reminders/status', ensureLibraryRole(['ADMIN']), async (req, res) => {
     try {
         const today = new Date();
         const sevenDaysLater = new Date(); sevenDaysLater.setDate(today.getDate() + 7);
@@ -165,7 +165,7 @@ router.get('/books', async (req, res) => {
 });
 
 // ADD Book (RBAC: Admin/Librarian)
-router.post('/books', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res) => {
+router.post('/books', ensureLibraryRole(['ADMIN']), async (req, res) => {
     try {
         // Auto Tagging
         const { title, department, isbn } = req.body;
@@ -189,7 +189,7 @@ router.post('/books', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res
 });
 
 // UPDATE Book (RBAC: Admin/Librarian)
-router.patch('/books/:id', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res) => {
+router.patch('/books/:id', ensureLibraryRole(['ADMIN']), async (req, res) => {
     try {
         // Find first to apply logic if needed
         const book = await Book.findById(req.params.id);
@@ -214,6 +214,16 @@ router.patch('/books/:id', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req
 // DELETE Book (RBAC: Admin)
 router.delete('/books/:id', ensureLibraryRole(['ADMIN']), async (req, res) => {
     try {
+        // REFERENTIAL INTEGRITY CHECK: Prevent deletion if book has any transactions
+        const hasTransactions = await Transaction.exists({ bookId: req.params.id });
+
+        if (hasTransactions) {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'Cannot delete book with transaction history. Please archive the book instead.'
+            });
+        }
+
         const book = await Book.findByIdAndDelete(req.params.id);
         if (book) await logLibraryAction('DELETE', { bookId: book._id, adminId: req.user ? req.user._id : undefined, req });
         res.status(204).json({ status: 'success', data: null });
@@ -225,15 +235,38 @@ router.delete('/books/:id', ensureLibraryRole(['ADMIN']), async (req, res) => {
 // --- TRANSACTION ROUTES ---
 
 // ISSUE Book
-router.post('/issue', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res) => {
+router.post('/issue', ensureLibraryRole(['ADMIN']), async (req, res) => {
     try {
         const { bookId, studentId, days = 14 } = req.body;
 
+        // REFERENTIAL INTEGRITY: Verify student exists
+        const studentExists = await Student.exists({ _id: studentId });
+        if (!studentExists) {
+            return res.status(404).json({ status: 'fail', message: 'Student not found' });
+        }
+
+        // REFERENTIAL INTEGRITY: Verify book exists
         const book = await Book.findById(bookId);
+        if (!book) {
+            return res.status(404).json({ status: 'fail', message: 'Book not found' });
+        }
+
+        // DUPLICATE PREVENTION: Check for existing active transaction
+        const existingTransaction = await Transaction.findOne({
+            bookId: bookId,
+            studentId: studentId,
+            status: 'BORROWED'
+        });
+        if (existingTransaction) {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'Student already has an active loan for this book'
+            });
+        }
+
         // Robust check: Use derived availableCopies
         const available = book.totalCopies - book.checkedOutCount;
-
-        if (!book || available < 1) {
+        if (available < 1) {
             return res.status(400).json({ status: 'fail', message: 'Book not available' });
         }
 
@@ -262,12 +295,25 @@ router.post('/issue', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res
 });
 
 // RETURN Book (With Fine Engine)
-router.post('/return', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res) => {
+router.post('/return', ensureLibraryRole(['ADMIN']), async (req, res) => {
     try {
         const { transactionId } = req.body;
         const txn = await Transaction.findById(transactionId);
-        if (!txn || txn.status === 'Returned') {
-            return res.status(404).json({ status: 'fail', message: 'Active transaction not found' });
+
+        if (!txn) {
+            return res.status(404).json({ status: 'fail', message: 'Transaction not found' });
+        }
+
+        // DOUBLE-RETURN PREVENTION
+        if (txn.status === 'RETURNED') {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'Book has already been returned for this transaction'
+            });
+        }
+
+        if (txn.status !== 'BORROWED' && txn.status !== 'OVERDUE') {
+            return res.status(400).json({ status: 'fail', message: 'Invalid transaction status for return' });
         }
 
         // 1. Calculate Fine
@@ -305,7 +351,7 @@ router.post('/return', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, re
 });
 
 // RENEW Book
-router.post('/renew', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res) => {
+router.post('/renew', ensureLibraryRole(['ADMIN']), async (req, res) => {
     try {
         const { transactionId, days = 7 } = req.body;
         const txn = await Transaction.findById(transactionId);
@@ -336,14 +382,40 @@ router.post('/renew', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res
 });
 
 // ALIAS: BORROW (Same as Issue)
-router.post('/borrow', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res) => {
+router.post('/borrow', ensureLibraryRole(['ADMIN']), async (req, res) => {
     // Reuse Issue Logic - Redirect internally or copy code (Copying for strict separation/safety)
     try {
         const { bookId, studentId, days = 14 } = req.body;
-        const book = await Book.findById(bookId);
-        const available = book.totalCopies - book.checkedOutCount;
 
-        if (!book || available < 1) res.status(400).json({ status: 'fail', message: 'Book not available' });
+        // REFERENTIAL INTEGRITY: Verify student exists
+        const studentExists = await Student.exists({ _id: studentId });
+        if (!studentExists) {
+            return res.status(404).json({ status: 'fail', message: 'Student not found' });
+        }
+
+        // REFERENTIAL INTEGRITY: Verify book exists
+        const book = await Book.findById(bookId);
+        if (!book) {
+            return res.status(404).json({ status: 'fail', message: 'Book not found' });
+        }
+
+        // DUPLICATE PREVENTION: Check for existing active transaction
+        const existingTransaction = await Transaction.findOne({
+            bookId: bookId,
+            studentId: studentId,
+            status: 'BORROWED'
+        });
+        if (existingTransaction) {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'Student already has an active loan for this book'
+            });
+        }
+
+        const available = book.totalCopies - book.checkedOutCount;
+        if (available < 1) {
+            return res.status(400).json({ status: 'fail', message: 'Book not available' });
+        }
 
         const dueDate = new Date();
         dueDate.setDate(dueDate.getDate() + days);
@@ -415,7 +487,7 @@ router.post('/reserve', ensureLibraryRole(['ADMIN', 'LIBRARIAN', 'STUDENT']), as
     }
 });
 
-router.get('/reservations', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res) => {
+router.get('/reservations', ensureLibraryRole(['ADMIN']), async (req, res) => {
     try {
         const { status } = req.query;
         const data = await bookService.getReservations({ status });
@@ -425,7 +497,7 @@ router.get('/reservations', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (re
     }
 });
 
-router.post('/reserve/action', ensureLibraryRole(['ADMIN', 'LIBRARIAN']), async (req, res) => {
+router.post('/reserve/action', ensureLibraryRole(['ADMIN']), async (req, res) => {
     try {
         const { reservationId, action } = req.body;
         const reservation = await BookReservation.findById(reservationId);
@@ -568,16 +640,26 @@ router.get('/audit-logs', ensureLibraryRole(['ADMIN', 'AUDITOR']), async (req, r
 
         const total = await LibraryAuditLog.countDocuments(query);
 
-        // Transform for frontend
+        // Transform for frontend - LAYER 11: DBMS Integrity Validation
         const items = logs.map(log => {
             const logObj = log.toObject();
+
+            // Validate populated references - log errors for orphans
+            if (!log.bookId && log.action !== 'OVERDUE' && log.action !== 'EMAIL_SENT') {
+                console.error(`DBMS INTEGRITY ERROR: AuditLog ${log._id} has invalid bookId reference`);
+            }
+            if (!log.studentId && log.action !== 'ADD' && log.action !== 'DELETE' && log.action !== 'UPDATE') {
+                console.error(`DBMS INTEGRITY ERROR: AuditLog ${log._id} has invalid studentId reference`);
+            }
+
             return {
                 ...logObj,
-                bookId: log.bookId ? log.bookId._id : null, // Flatten to ID string
-                studentId: log.studentId ? log.studentId._id : null, // Flatten to ID string
-                adminId: log.adminId ? log.adminId._id : null, // Flatten to ID string
-                bookTitle: log.bookId ? log.bookId.title : 'Unknown Book',
-                studentName: log.studentId ? log.studentId.name : 'Unknown Student',
+                bookId: log.bookId ? log.bookId._id : null,
+                studentId: log.studentId ? log.studentId._id : null,
+                adminId: log.adminId ? log.adminId._id : null,
+                // Use N/A only for legitimate system actions, not for orphans
+                bookTitle: log.bookId ? log.bookId.title : 'N/A',
+                studentName: log.studentId ? log.studentId.name : 'N/A',
                 adminName: log.adminId ? log.adminId.name : 'System'
             };
         });

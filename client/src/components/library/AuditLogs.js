@@ -165,9 +165,7 @@ const AuditLogs = () => {
                                 >
                                     <Header as='h5'>
                                         <Header.Content>
-                                            {log.bookTitle !== 'N/A'
-                                                ? log.bookTitle
-                                                : (log.action === 'OVERDUE' ? 'System Batch Run' : 'N/A')}
+                                            {log.bookTitle || (log.action === 'OVERDUE' ? 'System Batch Run' : '')}
                                             {log.bookId && <Header.Subheader>Click to View</Header.Subheader>}
                                         </Header.Content>
                                     </Header>
@@ -179,9 +177,7 @@ const AuditLogs = () => {
                                     <Header as='h5' image>
                                         <Icon name={log.studentName === 'N/A' ? 'server' : 'user circle'} color='grey' />
                                         <Header.Content>
-                                            {log.studentName !== 'N/A'
-                                                ? log.studentName
-                                                : (log.action === 'OVERDUE' ? 'System Task' : 'N/A')}
+                                            {log.studentName || (log.action === 'OVERDUE' ? 'System Task' : '')}
                                             {log.adminName && <Header.Subheader>By: {log.adminName}</Header.Subheader>}
                                             {log.studentId && <Header.Subheader style={{ color: '#2185d0' }}>Click to Profile</Header.Subheader>}
                                         </Header.Content>

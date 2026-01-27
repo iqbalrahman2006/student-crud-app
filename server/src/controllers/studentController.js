@@ -1,5 +1,7 @@
 const Student = require('../models/Student');
 const studentService = require('../services/studentService');
+const Transaction = require('../models/Transaction');
+const BorrowTransaction = require('../models/BorrowTransaction');
 
 exports.getAllStudents = async (req, res, next) => {
     try {
@@ -64,6 +66,16 @@ exports.updateStudent = async (req, res, next) => {
 
 exports.deleteStudent = async (req, res, next) => {
     try {
+        // REFERENTIAL INTEGRITY CHECK: Prevent deletion if student has transactions
+        const hasTransactions = await Transaction.exists({ student: req.params.id });
+        const hasBorrowTransactions = await BorrowTransaction.exists({ studentId: req.params.id });
+
+        if (hasTransactions || hasBorrowTransactions) {
+            const error = new Error('Cannot delete student with transaction history. Please archive the student instead.');
+            error.statusCode = 400;
+            throw error;
+        }
+
         const student = await Student.findByIdAndDelete(req.params.id);
         if (!student) {
             const error = new Error('Student not found');

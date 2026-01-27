@@ -50,7 +50,7 @@ const LibraryProfileView = ({ studentId }) => {
                     <tbody>
                         {activeLoans.map(loan => (
                             <tr key={loan._id}>
-                                <td>{loan.bookId?.title || 'Unknown Book'}</td>
+                                <td>{loan.bookId.title}</td>
                                 <td>{new Date(loan.dueDate).toLocaleDateString()}</td>
                                 <td><span className={`badge badge-${loan.status === 'BORROWED' ? 'warning' : 'success'}`}>{loan.status}</span></td>
                                 <td>

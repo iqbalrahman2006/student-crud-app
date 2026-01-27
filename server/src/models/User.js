@@ -8,17 +8,22 @@ const UserSchema = new mongoose.Schema({
     email: {
         type: String,
         unique: true,
-        required: true
+        required: true,
+        trim: true,
+        lowercase: true,
+        match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email address']
     },
     role: {
         type: String,
         enum: ['ADMIN', 'LIBRARIAN', 'AUDITOR', 'STUDENT'],
         default: 'STUDENT'
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
     }
+}, {
+    timestamps: true
 });
 
+// Index for faster email lookups
+UserSchema.index({ email: 1 });
+
 module.exports = mongoose.model('User', UserSchema);
+

@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Book = require('../models/Book');
 const Transaction = require('../models/BorrowTransaction');
 const BookReservation = require('../models/BookReservation');
@@ -75,26 +76,76 @@ class BookService {
     // --- CIRCULATION ---
 
     async issue({ bookId, studentId, days = 14 }, adminId = null, req = null) {
-        const book = await Book.findById(bookId);
-        const available = book.totalCopies - book.checkedOutCount;
+        // LAYER 6: Atomic transaction locking - ensure all-or-nothing write
+        // FALLBACK: Transaction numbers are only allowed on a replica set member or mongos.
+        // If standalone, we do it without a session/transaction.
+        const isReplicaSet = mongoose.connection.get('replicaSet') || mongoose.connection.get('replSet');
 
-        if (!book || available < 1) throw new Error('Book not available');
+        if (!isReplicaSet) {
+            // Standalone MongoDB Fallback
+            // Validate student exists
+            const student = await mongoose.model('Student').findById(studentId);
+            if (!student) throw new Error('DBMS_INTEGRITY_ERROR: Student does not exist');
 
-        const dueDate = new Date();
-        dueDate.setDate(dueDate.getDate() + days);
+            // Validate book exists
+            const book = await Book.findById(bookId);
+            if (!book) throw new Error('DBMS_INTEGRITY_ERROR: Book does not exist');
 
-        const transaction = await Transaction.create({
-            bookId, studentId, issuedAt: Date.now(), dueDate, status: 'BORROWED'
-        });
+            const available = book.totalCopies - book.checkedOutCount;
+            if (available < 1) throw new Error('Book not available');
 
-        // Atomic update for consistency (Update both counts)
-        await Book.findByIdAndUpdate(bookId, {
-            $inc: { checkedOutCount: 1, availableCopies: -1 }
-        });
+            const dueDate = new Date();
+            dueDate.setDate(dueDate.getDate() + days);
 
-        await logLibraryAction('BORROW', { bookId, studentId, adminId, req });
+            const transaction = await Transaction.create({
+                bookId, studentId, issuedAt: Date.now(), dueDate, status: 'BORROWED'
+            });
 
-        return await Transaction.findById(transaction._id).populate('bookId').populate('studentId');
+            await Book.findByIdAndUpdate(bookId, {
+                $inc: { checkedOutCount: 1, availableCopies: -1 }
+            });
+
+            await logLibraryAction('BORROW', { bookId, studentId, adminId, req });
+            return await Transaction.findById(transaction._id).populate('bookId').populate('studentId');
+        }
+
+        const session = await mongoose.startSession();
+        try {
+            return await session.withTransaction(async () => {
+                // Validate student exists
+                const student = await mongoose.model('Student').findById(studentId).session(session);
+                if (!student) {
+                    throw new Error('DBMS_INTEGRITY_ERROR: Student does not exist');
+                }
+
+                // Validate book exists
+                const book = await Book.findById(bookId).session(session);
+                if (!book) {
+                    throw new Error('DBMS_INTEGRITY_ERROR: Book does not exist');
+                }
+
+                const available = book.totalCopies - book.checkedOutCount;
+                if (available < 1) throw new Error('Book not available');
+
+                const dueDate = new Date();
+                dueDate.setDate(dueDate.getDate() + days);
+
+                const transaction = await Transaction.create([{
+                    bookId, studentId, issuedAt: Date.now(), dueDate, status: 'BORROWED'
+                }], { session });
+
+                // Atomic update for consistency (Update both counts)
+                await Book.findByIdAndUpdate(bookId, {
+                    $inc: { checkedOutCount: 1, availableCopies: -1 }
+                }, { session });
+
+                await logLibraryAction('BORROW', { bookId, studentId, adminId, req });
+
+                return await Transaction.findById(transaction[0]._id).populate('bookId').populate('studentId');
+            });
+        } finally {
+            await session.endSession();
+        }
     }
 
     async returnBook(transactionId, adminId = null, req = null) {
@@ -120,25 +171,28 @@ class BookService {
 
         // 4. Reservation Check
         // Notify/Hold for next in queue
-        const nextRes = await BookReservation.findOne({ book: book._id, status: 'Active' }).sort({ queuePosition: 1 });
-        if (nextRes) {
-            // Fulfill Reservation
-            nextRes.status = 'Fulfilled';
-            nextRes.fulfilledAt = Date.now();
-            await nextRes.save();
+        let nextRes = null;
+        if (book) {
+            nextRes = await BookReservation.findOne({ book: book._id, status: 'Active' }).sort({ queuePosition: 1 });
+            if (nextRes) {
+                // Fulfill Reservation
+                nextRes.status = 'Fulfilled';
+                nextRes.fulfilledAt = Date.now();
+                await nextRes.save();
 
-            // Log Actions
-            await logLibraryAction('RESERVE', {
-                bookId: book._id,
-                studentId: nextRes.student,
-                metadata: {
-                    action: 'FULFILLED',
-                    info: "Book Returned. Reservation Auto-Fulfilled.",
-                    queuePosition: nextRes.queuePosition
-                },
-                req
-            });
-            // Ideally trigger Email here
+                // Log Actions
+                await logLibraryAction('RESERVE', {
+                    bookId: book._id,
+                    studentId: nextRes.student,
+                    metadata: {
+                        action: 'FULFILLED',
+                        info: "Book Returned. Reservation Auto-Fulfilled.",
+                        queuePosition: nextRes.queuePosition
+                    },
+                    req
+                });
+                // Ideally trigger Email here
+            }
         }
 
         await logLibraryAction('RETURN', { bookId: txn.bookId, studentId: txn.studentId, adminId, metadata: { fine }, req });
@@ -168,29 +222,80 @@ class BookService {
     // --- RESERVATIONS ---
 
     async reserveBook({ bookId, studentId, reservedUntil }, adminId = null, req = null) {
-        const book = await Book.findById(bookId);
-        if (!book) throw new Error('Book not found');
+        // LAYER 6: Atomic transaction locking - ensure all-or-nothing write
+        const isReplicaSet = mongoose.connection.get('replicaSet') || mongoose.connection.get('replSet');
 
-        // Check if already reserved
-        const existing = await BookReservation.findOne({ book: bookId, student: studentId, status: 'Active' });
-        if (existing) throw new Error('Student already has an active reservation for this book');
+        if (!isReplicaSet) {
+            // Standalone MongoDB Fallback
+            // Validate book exists
+            const book = await Book.findById(bookId);
+            if (!book) throw new Error('DBMS_INTEGRITY_ERROR: Book does not exist');
 
-        const available = book.totalCopies - book.checkedOutCount;
-        if (available > 0) throw new Error('Cannot reserve: Book is currently available for immediate issue.');
+            // Validate student exists
+            const student = await mongoose.model('Student').findById(studentId);
+            if (!student) throw new Error('DBMS_INTEGRITY_ERROR: Student does not exist');
 
-        const count = await BookReservation.countDocuments({ book: bookId, status: 'Active' });
+            // Check if already reserved
+            const existing = await BookReservation.findOne({ book: bookId, student: studentId, status: 'Active' });
+            if (existing) throw new Error('Student already has an active reservation for this book');
 
-        const resv = await BookReservation.create({
-            book: bookId,
-            student: studentId,
-            status: 'Active',
-            queuePosition: count + 1,
-            expiryDate: reservedUntil || new Date(Date.now() + 3 * 24 * 60 * 60 * 1000) // Default 3 days
-        });
+            const available = book.totalCopies - book.checkedOutCount;
+            if (available >= 1) throw new Error('Cannot reserve: Book is currently available for immediate issue.');
 
-        if (req) await logLibraryAction('RESERVE', { bookId, studentId, adminId, metadata: { queuePosition: count + 1 }, req });
+            const count = await BookReservation.countDocuments({ book: bookId, status: 'Active' });
 
-        return resv;
+            const resv = await BookReservation.create({
+                book: bookId,
+                student: studentId,
+                status: 'Active',
+                queuePosition: count + 1,
+                expiryDate: reservedUntil || new Date(Date.now() + 3 * 24 * 60 * 60 * 1000) // Default 3 days
+            });
+
+            if (req) await logLibraryAction('RESERVE', { bookId, studentId, adminId, metadata: { queuePosition: count + 1 }, req });
+
+            return resv;
+        }
+
+        const session = await mongoose.startSession();
+        try {
+            return await session.withTransaction(async () => {
+                // Validate book exists
+                const book = await Book.findById(bookId).session(session);
+                if (!book) {
+                    throw new Error('DBMS_INTEGRITY_ERROR: Book does not exist');
+                }
+
+                // Validate student exists
+                const student = await mongoose.model('Student').findById(studentId).session(session);
+                if (!student) {
+                    throw new Error('DBMS_INTEGRITY_ERROR: Student does not exist');
+                }
+
+                // Check if already reserved
+                const existing = await BookReservation.findOne({ book: bookId, student: studentId, status: 'Active' }).session(session);
+                if (existing) throw new Error('Student already has an active reservation for this book');
+
+                const available = book.totalCopies - book.checkedOutCount;
+                if (available >= 1) throw new Error('Cannot reserve: Book is currently available for immediate issue.');
+
+                const count = await BookReservation.countDocuments({ book: bookId, status: 'Active' }).session(session);
+
+                const resv = await BookReservation.create([{
+                    book: bookId,
+                    student: studentId,
+                    status: 'Active',
+                    queuePosition: count + 1,
+                    expiryDate: reservedUntil || new Date(Date.now() + 3 * 24 * 60 * 60 * 1000) // Default 3 days
+                }], { session });
+
+                if (req) await logLibraryAction('RESERVE', { bookId, studentId, adminId, metadata: { queuePosition: count + 1 }, req });
+
+                return resv[0];
+            });
+        } finally {
+            await session.endSession();
+        }
     }
 
     async getReservations({ status } = {}) {
@@ -198,10 +303,13 @@ class BookService {
         if (status && status !== 'ALL') {
             filter.status = status;
         }
-        return await BookReservation.find(filter)
+        const reservations = await BookReservation.find(filter)
             .populate('book', 'title author')
             .populate('student', 'name email')
             .sort({ timestamp: -1 });
+
+        // LAYER 11: Prevention - filter out any orphan records that slipped through
+        return reservations.filter(r => r.book && r.student);
     }
 }
 

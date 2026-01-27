@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, Icon, Button, Header, Popup } from 'semantic-ui-react';
+import ActionGuard from '../utils/ActionGuard';
 
 const StudentItem = ({ student, onEdit, onDelete, onViewActivity, isLoading, density, viewMode }) => {
   if (!student) return null;
@@ -37,7 +38,7 @@ const StudentItem = ({ student, onEdit, onDelete, onViewActivity, isLoading, den
         {isConsolidated ? (
           <span className="course-tag">{student.course}</span>
         ) : (
-          student.course || 'N/A'
+          student.course
         )}
       </Table.Cell>
 
@@ -90,12 +91,9 @@ const StudentItem = ({ student, onEdit, onDelete, onViewActivity, isLoading, den
                 <Button icon='edit' className="action-btn" onClick={() => onEdit(student)} disabled={isLoading} />
               }
             />
-            <Popup
-              content='Delete Student Record'
-              trigger={
-                <Button icon='trash' className="action-btn delete" color='red' onClick={() => onDelete(student._id)} disabled={isLoading} loading={isLoading} />
-              }
-            />
+            <ActionGuard actionKey="STUDENT_DELETE" handler={() => onDelete(student._id)} role="ADMIN">
+              <Button icon='trash' className="action-btn delete" color='red' disabled={isLoading} loading={isLoading} />
+            </ActionGuard>
           </Button.Group>
         </Table.Cell>
       )}

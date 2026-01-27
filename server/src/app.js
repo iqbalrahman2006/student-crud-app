@@ -23,15 +23,17 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 // Serving static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+// SYSTEM INTEGRITY LAYER (Traceability Enforcement)
+app.use('/api/v1', require('./middleware/integrityEnforcer'));
+
 // ROUTES
 app.use('/api/v1/students', studentsRouter);
 app.use('/api/v1/library', require('./routes/library'));
 app.use('/api/v1/notifications', require('./routes/notifications'));
 app.use('/api/v1/reports', require('./routes/reports'));
+app.use('/api/v1/system', require('./routes/system')); // Database integrity management
 app.use('/api/auth', require('./routes/auth.routes'));
 
-// ⭐ ADD THIS LINE — Centralized Auth Route ⭐
-app.use('/api/auth', require('./routes/auth.routes'));
 
 // Root Handler for API Check
 app.get('/', (req, res) => {

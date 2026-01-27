@@ -5,6 +5,8 @@ const DailyActivityLog = () => {
     const [logs, setLogs] = useState([]);
     const [stats, setStats] = useState({ borrowed: 0, returned: 0, overdue: 0, emails: 0 });
     const [loading, setLoading] = useState(true);
+    const [scanResult, setScanResult] = useState(null);
+    const [scanning, setScanning] = useState(false);
 
     useEffect(() => {
         fetchLogs();
@@ -66,18 +68,50 @@ const DailyActivityLog = () => {
                 {logs.length === 0 ? (
                     <div style={{ textAlign: 'center', padding: '20px', color: '#94a3b8' }}>
                         <p style={{ fontStyle: 'italic', marginBottom: '10px' }}>No activity recorded today.</p>
-                        <button
-                            className="button button-edit"
-                            style={{ fontSize: '0.8rem' }}
-                            onClick={async () => {
-                                try {
-                                    await analyticsService.request('/library/debug/seed-logs', 'POST');
-                                    window.location.reload();
-                                } catch (e) { alert("Seed Failed"); }
-                            }}
-                        >
-                            🛠️ Generate Test Data
-                        </button>
+                        <div style={{ padding: '15px', background: '#f8fafc', borderRadius: '12px', border: '1px dashed #cbd5e1', marginBottom: '10px' }}>
+                            {scanning ? (
+                                <div style={{ color: '#4f46e5', fontWeight: 600 }} className="flex-center gap-2">
+                                    <div className="spinner-small" style={{ borderTopColor: '#4f46e5' }}></div> Scanning Database Integrity...
+                                </div>
+                            ) : scanResult ? (
+                                <div style={{ textAlign: 'left' }}>
+                                    <div style={{ color: scanResult.totalOrphans > 0 ? '#ef4444' : '#10b981', fontWeight: 700, marginBottom: '5px' }}>
+                                        {scanResult.totalOrphans > 0 ? `⚠️ ${scanResult.totalOrphans} Integrity Issues Found` : '✅ System Integrity Verified'}
+                                    </div>
+                                    <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{scanResult.message}</div>
+                                    {scanResult.totalOrphans > 0 && (
+                                        <button
+                                            className="button button-submit"
+                                            style={{ fontSize: '0.7rem', marginTop: '8px', width: '100%' }}
+                                            onClick={async () => {
+                                                if (!window.confirm("Run Automated Repair? This will cleanup orphan records.")) return;
+                                                try {
+                                                    await analyticsService.runIntegrityRepair(false);
+                                                    alert("Repair Complete. Optimization successful.");
+                                                    setScanResult(null);
+                                                } catch (e) { alert("Repair Failed"); }
+                                            }}
+                                        >🛠️ Run High-Speed Repair</button>
+                                    )}
+                                </div>
+                            ) : (
+                                <button
+                                    className="button button-primary"
+                                    style={{ fontSize: '0.8rem', width: '100%', fontWeight: 700 }}
+                                    onClick={async () => {
+                                        setScanning(true);
+                                        try {
+                                            const res = await analyticsService.getIntegrityScan();
+                                            setScanResult(res.data.data);
+                                        } catch (e) {
+                                            alert("Integrity Scan Failed: " + (e.response?.data?.message || e.message));
+                                        } finally {
+                                            setScanning(false);
+                                        }
+                                    }}
+                                >🛡️ System Integrity Scan</button>
+                            )}
+                        </div>
                     </div>
                 ) : (
                     <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>

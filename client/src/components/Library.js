@@ -164,187 +164,169 @@ const Library = ({ students = [], viewMode }) => {
                 {activeTab === 'reminders' && <ReminderCenter />}
             </div>
 
-            {/* --- MODALS --- */}
+            {/* --- CUSTOM PREMIUM MODALS --- */}
 
             {/* ADD/EDIT BOOK MODAL */}
-            <Modal
-                isOpen={isBookModalOpen}
-                onRequestClose={() => setIsBookModalOpen(false)}
-                className="modal"
-                overlayClassName="overlay"
-            >
-                <div className="modal-header">
-                    <h2>{currentBook ? "Edit Book" : "Add New Book"}</h2>
-                    <button className="button-icon" onClick={() => setIsBookModalOpen(false)}>✕</button>
-                </div>
-                <form onSubmit={handleBookSubmit} className="modal-content-scroll form">
-                    <div className="message-grid">
-                        <div className="form-group floating-label-group">
-                            <input className="floating-input" name="title" value={bookForm.title} onChange={e => setBookForm({ ...bookForm, title: e.target.value })} required placeholder=" " />
-                            <label className="floating-label">Book Title</label>
-                        </div>
-                        <div className="form-group floating-label-group">
-                            <input className="floating-input" name="author" value={bookForm.author} onChange={e => setBookForm({ ...bookForm, author: e.target.value })} required placeholder=" " />
-                            <label className="floating-label">Author</label>
-                        </div>
-                        <div className="form-group floating-label-group">
-                            <input className="floating-input" name="isbn" value={bookForm.isbn} onChange={e => setBookForm({ ...bookForm, isbn: e.target.value })} required placeholder=" " />
-                            <label className="floating-label">ISBN</label>
-                        </div>
-                        <div className="form-group floating-label-group">
-                            <select className="floating-input" name="department" value={bookForm.department} onChange={e => setBookForm({ ...bookForm, department: e.target.value })} required>
-                                <option value="General">General</option>
-                                <option value="Computer Science">Computer Science</option>
-                                <option value="Electrical">Electrical</option>
-                                <option value="Mechanical">Mechanical</option>
-                                <option value="Civil">Civil</option>
-                                <option value="Business">Business</option>
-                                <option value="Literature">Literature</option>
-                            </select>
-                            <label className="floating-label" style={{ top: '6px', fontSize: '0.75rem', color: 'var(--primary)' }}>Department</label>
-                        </div>
-                        <div className="form-group floating-label-group">
-                            <input className="floating-input" name="genre" value={bookForm.genre} onChange={e => setBookForm({ ...bookForm, genre: e.target.value })} placeholder=" " />
-                            <label className="floating-label">Genre</label>
-                        </div>
-                        <div className="form-group floating-label-group">
-                            <input type="number" className="floating-input" name="totalCopies" value={bookForm.totalCopies} onChange={e => setBookForm({ ...bookForm, totalCopies: e.target.value })} required min="1" placeholder=" " />
-                            <label className="floating-label">Total Copies</label>
-                        </div>
-                        {/* Requirement G: Reservation Info Tooltip (UI Only) */}
-                        <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
-                            <label style={{ fontSize: '0.9rem', color: '#334155', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                                <input type="checkbox" defaultChecked title="Enable reservations for this book" /> Allow Reservations
-                            </label>
-                            <div className="tooltip-container" title="Reservation allows student to queue for the book when all copies are borrowed.">
-                                <span style={{ cursor: 'help', fontSize: '0.9rem' }}>ℹ️</span>
+            {isBookModalOpen && (
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                    background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(4px)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    zIndex: 9999, animation: 'fadeIn 0.2s ease'
+                }}>
+                    <div style={{
+                        background: '#ffffff', borderRadius: '24px', width: '90%', maxWidth: '600px',
+                        boxShadow: '0 30px 70px rgba(0, 0, 0, 0.3)', overflow: 'hidden', animation: 'slideUp 0.3s ease'
+                    }}>
+                        <div style={{
+                            background: 'linear-gradient(135deg, #6366f1 0%, #4338ca 100%)',
+                            padding: '30px 35px', color: '#ffffff', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                        }}>
+                            <div>
+                                <h2 style={{ margin: 0, fontSize: '1.6rem', fontWeight: 800 }}>{currentBook ? "📝 Edit Book" : "➕ Add New Book"}</h2>
+                                <p style={{ margin: '5px 0 0 0', fontSize: '0.95rem', opacity: 0.9 }}>Fill in the details to manage the inventory copies.</p>
                             </div>
+                            <button onClick={() => setIsBookModalOpen(false)} style={{ background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', cursor: 'pointer', padding: '10px', borderRadius: '50%', fontWeight: 700 }}>✕</button>
                         </div>
-
-                        {/* PART 4: CIRCULATION PANEL */}
-                        {currentBook && (
-                            <div className="form-group" style={{ marginTop: '20px', padding: '15px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                                <label style={{ fontWeight: 600, color: '#334155', display: 'block', marginBottom: '10px' }}>⚡ Circulation Actions</label>
-                                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                                    <button
-                                        type="button"
-                                        className="button button-submit"
-                                        onClick={() => { setIsBookModalOpen(false); openIssueBook(currentBook); }}
-                                        disabled={currentBook.availableCopies < 1}
-                                        style={{ opacity: currentBook.availableCopies < 1 ? 0.5 : 1 }}
-                                    >
-                                        {currentBook.availableCopies > 0 ? "📤 Issue Copy" : "🚫 Unavailable"}
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="button button-edit"
-                                        onClick={() => { setIsBookModalOpen(false); switchTab('issued'); }}
-                                    >
-                                        📨 View Active Loans
-                                    </button>
+                        <form onSubmit={handleBookSubmit} style={{ padding: '35px' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                                <div style={{ marginBottom: '15px' }}>
+                                    <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.85rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>Book Title</label>
+                                    <input value={bookForm.title} onChange={e => setBookForm({ ...bookForm, title: e.target.value })} required style={{ width: '100%', padding: '12px 15px', borderRadius: '10px', border: '2px solid #f1f5f9', background: '#f8fafc', fontSize: '0.95rem' }} />
                                 </div>
-                                <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '8px' }}>
-                                    To Return or Renew, please find the specific transaction in the "Active Loans" tab or the Student's Profile.
-                                </p>
+                                <div style={{ marginBottom: '15px' }}>
+                                    <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.85rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>Author</label>
+                                    <input value={bookForm.author} onChange={e => setBookForm({ ...bookForm, author: e.target.value })} required style={{ width: '100%', padding: '12px 15px', borderRadius: '10px', border: '2px solid #f1f5f9', background: '#f8fafc', fontSize: '0.95rem' }} />
+                                </div>
+                                <div style={{ marginBottom: '15px' }}>
+                                    <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.85rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>ISBN</label>
+                                    <input value={bookForm.isbn} onChange={e => setBookForm({ ...bookForm, isbn: e.target.value })} required style={{ width: '100%', padding: '12px 15px', borderRadius: '10px', border: '2px solid #f1f5f9', background: '#f8fafc', fontSize: '0.95rem' }} />
+                                </div>
+                                <div style={{ marginBottom: '15px' }}>
+                                    <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.85rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>Department</label>
+                                    <select value={bookForm.department} onChange={e => setBookForm({ ...bookForm, department: e.target.value })} required style={{ width: '100%', padding: '12px 15px', borderRadius: '10px', border: '2px solid #f1f5f9', background: '#f8fafc', fontSize: '0.95rem' }}>
+                                        <option value="General">General</option>
+                                        <option value="Computer Science">Computer Science</option>
+                                        <option value="Electrical">Electrical</option>
+                                        <option value="Mechanical">Mechanical</option>
+                                        <option value="Civil">Civil</option>
+                                        <option value="Business">Business</option>
+                                        <option value="Literature">Literature</option>
+                                    </select>
+                                </div>
+                                <div style={{ marginBottom: '15px' }}>
+                                    <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.85rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>Genre</label>
+                                    <input value={bookForm.genre} onChange={e => setBookForm({ ...bookForm, genre: e.target.value })} style={{ width: '100%', padding: '12px 15px', borderRadius: '10px', border: '2px solid #f1f5f9', background: '#f8fafc', fontSize: '0.95rem' }} />
+                                </div>
+                                <div style={{ marginBottom: '15px' }}>
+                                    <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.85rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>Total Copies</label>
+                                    <input type="number" value={bookForm.totalCopies} onChange={e => setBookForm({ ...bookForm, totalCopies: e.target.value })} required min="1" style={{ width: '100%', padding: '12px 15px', borderRadius: '10px', border: '2px solid #f1f5f9', background: '#f8fafc', fontSize: '0.95rem' }} />
+                                </div>
                             </div>
-                        )}
 
+                            <div style={{ marginTop: '20px', display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+                                <button type="button" onClick={() => setIsBookModalOpen(false)} style={{ padding: '12px 25px', borderRadius: '10px', border: '2px solid #e2e8f0', background: 'white', color: '#64748b', fontWeight: 600, cursor: 'pointer' }}>Cancel</button>
+                                <button type="submit" style={{ padding: '12px 30px', borderRadius: '10px', border: 'none', background: 'linear-gradient(135deg, #6366f1 0%, #4338ca 100%)', color: 'white', fontWeight: 700, cursor: 'pointer', boxShadow: '0 10px 20px rgba(99, 102, 241, 0.2)' }}>Save changes</button>
+                            </div>
+                        </form>
                     </div>
-                    <div className="modal-footer">
-                        <button type="button" className="button button-cancel" onClick={() => setIsBookModalOpen(false)}>Cancel</button>
-                        <button type="submit" className="button button-submit">Save Book</button>
-                    </div>
-                </form>
-            </Modal>
+                </div>
+            )}
 
             {/* ISSUE BOOK MODAL */}
-            <Modal
-                isOpen={isIssueModalOpen}
-                onRequestClose={() => setIsIssueModalOpen(false)}
-                className="modal"
-                overlayClassName="overlay"
-            >
-                <div className="modal-header">
-                    <h2>Issue Book</h2>
-                    <button className="button-icon" onClick={() => setIsIssueModalOpen(false)}>✕</button>
+            {isIssueModalOpen && (
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                    background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(4px)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    zIndex: 9999, animation: 'fadeIn 0.2s ease'
+                }}>
+                    <div style={{
+                        background: '#ffffff', borderRadius: '24px', width: '90%', maxWidth: '480px',
+                        boxShadow: '0 30px 70px rgba(0, 0, 0, 0.3)', overflow: 'hidden', animation: 'slideUp 0.3s ease'
+                    }}>
+                        <div style={{
+                            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                            padding: '30px 35px', color: '#ffffff'
+                        }}>
+                            <h2 style={{ margin: 0, fontSize: '1.6rem', fontWeight: 800 }}>📤 Issue Book</h2>
+                            <p style={{ margin: '5px 0 0 0', fontSize: '1rem', fontWeight: 500, opacity: 0.95 }}>Select a student and duration to issue this copy.</p>
+                        </div>
+                        <form onSubmit={handleIssueSubmit} style={{ padding: '35px' }}>
+                            <div style={{ marginBottom: '25px' }}>
+                                <label style={{ display: 'block', marginBottom: '10px', fontSize: '0.9rem', fontWeight: 700, color: '#334155', textTransform: 'uppercase' }}>Student</label>
+                                <select
+                                    value={issueForm.studentId}
+                                    onChange={e => setIssueForm({ ...issueForm, studentId: e.target.value })}
+                                    required
+                                    style={{ width: '100%', padding: '14px 18px', borderRadius: '12px', border: '2px solid #e2e8f0', background: '#f8fafc', fontSize: '1rem', fontWeight: 500 }}
+                                >
+                                    <option value="">Select Student...</option>
+                                    {students?.filter(s => s).map(s => <option key={s._id} value={s._id}>{s.name} ({s.course})</option>)}
+                                </select>
+                            </div>
+                            <div style={{ marginBottom: '35px' }}>
+                                <label style={{ display: 'block', marginBottom: '10px', fontSize: '0.9rem', fontWeight: 700, color: '#334155', textTransform: 'uppercase' }}>Duration (Days)</label>
+                                <input type="number" value={issueForm.days} onChange={e => setIssueForm({ ...issueForm, days: e.target.value })} required min="1" max="30" style={{ width: '100%', padding: '14px 18px', borderRadius: '12px', border: '2px solid #e2e8f0', background: '#f8fafc', fontSize: '1rem', fontWeight: 500 }} />
+                            </div>
+                            <div style={{ display: 'flex', gap: '15px', justifyContent: 'flex-end' }}>
+                                <button type="button" onClick={() => setIsIssueModalOpen(false)} style={{ padding: '12px 25px', borderRadius: '10px', border: '2px solid #e2e8f0', background: 'white', color: '#64748b', fontWeight: 600, cursor: 'pointer' }}>Cancel</button>
+                                <button type="submit" style={{ padding: '12px 30px', borderRadius: '10px', border: 'none', background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', color: 'white', fontWeight: 700, cursor: 'pointer', boxShadow: '0 10px 20px rgba(16, 185, 129, 0.2)' }}>Confirm Issue</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <form onSubmit={handleIssueSubmit} className="modal-content-scroll form">
-                    <div className="form-group floating-label-group" style={{ marginTop: '20px' }}>
-                        <select
-                            className="floating-input"
-                            value={issueForm.studentId}
-                            onChange={e => setIssueForm({ ...issueForm, studentId: e.target.value })}
-                            required
-                        >
-                            <option value="">Select Student...</option>
-                            {students?.filter(s => s).map(s => (
-                                <option key={s._id} value={s._id}>{s.name} ({s.course})</option>
-                            ))}
-                        </select>
-                        <label className="floating-label" style={{ top: '6px', fontSize: '0.75rem', color: 'var(--primary)' }}>Student</label>
-                    </div>
-
-                    <div className="form-group floating-label-group">
-                        <input
-                            type="number"
-                            className="floating-input"
-                            value={issueForm.days}
-                            onChange={e => setIssueForm({ ...issueForm, days: e.target.value })}
-                            required
-                            min="1"
-                            max="30"
-                            placeholder=" "
-                        />
-                        <label className="floating-label">Days for Issue</label>
-                    </div>
-
-                    <div className="modal-footer">
-                        <button type="button" className="button button-cancel" onClick={() => setIsIssueModalOpen(false)}>Cancel</button>
-                        <button type="submit" className="button button-submit">Confirm Issue</button>
-                    </div>
-                </form>
-            </Modal>
+            )}
 
             {/* ALERTS MODAL */}
-            <Modal
-                isOpen={isAlertsOpen}
-                onRequestClose={() => setIsAlertsOpen(false)}
-                className="modal"
-                overlayClassName="overlay"
-            >
-                <div className="modal-header">
-                    <h2>🔔 Email Alert System</h2>
-                    <button className="button-icon" onClick={() => setIsAlertsOpen(false)}>✕</button>
-                </div>
-                <div className="modal-content-scroll" style={{ padding: '20px' }}>
-                    <div style={{ background: '#f8fafc', padding: '15px', borderRadius: '8px', border: '1px solid #e2e8f0', marginBottom: '20px' }}>
-                        <h4 style={{ margin: '0 0 10px 0', color: '#475569' }}>System Status</h4>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem' }}>
-                            <span style={{ height: '10px', width: '10px', borderRadius: '50%', background: '#22c55e' }}></span>
-                            <span>Scheduler Active (Daily 08:00 AM)</span>
+            {isAlertsOpen && (
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                    background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(4px)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    zIndex: 9999, animation: 'fadeIn 0.2s ease'
+                }}>
+                    <div style={{
+                        background: '#ffffff', borderRadius: '24px', width: '90%', maxWidth: '520px',
+                        boxShadow: '0 30px 70px rgba(0, 0, 0, 0.3)', overflow: 'hidden', animation: 'slideUp 0.3s ease'
+                    }}>
+                        <div style={{
+                            background: 'linear-gradient(135deg, #6b7280 0%, #374151 100%)',
+                            padding: '30px 35px', color: '#ffffff'
+                        }}>
+                            <h2 style={{ margin: 0, fontSize: '1.6rem', fontWeight: 800 }}>🔔 Email Alerts Center</h2>
+                            <p style={{ margin: '5px 0 0 0', fontSize: '0.95rem', opacity: 0.9 }}>System-wide notification engine status and manual controls.</p>
                         </div>
-                        <p style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '5px' }}>
-                            System automatically scans for overdue books and sends email notifications via <strong>NodeMailer</strong> (HTML Templates supported).
-                        </p>
+                        <div style={{ padding: '35px' }}>
+                            <div style={{ background: '#f8fafc', padding: '20px', borderRadius: '16px', border: '1px solid #e2e8f0', marginBottom: '25px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                                    <span style={{ height: '12px', width: '12px', borderRadius: '50%', background: '#22c55e' }}></span>
+                                    <span style={{ fontWeight: 700, color: '#1e293b' }}>Scheduler Online</span>
+                                </div>
+                                <p style={{ margin: 0, fontSize: '0.9rem', color: '#64748b', lineHeight: 1.6 }}>Automatic scan runs every day at 08:00 AM to notify students via html templates.</p>
+                            </div>
+                            <div style={{ marginBottom: '30px' }}>
+                                <h4 style={{ margin: '0 0 10px 0', fontSize: '0.9rem', fontWeight: 700, color: '#334155', textTransform: 'uppercase' }}>Manual Control</h4>
+                                <button
+                                    onClick={handleTriggerReminders}
+                                    disabled={isTriggering}
+                                    style={{ width: '100%', padding: '15px', borderRadius: '12px', border: 'none', background: isTriggering ? '#94a3b8' : 'linear-gradient(135deg, #6366f1 0%, #4338ca 100%)', color: 'white', fontWeight: 700, fontSize: '1rem', cursor: isTriggering ? 'not-allowed' : 'pointer', boxShadow: '0 10px 20px rgba(99, 102, 241, 0.1)' }}
+                                >
+                                    {isTriggering ? "🚀 Processing Engine..." : "🚀 Run Overdue Check Now"}
+                                </button>
+                            </div>
+                            <div style={{ textAlign: 'right' }}>
+                                <button type="button" onClick={() => setIsAlertsOpen(false)} style={{ padding: '12px 25px', borderRadius: '10px', border: '2px solid #e2e8f0', background: 'white', color: '#64748b', fontWeight: 600, cursor: 'pointer' }}>Close</button>
+                            </div>
+                        </div>
                     </div>
+                </div>
+            )}
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                        <label style={{ fontWeight: 600 }}>Manual Override</label>
-                        <p style={{ fontSize: '0.85rem', margin: 0 }}>Force run the daily check now.</p>
-                        <button
-                            className="button button-submit"
-                            style={{ width: '100%', marginTop: '10px', opacity: isTriggering ? 0.7 : 1 }}
-                            onClick={handleTriggerReminders}
-                            disabled={isTriggering}
-                        >
-                            {isTriggering ? "🚀 Sending..." : "🚀 Run Overdue Check Now"}
-                        </button>
-                    </div>
-                </div>
-                <div className="modal-footer">
-                    <button type="button" className="button button-cancel" onClick={() => setIsAlertsOpen(false)}>Close</button>
-                </div>
-            </Modal>
+            <style>{`
+                @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+                @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+            `}</style>
         </div >
     );
 };
