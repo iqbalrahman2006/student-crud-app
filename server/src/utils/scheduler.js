@@ -4,6 +4,11 @@ const logLibraryAction = require('./libraryLogger');
 const cron = require('node-cron');
 
 const initScheduler = () => {
+    if (process.env.NODE_ENV === 'test') {
+        console.log('⏰ Enterprise Library Scheduler skipped in test environment');
+        return;
+    }
+
     console.log("⏰ Enterprise Library Scheduler Initialized");
 
     // Run every day at 8:00 AM

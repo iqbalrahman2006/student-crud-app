@@ -11,7 +11,7 @@ const bookSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please provide an author name'],
         trim: true,
-        minlength: [2, 'Author name must be at least 2 characters']
+        minlength: [1, 'Author name must be at least 1 character']
     },
     isbn: {
         type: String,

@@ -20,10 +20,10 @@ const calculateFine = async (transaction, isReturnAction = false) => {
 
     // Logic: If returning, we finalize the fine. If just viewing, we project it.
     if (isReturnAction && fineAmount > 0) {
-        // Create Ledger Entry
+        // Create Ledger Entry — link to BorrowTransaction to avoid cross-model mismatch
         await LibraryFineLedger.create({
             student: transaction.studentId,
-            transaction: transaction._id,
+            borrowTransaction: transaction._id,
             amount: fineAmount,
             reason: `Overdue by ${diffDays} days`,
             status: 'Unpaid'

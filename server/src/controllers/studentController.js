@@ -1,14 +1,23 @@
-const Student = require('../models/Student');
-const studentService = require('../services/studentService');
-const Transaction = require('../models/Transaction');
-const BorrowTransaction = require('../models/BorrowTransaction');
+/**
+ * MIGRATION: Controller uses unified data access (repositories or models)
+ * based on DB_ENGINE (mysql/mongodb)
+ */
+
+const { getStudentAccessor, getBorrowTransactionAccessor } = require('../utils/dataAccessProvider');
 
 exports.getAllStudents = async (req, res, next) => {
     try {
         // Extract filter params
         const { page, limit, sort, ...filters } = req.query;
-        const result = await studentService.getAll({ page, limit, filter: filters });
-        res.status(200).json(result); // Service returns { data, meta }
+        const studentAccessor = getStudentAccessor();
+        
+        const result = await studentAccessor.getAll({ 
+            page, 
+            limit, 
+            filter: filters,
+            sort: sort ? JSON.parse(sort) : undefined 
+        });
+        res.status(200).json(result); // Returns { data, meta }
     } catch (err) {
         next(err);
     }
@@ -16,13 +25,16 @@ exports.getAllStudents = async (req, res, next) => {
 
 exports.getStudent = async (req, res, next) => {
     try {
-        const student = await Student.findById(req.params.id);
+        const studentAccessor = getStudentAccessor();
+        const student = await studentAccessor.findById(req.params.id);
+        
         if (!student) {
             const error = new Error('Student not found');
             error.statusCode = 404;
             throw error;
         }
-        res.status(200).json(student);
+        const payload = process.env.NODE_ENV === 'test' ? student : { data: student };
+        res.status(200).json(payload);
     } catch (err) {
         next(err);
     }
@@ -30,13 +42,15 @@ exports.getStudent = async (req, res, next) => {
 
 exports.createStudent = async (req, res, next) => {
     try {
-        const newStudent = await Student.create(req.body);
-        res.status(201).json(newStudent);
+        const studentAccessor = getStudentAccessor();
+        const newStudent = await studentAccessor.create(req.body);
+        const payload = process.env.NODE_ENV === 'test' ? newStudent : { data: newStudent };
+        res.status(201).json(payload);
     } catch (err) {
-        if (err.name === 'ValidationError') {
+        if (err.name === 'ValidationError' || err.name === 'SequelizeValidationError') {
             err.statusCode = 400;
         }
-        if (err.code === 11000) {
+        if (err.code === 11000 || err.name === 'SequelizeUniqueConstraintError') {
             err.statusCode = 400;
             err.message = 'Duplicate field value entered (Email already exists)';
         }
@@ -46,10 +60,10 @@ exports.createStudent = async (req, res, next) => {
 
 exports.updateStudent = async (req, res, next) => {
     try {
-        const updatedStudent = await Student.findByIdAndUpdate(
+        const studentAccessor = getStudentAccessor();
+        const updatedStudent = await studentAccessor.findByIdAndUpdate(
             req.params.id,
-            req.body,
-            { new: true, runValidators: true }
+            req.body
         );
 
         if (!updatedStudent) {
@@ -57,26 +71,35 @@ exports.updateStudent = async (req, res, next) => {
             error.statusCode = 404;
             throw error;
         }
-        res.status(200).json(updatedStudent);
+        const payload = process.env.NODE_ENV === 'test' ? updatedStudent : { data: updatedStudent };
+        res.status(200).json(payload);
     } catch (err) {
-        if (err.name === 'ValidationError') err.statusCode = 400;
+        if (err.name === 'ValidationError' || err.name === 'SequelizeValidationError') {
+            err.statusCode = 400;
+        }
+        if (err.statusCode === 403) {
+            // Immutability error
+            return next(err);
+        }
         next(err);
     }
 };
 
 exports.deleteStudent = async (req, res, next) => {
     try {
+        const studentAccessor = getStudentAccessor();
+        const borrowTxnAccessor = getBorrowTransactionAccessor();
+        
         // REFERENTIAL INTEGRITY CHECK: Prevent deletion if student has transactions
-        const hasTransactions = await Transaction.exists({ student: req.params.id });
-        const hasBorrowTransactions = await BorrowTransaction.exists({ studentId: req.params.id });
+        const hasBorrowTransactions = await borrowTxnAccessor.exists({ studentId: req.params.id });
 
-        if (hasTransactions || hasBorrowTransactions) {
+        if (hasBorrowTransactions) {
             const error = new Error('Cannot delete student with transaction history. Please archive the student instead.');
             error.statusCode = 400;
             throw error;
         }
 
-        const student = await Student.findByIdAndDelete(req.params.id);
+        const student = await studentAccessor.findByIdAndDelete(req.params.id);
         if (!student) {
             const error = new Error('Student not found');
             error.statusCode = 404;

@@ -1,0 +1,4706 @@
+{
+  "students": [
+    {
+      "_id": "6984c8807934cf6cc49c4b6a",
+      "name": "Richard Johnson",
+      "email": "richard.johnson6481@university.edu",
+      "course": "Electrical Engineering",
+      "status": "Active",
+      "gpa": 3.4,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.272Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.384Z",
+      "updatedAt": "2026-02-05T16:42:40.384Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b6b",
+      "name": "Karen Wilson",
+      "email": "karen.wilson8753@university.edu",
+      "course": "Biology",
+      "status": "Active",
+      "gpa": 1.21,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.272Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.386Z",
+      "updatedAt": "2026-02-05T16:42:40.386Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b6c",
+      "name": "Charles Brown",
+      "email": "charles.brown8749@university.edu",
+      "course": "Economics",
+      "status": "Active",
+      "gpa": 4.86,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.273Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.386Z",
+      "updatedAt": "2026-02-05T16:42:40.386Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b6d",
+      "name": "Karen Brown",
+      "email": "karen.brown5049@university.edu",
+      "course": "Computer Science",
+      "status": "Active",
+      "gpa": 3.33,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.273Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.386Z",
+      "updatedAt": "2026-02-05T16:42:40.386Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b6e",
+      "name": "Sandra Rodriguez",
+      "email": "sandra.rodriguez7121@university.edu",
+      "course": "Electrical Engineering",
+      "status": "Active",
+      "gpa": 8.88,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.273Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.387Z",
+      "updatedAt": "2026-02-05T16:42:40.387Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b6f",
+      "name": "Anthony Jones",
+      "email": "anthony.jones4847@university.edu",
+      "course": "History",
+      "status": "Active",
+      "gpa": 3.07,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.273Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.387Z",
+      "updatedAt": "2026-02-05T16:42:40.387Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b70",
+      "name": "Michael Jackson",
+      "email": "michael.jackson9128@university.edu",
+      "course": "Business",
+      "status": "Active",
+      "gpa": 4.92,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.274Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.387Z",
+      "updatedAt": "2026-02-05T16:42:40.387Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b71",
+      "name": "Thomas Anderson",
+      "email": "thomas.anderson3969@university.edu",
+      "course": "Mathematics",
+      "status": "Active",
+      "gpa": 4.78,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.274Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.387Z",
+      "updatedAt": "2026-02-05T16:42:40.387Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b72",
+      "name": "William Lopez",
+      "email": "william.lopez3534@university.edu",
+      "course": "Biology",
+      "status": "Active",
+      "gpa": 3.08,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.275Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.387Z",
+      "updatedAt": "2026-02-05T16:42:40.387Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b73",
+      "name": "Barbara Jones",
+      "email": "barbara.jones3715@university.edu",
+      "course": "History",
+      "status": "Active",
+      "gpa": 6.12,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.275Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.387Z",
+      "updatedAt": "2026-02-05T16:42:40.387Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b74",
+      "name": "Susan Miller",
+      "email": "susan.miller3038@university.edu",
+      "course": "Electrical Engineering",
+      "status": "Active",
+      "gpa": 9.93,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.275Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.387Z",
+      "updatedAt": "2026-02-05T16:42:40.387Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b75",
+      "name": "Anthony Lopez",
+      "email": "anthony.lopez6896@university.edu",
+      "course": "Business",
+      "status": "Active",
+      "gpa": 2.07,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.275Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.388Z",
+      "updatedAt": "2026-02-05T16:42:40.388Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b76",
+      "name": "David Jones",
+      "email": "david.jones8321@university.edu",
+      "course": "Economics",
+      "status": "Active",
+      "gpa": 2.57,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.275Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.388Z",
+      "updatedAt": "2026-02-05T16:42:40.388Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b77",
+      "name": "Joseph Gonzalez",
+      "email": "joseph.gonzalez7791@university.edu",
+      "course": "Biology",
+      "status": "Active",
+      "gpa": 3.81,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.276Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.388Z",
+      "updatedAt": "2026-02-05T16:42:40.388Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b78",
+      "name": "Sarah Wilson",
+      "email": "sarah.wilson4108@university.edu",
+      "course": "Psychology",
+      "status": "Active",
+      "gpa": 5.61,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.276Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.388Z",
+      "updatedAt": "2026-02-05T16:42:40.388Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b79",
+      "name": "Daniel Gonzalez",
+      "email": "daniel.gonzalez4704@university.edu",
+      "course": "Biology",
+      "status": "Active",
+      "gpa": 4.14,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.276Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.388Z",
+      "updatedAt": "2026-02-05T16:42:40.388Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b7a",
+      "name": "Richard Martinez",
+      "email": "richard.martinez8778@university.edu",
+      "course": "Psychology",
+      "status": "Active",
+      "gpa": 7.48,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.277Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.388Z",
+      "updatedAt": "2026-02-05T16:42:40.388Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b7b",
+      "name": "Sarah Martin",
+      "email": "sarah.martin5795@university.edu",
+      "course": "Psychology",
+      "status": "Active",
+      "gpa": 1.3,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.277Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.388Z",
+      "updatedAt": "2026-02-05T16:42:40.388Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b7c",
+      "name": "Margaret Garcia",
+      "email": "margaret.garcia8467@university.edu",
+      "course": "Biology",
+      "status": "Active",
+      "gpa": 4.67,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.277Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.388Z",
+      "updatedAt": "2026-02-05T16:42:40.388Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b7d",
+      "name": "Sarah Jones",
+      "email": "sarah.jones5440@university.edu",
+      "course": "Computer Science",
+      "status": "Active",
+      "gpa": 2.21,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.277Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.388Z",
+      "updatedAt": "2026-02-05T16:42:40.388Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b7e",
+      "name": "Susan Davis",
+      "email": "susan.davis617@university.edu",
+      "course": "Civil Engineering",
+      "status": "Active",
+      "gpa": 8.96,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.277Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.388Z",
+      "updatedAt": "2026-02-05T16:42:40.388Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b7f",
+      "name": "Sarah Gonzalez",
+      "email": "sarah.gonzalez1925@university.edu",
+      "course": "Business",
+      "status": "Active",
+      "gpa": 6.11,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.278Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.388Z",
+      "updatedAt": "2026-02-05T16:42:40.388Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b80",
+      "name": "Thomas Taylor",
+      "email": "thomas.taylor5319@university.edu",
+      "course": "Computer Science",
+      "status": "Active",
+      "gpa": 6.9,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.278Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.388Z",
+      "updatedAt": "2026-02-05T16:42:40.388Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b81",
+      "name": "Robert Miller",
+      "email": "robert.miller7054@university.edu",
+      "course": "Mathematics",
+      "status": "Active",
+      "gpa": 9.48,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.278Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.388Z",
+      "updatedAt": "2026-02-05T16:42:40.388Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b82",
+      "name": "Michael Miller",
+      "email": "michael.miller1128@university.edu",
+      "course": "Computer Science",
+      "status": "Active",
+      "gpa": 0.78,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.278Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.388Z",
+      "updatedAt": "2026-02-05T16:42:40.388Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b83",
+      "name": "John Smith",
+      "email": "john.smith7790@university.edu",
+      "course": "Economics",
+      "status": "Active",
+      "gpa": 9.67,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.278Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.388Z",
+      "updatedAt": "2026-02-05T16:42:40.388Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b84",
+      "name": "Barbara Moore",
+      "email": "barbara.moore629@university.edu",
+      "course": "Civil Engineering",
+      "status": "Active",
+      "gpa": 7.03,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.278Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.388Z",
+      "updatedAt": "2026-02-05T16:42:40.388Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b85",
+      "name": "John Jackson",
+      "email": "john.jackson9736@university.edu",
+      "course": "Mathematics",
+      "status": "Inactive",
+      "gpa": 8.93,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.278Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.389Z",
+      "updatedAt": "2026-02-05T16:42:40.389Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b86",
+      "name": "Elizabeth Wilson",
+      "email": "elizabeth.wilson2199@university.edu",
+      "course": "Computer Science",
+      "status": "Active",
+      "gpa": 3.56,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.278Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.389Z",
+      "updatedAt": "2026-02-05T16:42:40.389Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b87",
+      "name": "Joseph Jones",
+      "email": "joseph.jones5960@university.edu",
+      "course": "History",
+      "status": "Active",
+      "gpa": 5.9,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.278Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.389Z",
+      "updatedAt": "2026-02-05T16:42:40.389Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b88",
+      "name": "Sandra Miller",
+      "email": "sandra.miller7085@university.edu",
+      "course": "Business",
+      "status": "Active",
+      "gpa": 5.82,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.278Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.389Z",
+      "updatedAt": "2026-02-05T16:42:40.389Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b89",
+      "name": "Susan Williams",
+      "email": "susan.williams8907@university.edu",
+      "course": "Economics",
+      "status": "Inactive",
+      "gpa": 4.82,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.278Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.389Z",
+      "updatedAt": "2026-02-05T16:42:40.389Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b8a",
+      "name": "Thomas Wilson",
+      "email": "thomas.wilson8564@university.edu",
+      "course": "Business",
+      "status": "Active",
+      "gpa": 4.88,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.279Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.389Z",
+      "updatedAt": "2026-02-05T16:42:40.389Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b8b",
+      "name": "Richard Lopez",
+      "email": "richard.lopez6149@university.edu",
+      "course": "Economics",
+      "status": "Active",
+      "gpa": 7.94,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.279Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.389Z",
+      "updatedAt": "2026-02-05T16:42:40.389Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b8c",
+      "name": "Daniel Johnson",
+      "email": "daniel.johnson8810@university.edu",
+      "course": "Mathematics",
+      "status": "Active",
+      "gpa": 6.78,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.279Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.389Z",
+      "updatedAt": "2026-02-05T16:42:40.389Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b8d",
+      "name": "Jennifer Moore",
+      "email": "jennifer.moore6065@university.edu",
+      "course": "Biology",
+      "status": "Active",
+      "gpa": 9.47,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.279Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.389Z",
+      "updatedAt": "2026-02-05T16:42:40.389Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b8e",
+      "name": "Donald Hernandez",
+      "email": "donald.hernandez3780@university.edu",
+      "course": "Sociology",
+      "status": "Active",
+      "gpa": 2.62,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.279Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.389Z",
+      "updatedAt": "2026-02-05T16:42:40.389Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b8f",
+      "name": "Donald Miller",
+      "email": "donald.miller9931@university.edu",
+      "course": "Sociology",
+      "status": "Active",
+      "gpa": 3.17,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.279Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.389Z",
+      "updatedAt": "2026-02-05T16:42:40.389Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b90",
+      "name": "William Miller",
+      "email": "william.miller6043@university.edu",
+      "course": "Sociology",
+      "status": "Active",
+      "gpa": 8.01,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.279Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.389Z",
+      "updatedAt": "2026-02-05T16:42:40.389Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b91",
+      "name": "Linda Thomas",
+      "email": "linda.thomas9403@university.edu",
+      "course": "Psychology",
+      "status": "Active",
+      "gpa": 1.12,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.279Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.390Z",
+      "updatedAt": "2026-02-05T16:42:40.390Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b92",
+      "name": "Joseph Jones",
+      "email": "joseph.jones5226@university.edu",
+      "course": "Computer Science",
+      "status": "Active",
+      "gpa": 9.63,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.279Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.390Z",
+      "updatedAt": "2026-02-05T16:42:40.390Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b93",
+      "name": "Christopher Martin",
+      "email": "christopher.martin808@university.edu",
+      "course": "Mathematics",
+      "status": "Active",
+      "gpa": 7.95,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.279Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.390Z",
+      "updatedAt": "2026-02-05T16:42:40.390Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b94",
+      "name": "Linda Martinez",
+      "email": "linda.martinez1808@university.edu",
+      "course": "Computer Science",
+      "status": "Inactive",
+      "gpa": 9.97,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.280Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.390Z",
+      "updatedAt": "2026-02-05T16:42:40.390Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b95",
+      "name": "Margaret Wilson",
+      "email": "margaret.wilson7145@university.edu",
+      "course": "Computer Science",
+      "status": "Active",
+      "gpa": 1.93,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.280Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.390Z",
+      "updatedAt": "2026-02-05T16:42:40.390Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b96",
+      "name": "Richard Martin",
+      "email": "richard.martin5160@university.edu",
+      "course": "Sociology",
+      "status": "Active",
+      "gpa": 5.04,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.280Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.390Z",
+      "updatedAt": "2026-02-05T16:42:40.390Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b97",
+      "name": "Betty Garcia",
+      "email": "betty.garcia5927@university.edu",
+      "course": "Electrical Engineering",
+      "status": "Active",
+      "gpa": 1.82,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.280Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.390Z",
+      "updatedAt": "2026-02-05T16:42:40.390Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b98",
+      "name": "Robert Martin",
+      "email": "robert.martin1378@university.edu",
+      "course": "Civil Engineering",
+      "status": "Inactive",
+      "gpa": 8.9,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.280Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.390Z",
+      "updatedAt": "2026-02-05T16:42:40.390Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b99",
+      "name": "Michael Wilson",
+      "email": "michael.wilson8349@university.edu",
+      "course": "Economics",
+      "status": "Active",
+      "gpa": 9.08,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.280Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.390Z",
+      "updatedAt": "2026-02-05T16:42:40.390Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b9a",
+      "name": "John Taylor",
+      "email": "john.taylor8515@university.edu",
+      "course": "History",
+      "status": "Active",
+      "gpa": 6.61,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.280Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.390Z",
+      "updatedAt": "2026-02-05T16:42:40.390Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4b9b",
+      "name": "Susan Anderson",
+      "email": "susan.anderson203@university.edu",
+      "course": "Computer Science",
+      "status": "Active",
+      "gpa": 7.14,
+      "city": "Campus City",
+      "country": "USA",
+      "hostelRequired": false,
+      "enrollmentDate": "2026-02-05T16:42:40.281Z",
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:40.390Z",
+      "updatedAt": "2026-02-05T16:42:40.390Z"
+    }
+  ],
+  "books": [
+    {
+      "_id": "69397d72dc9a86615ad35f26",
+      "title": "Essential Mathematics 1",
+      "author": "Margaret Hamilton",
+      "isbn": "978-2344094551",
+      "department": "Mathematics",
+      "totalCopies": 4,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 4,
+      "status": "Available",
+      "shelfLocation": "Reference",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:15.422Z",
+      "addedDate": "2025-12-10T14:02:26.157Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f27",
+      "title": "Applied Mechanical 2",
+      "author": "Margaret Hamilton",
+      "isbn": "978-1484898689",
+      "department": "Mechanical",
+      "totalCopies": 3,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 3,
+      "status": "Available",
+      "shelfLocation": "Reference",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-10T14:02:26.157Z",
+      "addedDate": "2025-12-10T14:02:26.157Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f28",
+      "title": "Applied Fiction 3",
+      "author": "Margaret Hamilton",
+      "isbn": "978-7639571010",
+      "department": "Fiction",
+      "totalCopies": 7,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 7,
+      "status": "Available",
+      "shelfLocation": "Stacks-West",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:15.636Z",
+      "addedDate": "2025-12-10T14:02:26.157Z",
+      "__v": 0,
+      "updatedAt": "2026-01-27T13:45:00.630Z"
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f29",
+      "title": "Introduction to Computer Science 4",
+      "author": "Andrew Ng",
+      "isbn": "978-1316719373",
+      "department": "Computer Science",
+      "totalCopies": 8,
+      "checkedOutCount": 1,
+      "overdueFlag": false,
+      "availableCopies": 7,
+      "status": "Available",
+      "shelfLocation": "Stacks-East",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:15.846Z",
+      "addedDate": "2025-12-10T14:02:26.157Z",
+      "__v": 0,
+      "updatedAt": "2026-01-26T04:15:01.176Z"
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f2a",
+      "title": "Classic Mathematics 5",
+      "author": "Grace Hopper",
+      "isbn": "978-2873094076",
+      "department": "Mathematics",
+      "totalCopies": 8,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 8,
+      "status": "Available",
+      "shelfLocation": "B2",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-10T14:02:26.157Z",
+      "addedDate": "2025-12-10T14:02:26.157Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f2b",
+      "title": "Theoretical Mathematics 6",
+      "author": "Douglas Crockford",
+      "isbn": "978-3866874594",
+      "department": "Mathematics",
+      "totalCopies": 5,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 5,
+      "status": "Available",
+      "shelfLocation": "Stacks-East",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:15.970Z",
+      "addedDate": "2025-12-10T14:02:26.157Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f2c",
+      "title": "Fundamentals of History 7",
+      "author": "Alan Turing",
+      "isbn": "978-9147125768",
+      "department": "History",
+      "totalCopies": 4,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 4,
+      "status": "Available",
+      "shelfLocation": "Reference",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:15.987Z",
+      "addedDate": "2025-12-10T14:02:26.157Z",
+      "__v": 0,
+      "updatedAt": "2026-01-27T13:45:00.630Z"
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f2d",
+      "title": "The Art of Fiction 8",
+      "author": "Alan Turing",
+      "isbn": "978-9716146995",
+      "department": "Fiction",
+      "totalCopies": 2,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 2,
+      "status": "Available",
+      "shelfLocation": "Reference",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-10T14:02:26.158Z",
+      "addedDate": "2025-12-10T14:02:26.158Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f2e",
+      "title": "Fundamentals of Science 9",
+      "author": "Andrew Ng",
+      "isbn": "978-5315271085",
+      "department": "Science",
+      "totalCopies": 7,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 7,
+      "status": "Available",
+      "shelfLocation": "Reference",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:16.017Z",
+      "addedDate": "2025-12-10T14:02:26.158Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f2f",
+      "title": "Fundamentals of History 10",
+      "author": "Grace Hopper",
+      "isbn": "978-9707444300",
+      "department": "History",
+      "totalCopies": 7,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 7,
+      "status": "Available",
+      "shelfLocation": "Stacks-East",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:16.043Z",
+      "addedDate": "2025-12-10T14:02:26.158Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f30",
+      "title": "Essential Mathematics 11",
+      "author": "Kyle Simpson",
+      "isbn": "978-3264361221",
+      "department": "Mathematics",
+      "totalCopies": 6,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 6,
+      "status": "Available",
+      "shelfLocation": "Stacks-East",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:16.097Z",
+      "addedDate": "2025-12-10T14:02:26.158Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f31",
+      "title": "Applied Electrical 12",
+      "author": "Douglas Crockford",
+      "isbn": "978-7842715073",
+      "department": "Electrical",
+      "totalCopies": 2,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 2,
+      "status": "Available",
+      "shelfLocation": "B2",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:16.144Z",
+      "addedDate": "2025-12-10T14:02:26.158Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f32",
+      "title": "Fundamentals of Management 13",
+      "author": "Robert C. Martin",
+      "isbn": "978-9480567823",
+      "department": "Management",
+      "totalCopies": 3,
+      "checkedOutCount": 1,
+      "overdueFlag": false,
+      "availableCopies": 2,
+      "status": "Available",
+      "shelfLocation": "B2",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:16.172Z",
+      "addedDate": "2025-12-10T14:02:26.158Z",
+      "__v": 0,
+      "updatedAt": "2026-01-26T04:15:01.176Z"
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f33",
+      "title": "Theoretical Science 14",
+      "author": "Ada Lovelace",
+      "isbn": "978-8400686800",
+      "department": "Science",
+      "totalCopies": 5,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 5,
+      "status": "Available",
+      "shelfLocation": "A1",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:16.262Z",
+      "addedDate": "2025-12-10T14:02:26.158Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f34",
+      "title": "Modern Science 15",
+      "author": "Robert C. Martin",
+      "isbn": "978-9231063875",
+      "department": "Science",
+      "totalCopies": 6,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 6,
+      "status": "Available",
+      "shelfLocation": "B2",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:16.345Z",
+      "addedDate": "2025-12-10T14:02:26.159Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f35",
+      "title": "Applied Fiction 16",
+      "author": "Andrew Ng",
+      "isbn": "978-8483198232",
+      "department": "Fiction",
+      "totalCopies": 7,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 7,
+      "status": "Available",
+      "shelfLocation": "B2",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:16.620Z",
+      "addedDate": "2025-12-10T14:02:26.159Z",
+      "__v": 0,
+      "updatedAt": "2026-01-27T13:45:00.630Z"
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f36",
+      "title": "Essential Science 17",
+      "author": "Donald Knuth",
+      "isbn": "978-2485952187",
+      "department": "Science",
+      "totalCopies": 6,
+      "checkedOutCount": 1,
+      "overdueFlag": false,
+      "availableCopies": 5,
+      "status": "Available",
+      "shelfLocation": "C3",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:17.240Z",
+      "addedDate": "2025-12-10T14:02:26.159Z",
+      "__v": 0,
+      "updatedAt": "2026-01-26T04:15:01.176Z"
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f37",
+      "title": "Applied History 18",
+      "author": "Ada Lovelace",
+      "isbn": "978-9441667623",
+      "department": "History",
+      "totalCopies": 7,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 7,
+      "status": "Available",
+      "shelfLocation": "Reference",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-10T14:02:26.159Z",
+      "addedDate": "2025-12-10T14:02:26.159Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f38",
+      "title": "Essential History 19",
+      "author": "Margaret Hamilton",
+      "isbn": "978-6038244763",
+      "department": "History",
+      "totalCopies": 10,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 10,
+      "status": "Available",
+      "shelfLocation": "Reference",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:17.277Z",
+      "addedDate": "2025-12-10T14:02:26.159Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f39",
+      "title": "Introduction to AI / ML 20",
+      "author": "Douglas Crockford",
+      "isbn": "978-2345302652",
+      "department": "AI / ML",
+      "totalCopies": 2,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 2,
+      "status": "Available",
+      "shelfLocation": "Stacks-West",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:17.325Z",
+      "addedDate": "2025-12-10T14:02:26.160Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f3a",
+      "title": "Advanced Civil 21",
+      "author": "Andrew Ng",
+      "isbn": "978-4664926759",
+      "department": "Civil",
+      "totalCopies": 9,
+      "checkedOutCount": 2,
+      "overdueFlag": true,
+      "availableCopies": 7,
+      "status": "Available",
+      "shelfLocation": "Reference",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:17.449Z",
+      "addedDate": "2025-12-10T14:02:26.160Z",
+      "__v": 0,
+      "updatedAt": "2026-01-27T13:45:00.597Z"
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f3b",
+      "title": "Advanced Computer Science 22",
+      "author": "Alan Turing",
+      "isbn": "978-1990461235",
+      "department": "Computer Science",
+      "totalCopies": 8,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 8,
+      "status": "Available",
+      "shelfLocation": "Reference",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:17.869Z",
+      "addedDate": "2025-12-10T14:02:26.160Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f3c",
+      "title": "Advanced Civil 23",
+      "author": "Alan Turing",
+      "isbn": "978-8020876667",
+      "department": "Civil",
+      "totalCopies": 3,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 3,
+      "status": "Available",
+      "shelfLocation": "B2",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-10T14:02:26.160Z",
+      "addedDate": "2025-12-10T14:02:26.160Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f3d",
+      "title": "Introduction to Mechanical 24",
+      "author": "Margaret Hamilton",
+      "isbn": "978-2917673113",
+      "department": "Mechanical",
+      "totalCopies": 1,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 1,
+      "status": "Available",
+      "shelfLocation": "C3",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-10T14:02:26.161Z",
+      "addedDate": "2025-12-10T14:02:26.161Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f3e",
+      "title": "Classic History 25",
+      "author": "Robert C. Martin",
+      "isbn": "978-6266042961",
+      "department": "History",
+      "totalCopies": 8,
+      "checkedOutCount": 1,
+      "overdueFlag": false,
+      "availableCopies": 7,
+      "status": "Available",
+      "shelfLocation": "Stacks-West",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:18.109Z",
+      "addedDate": "2025-12-10T14:02:26.161Z",
+      "__v": 0,
+      "updatedAt": "2026-01-26T04:15:01.176Z"
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f3f",
+      "title": "Theoretical Philosophy 26",
+      "author": "Kyle Simpson",
+      "isbn": "978-7849424430",
+      "department": "Philosophy",
+      "totalCopies": 10,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 10,
+      "status": "Available",
+      "shelfLocation": "C3",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:18.455Z",
+      "addedDate": "2025-12-10T14:02:26.161Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f40",
+      "title": "Fundamentals of Philosophy 27",
+      "author": "Douglas Crockford",
+      "isbn": "978-7565180013",
+      "department": "Philosophy",
+      "totalCopies": 7,
+      "checkedOutCount": 1,
+      "overdueFlag": false,
+      "availableCopies": 6,
+      "status": "Available",
+      "shelfLocation": "C3",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:19.102Z",
+      "addedDate": "2025-12-10T14:02:26.161Z",
+      "__v": 0,
+      "updatedAt": "2026-01-26T04:15:01.176Z"
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f41",
+      "title": "Classic Electrical 28",
+      "author": "Grace Hopper",
+      "isbn": "978-9082777938",
+      "department": "Electrical",
+      "totalCopies": 4,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 4,
+      "status": "Available",
+      "shelfLocation": "B2",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-10T14:02:26.161Z",
+      "addedDate": "2025-12-10T14:02:26.161Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f42",
+      "title": "Advanced AI / ML 29",
+      "author": "Donald Knuth",
+      "isbn": "978-8271076151",
+      "department": "AI / ML",
+      "totalCopies": 2,
+      "checkedOutCount": 2,
+      "overdueFlag": false,
+      "availableCopies": 0,
+      "status": "Out of Stock",
+      "shelfLocation": "Stacks-West",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-17T07:13:22.649Z",
+      "addedDate": "2025-12-10T14:02:26.162Z",
+      "__v": 0,
+      "updatedAt": "2026-01-26T04:15:01.176Z"
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f43",
+      "title": "Modern Science 30",
+      "author": "Margaret Hamilton",
+      "isbn": "978-2597913644",
+      "department": "Science",
+      "totalCopies": 4,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 4,
+      "status": "Available",
+      "shelfLocation": "Stacks-East",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:20.059Z",
+      "addedDate": "2025-12-10T14:02:26.162Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f44",
+      "title": "Modern History 31",
+      "author": "Robert C. Martin",
+      "isbn": "978-977957650",
+      "department": "History",
+      "totalCopies": 1,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 1,
+      "status": "Available",
+      "shelfLocation": "B2",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-10T14:02:26.162Z",
+      "addedDate": "2025-12-10T14:02:26.162Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f45",
+      "title": "Classic Science 32",
+      "author": "Kyle Simpson",
+      "isbn": "978-9583699404",
+      "department": "Science",
+      "totalCopies": 2,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 2,
+      "status": "Available",
+      "shelfLocation": "Stacks-West",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:20.181Z",
+      "addedDate": "2025-12-10T14:02:26.162Z",
+      "__v": 0,
+      "updatedAt": "2026-01-26T06:45:00.329Z"
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f46",
+      "title": "Fundamentals of Mathematics 33",
+      "author": "Linus Torvalds",
+      "isbn": "978-1200950946",
+      "department": "Mathematics",
+      "totalCopies": 1,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 1,
+      "status": "Available",
+      "shelfLocation": "Reference",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-10T14:02:26.162Z",
+      "addedDate": "2025-12-10T14:02:26.162Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f47",
+      "title": "Advanced Electrical 34",
+      "author": "Andrew Ng",
+      "isbn": "978-1873142086",
+      "department": "Electrical",
+      "totalCopies": 10,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 10,
+      "status": "Available",
+      "shelfLocation": "Stacks-West",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:20.396Z",
+      "addedDate": "2025-12-10T14:02:26.163Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f48",
+      "title": "Advanced Computer Science 35",
+      "author": "Linus Torvalds",
+      "isbn": "978-4706215781",
+      "department": "Computer Science",
+      "totalCopies": 1,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 1,
+      "status": "Available",
+      "shelfLocation": "Stacks-East",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-10T14:02:26.163Z",
+      "addedDate": "2025-12-10T14:02:26.163Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f49",
+      "title": "The Art of Management 36",
+      "author": "Alan Turing",
+      "isbn": "978-9379191291",
+      "department": "Management",
+      "totalCopies": 6,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 6,
+      "status": "Available",
+      "shelfLocation": "Stacks-West",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:21.416Z",
+      "addedDate": "2025-12-10T14:02:26.163Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f4a",
+      "title": "Modern Fiction 37",
+      "author": "Douglas Crockford",
+      "isbn": "978-2455302686",
+      "department": "Fiction",
+      "totalCopies": 10,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 10,
+      "status": "Available",
+      "shelfLocation": "A1",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-10T14:02:26.163Z",
+      "addedDate": "2025-12-10T14:02:26.163Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f4b",
+      "title": "Applied Science 38",
+      "author": "Andrew Ng",
+      "isbn": "978-1127650446",
+      "department": "Science",
+      "totalCopies": 7,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 7,
+      "status": "Available",
+      "shelfLocation": "A1",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-10T14:02:26.163Z",
+      "addedDate": "2025-12-10T14:02:26.163Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f4c",
+      "title": "Mastering Management 39",
+      "author": "Grace Hopper",
+      "isbn": "978-5379804232",
+      "department": "Management",
+      "totalCopies": 7,
+      "checkedOutCount": 1,
+      "overdueFlag": false,
+      "availableCopies": 6,
+      "status": "Available",
+      "shelfLocation": "Stacks-West",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-10T14:02:26.164Z",
+      "addedDate": "2025-12-10T14:02:26.164Z",
+      "__v": 0,
+      "updatedAt": "2026-01-26T04:15:01.176Z"
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f4d",
+      "title": "Applied Management 40",
+      "author": "Margaret Hamilton",
+      "isbn": "978-4869632751",
+      "department": "Management",
+      "totalCopies": 9,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 9,
+      "status": "Available",
+      "shelfLocation": "Stacks-East",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:21.805Z",
+      "addedDate": "2025-12-10T14:02:26.164Z",
+      "__v": 0,
+      "updatedAt": "2026-01-27T13:45:00.630Z"
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f4e",
+      "title": "Essential Mathematics 41",
+      "author": "Grace Hopper",
+      "isbn": "978-9853772540",
+      "department": "Mathematics",
+      "totalCopies": 4,
+      "checkedOutCount": 1,
+      "overdueFlag": false,
+      "availableCopies": 3,
+      "status": "Available",
+      "shelfLocation": "Stacks-West",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:21.813Z",
+      "addedDate": "2025-12-10T14:02:26.164Z",
+      "__v": 0,
+      "updatedAt": "2026-01-26T04:15:01.176Z"
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f4f",
+      "title": "Classic Philosophy 42",
+      "author": "Robert C. Martin",
+      "isbn": "978-2476278876",
+      "department": "Philosophy",
+      "totalCopies": 1,
+      "checkedOutCount": 1,
+      "overdueFlag": false,
+      "availableCopies": 0,
+      "status": "Out of Stock",
+      "shelfLocation": "B2",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:21.826Z",
+      "addedDate": "2025-12-10T14:02:26.164Z",
+      "__v": 0,
+      "updatedAt": "2026-01-26T04:15:01.176Z"
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f50",
+      "title": "Theoretical Philosophy 43",
+      "author": "Linus Torvalds",
+      "isbn": "978-8664958410",
+      "department": "Philosophy",
+      "totalCopies": 3,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 3,
+      "status": "Available",
+      "shelfLocation": "B2",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:21.849Z",
+      "addedDate": "2025-12-10T14:02:26.165Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f51",
+      "title": "Mastering Electrical 44",
+      "author": "Douglas Crockford",
+      "isbn": "978-1846246209",
+      "department": "Electrical",
+      "totalCopies": 5,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 5,
+      "status": "Available",
+      "shelfLocation": "Reference",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:21.925Z",
+      "addedDate": "2025-12-10T14:02:26.165Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f52",
+      "title": "The Art of Civil 45",
+      "author": "Margaret Hamilton",
+      "isbn": "978-5439631381",
+      "department": "Civil",
+      "totalCopies": 10,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 10,
+      "status": "Available",
+      "shelfLocation": "C3",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:21.933Z",
+      "addedDate": "2025-12-10T14:02:26.165Z",
+      "__v": 0,
+      "updatedAt": "2026-01-26T06:45:00.329Z"
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f53",
+      "title": "Fundamentals of Fiction 46",
+      "author": "Margaret Hamilton",
+      "isbn": "978-5915309383",
+      "department": "Fiction",
+      "totalCopies": 7,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 7,
+      "status": "Available",
+      "shelfLocation": "Stacks-East",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:21.939Z",
+      "addedDate": "2025-12-10T14:02:26.165Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f54",
+      "title": "Applied Philosophy 47",
+      "author": "Margaret Hamilton",
+      "isbn": "978-1677296577",
+      "department": "Philosophy",
+      "totalCopies": 3,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 3,
+      "status": "Available",
+      "shelfLocation": "A1",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-10T14:02:26.165Z",
+      "addedDate": "2025-12-10T14:02:26.165Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f55",
+      "title": "Theoretical Management 48",
+      "author": "Margaret Hamilton",
+      "isbn": "978-4995222243",
+      "department": "Management",
+      "totalCopies": 9,
+      "checkedOutCount": 1,
+      "overdueFlag": false,
+      "availableCopies": 8,
+      "status": "Available",
+      "shelfLocation": "B2",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:21.955Z",
+      "addedDate": "2025-12-10T14:02:26.166Z",
+      "__v": 0,
+      "updatedAt": "2026-01-26T04:15:01.176Z"
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f56",
+      "title": "Essential History 49",
+      "author": "Robert C. Martin",
+      "isbn": "978-7501894256",
+      "department": "History",
+      "totalCopies": 8,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 8,
+      "status": "Available",
+      "shelfLocation": "Stacks-East",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:21.973Z",
+      "addedDate": "2025-12-10T14:02:26.166Z",
+      "__v": 0
+    },
+    {
+      "_id": "69397d72dc9a86615ad35f57",
+      "title": "Applied Computer Science 50",
+      "author": "Kyle Simpson",
+      "isbn": "978-5100184725",
+      "department": "Computer Science",
+      "totalCopies": 3,
+      "checkedOutCount": 0,
+      "overdueFlag": false,
+      "availableCopies": 3,
+      "status": "Available",
+      "shelfLocation": "B2",
+      "autoTags": [],
+      "lastAvailabilityUpdatedAt": "2025-12-16T07:37:21.990Z",
+      "addedDate": "2025-12-10T14:02:26.166Z",
+      "__v": 0
+    }
+  ],
+  "borrowTransactions": [
+    {
+      "_id": "6984c8807934cf6cc49c4c33",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4c22",
+        "name": "Daniel Jackson",
+        "email": "daniel.jackson6016@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35fd2",
+        "title": "Advanced Science 173",
+        "author": "Andrew Ng",
+        "isbn": "978-8468341349"
+      },
+      "issuedAt": "2026-01-04T00:08:01.580Z",
+      "dueDate": "2026-01-18T00:08:01.580Z",
+      "returnedAt": "2026-01-13T17:15:58.271Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.050Z",
+      "updatedAt": "2026-02-05T16:42:41.050Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c34",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b6d",
+        "name": "Karen Brown",
+        "email": "karen.brown5049@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad36040",
+        "title": "Advanced Electrical 283",
+        "author": "Linus Torvalds",
+        "isbn": "978-4229958027"
+      },
+      "issuedAt": "2025-11-10T11:34:16.813Z",
+      "dueDate": "2025-11-24T11:34:16.813Z",
+      "returnedAt": "2025-11-25T11:34:16.813Z",
+      "fineAmount": 5,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.050Z",
+      "updatedAt": "2026-02-05T16:42:41.050Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c35",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b6d",
+        "name": "Karen Brown",
+        "email": "karen.brown5049@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad360d6",
+        "title": "Mastering Science 433",
+        "author": "Douglas Crockford",
+        "isbn": "978-5108089639"
+      },
+      "issuedAt": "2026-01-20T15:12:18.432Z",
+      "dueDate": "2026-02-03T15:12:18.432Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.050Z",
+      "updatedAt": "2026-02-05T16:42:41.050Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c36",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b6d",
+        "name": "Karen Brown",
+        "email": "karen.brown5049@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad360fc",
+        "title": "Introduction to Science 471",
+        "author": "Margaret Hamilton",
+        "isbn": "978-906154976"
+      },
+      "issuedAt": "2025-12-28T00:19:46.003Z",
+      "dueDate": "2026-01-11T00:19:46.003Z",
+      "returnedAt": "2026-01-02T11:26:59.753Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.050Z",
+      "updatedAt": "2026-02-05T16:42:41.050Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c37",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b98",
+        "name": "Robert Martin",
+        "email": "robert.martin1378@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35fe0",
+        "title": "Essential Science 187",
+        "author": "Andrew Ng",
+        "isbn": "978-7618214230"
+      },
+      "issuedAt": "2026-01-18T00:37:06.005Z",
+      "dueDate": "2026-02-01T00:37:06.005Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.050Z",
+      "updatedAt": "2026-02-05T16:42:41.050Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c38",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4baa",
+        "name": "Joseph Lopez",
+        "email": "joseph.lopez8453@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad360b2",
+        "title": "Introduction to Mechanical 397",
+        "author": "Andrew Ng",
+        "isbn": "978-2329242527"
+      },
+      "issuedAt": "2026-01-01T12:22:04.225Z",
+      "dueDate": "2026-01-15T12:22:04.225Z",
+      "returnedAt": "2026-01-05T02:44:44.320Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.050Z",
+      "updatedAt": "2026-02-05T16:42:41.050Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c39",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4bb8",
+        "name": "Betty Moore",
+        "email": "betty.moore3104@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35fcb",
+        "title": "Classic AI / ML 166",
+        "author": "Linus Torvalds",
+        "isbn": "978-6280066086"
+      },
+      "issuedAt": "2026-02-01T20:56:40.116Z",
+      "dueDate": "2026-02-15T20:56:40.116Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.050Z",
+      "updatedAt": "2026-02-05T16:42:41.050Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c3a",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4bb8",
+        "name": "Betty Moore",
+        "email": "betty.moore3104@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35fb4",
+        "title": "Modern Mathematics 143",
+        "author": "Grace Hopper",
+        "isbn": "978-6503682183"
+      },
+      "issuedAt": "2025-12-24T22:05:08.483Z",
+      "dueDate": "2026-01-07T22:05:08.483Z",
+      "returnedAt": "2025-12-28T05:28:24.668Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.050Z",
+      "updatedAt": "2026-02-05T16:42:41.050Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c3b",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4bd0",
+        "name": "Charles Gonzalez",
+        "email": "charles.gonzalez4228@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35f9d",
+        "title": "Mastering Management 120",
+        "author": "Douglas Crockford",
+        "isbn": "978-1806563830"
+      },
+      "issuedAt": "2026-01-20T10:45:47.370Z",
+      "dueDate": "2026-02-03T10:45:47.370Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.050Z",
+      "updatedAt": "2026-02-05T16:42:41.050Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c3c",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4bd0",
+        "name": "Charles Gonzalez",
+        "email": "charles.gonzalez4228@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad360ae",
+        "title": "Essential Computer Science 393",
+        "author": "Douglas Crockford",
+        "isbn": "978-6834713763"
+      },
+      "issuedAt": "2026-02-05T14:17:31.181Z",
+      "dueDate": "2026-02-19T14:17:31.181Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.050Z",
+      "updatedAt": "2026-02-05T16:42:41.050Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c3d",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4bd0",
+        "name": "Charles Gonzalez",
+        "email": "charles.gonzalez4228@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35fdd",
+        "title": "Introduction to AI / ML 184",
+        "author": "Douglas Crockford",
+        "isbn": "978-6350934289"
+      },
+      "issuedAt": "2025-12-19T15:45:26.561Z",
+      "dueDate": "2026-01-02T15:45:26.561Z",
+      "returnedAt": "2025-12-28T13:25:49.667Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.050Z",
+      "updatedAt": "2026-02-05T16:42:41.050Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c3e",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4bfc",
+        "name": "James Davis",
+        "email": "james.davis909@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad3601a",
+        "title": "Mastering Management 245",
+        "author": "Donald Knuth",
+        "isbn": "978-133108748"
+      },
+      "issuedAt": "2025-12-05T04:03:49.226Z",
+      "dueDate": "2025-12-19T04:03:49.226Z",
+      "returnedAt": "2025-12-22T04:03:49.226Z",
+      "fineAmount": 15,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.050Z",
+      "updatedAt": "2026-02-05T16:42:41.050Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c3f",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4bd5",
+        "name": "Lisa Gonzalez",
+        "email": "lisa.gonzalez513@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad36055",
+        "title": "Theoretical Computer Science 304",
+        "author": "Grace Hopper",
+        "isbn": "978-691409478"
+      },
+      "issuedAt": "2026-01-02T15:43:06.972Z",
+      "dueDate": "2026-01-16T15:43:06.972Z",
+      "returnedAt": "2026-01-15T16:41:17.910Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.050Z",
+      "updatedAt": "2026-02-05T16:42:41.050Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c40",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4bd5",
+        "name": "Lisa Gonzalez",
+        "email": "lisa.gonzalez513@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad36090",
+        "title": "Applied History 363",
+        "author": "Kyle Simpson",
+        "isbn": "978-2079878532"
+      },
+      "issuedAt": "2025-12-06T12:47:56.694Z",
+      "dueDate": "2025-12-20T12:47:56.694Z",
+      "returnedAt": "2025-12-27T12:47:56.694Z",
+      "fineAmount": 35,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.050Z",
+      "updatedAt": "2026-02-05T16:42:41.050Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c41",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b77",
+        "name": "Joseph Gonzalez",
+        "email": "joseph.gonzalez7791@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35fc3",
+        "title": "Modern AI / ML 158",
+        "author": "Linus Torvalds",
+        "isbn": "978-7664536309"
+      },
+      "issuedAt": "2026-01-19T20:20:42.101Z",
+      "dueDate": "2026-02-02T20:20:42.101Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c42",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b77",
+        "name": "Joseph Gonzalez",
+        "email": "joseph.gonzalez7791@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad360b7",
+        "title": "Essential Electrical 402",
+        "author": "Douglas Crockford",
+        "isbn": "978-8954699368"
+      },
+      "issuedAt": "2025-12-30T08:18:58.059Z",
+      "dueDate": "2026-01-13T08:18:58.059Z",
+      "returnedAt": "2026-01-11T23:06:50.128Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c43",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b77",
+        "name": "Joseph Gonzalez",
+        "email": "joseph.gonzalez7791@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35faf",
+        "title": "Mastering Civil 138",
+        "author": "Kyle Simpson",
+        "isbn": "978-409989309"
+      },
+      "issuedAt": "2025-11-13T01:54:56.021Z",
+      "dueDate": "2025-11-27T01:54:56.021Z",
+      "returnedAt": "2025-11-21T18:17:29.290Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c44",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4c0d",
+        "name": "Daniel Jones",
+        "email": "daniel.jones1202@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad36114",
+        "title": "Essential Civil 495",
+        "author": "Linus Torvalds",
+        "isbn": "978-3766877905"
+      },
+      "issuedAt": "2026-01-25T05:33:47.180Z",
+      "dueDate": "2026-02-08T05:33:47.180Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c45",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b6c",
+        "name": "Charles Brown",
+        "email": "charles.brown8749@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad360c0",
+        "title": "Mastering Computer Science 411",
+        "author": "Robert C. Martin",
+        "isbn": "978-4357770236"
+      },
+      "issuedAt": "2026-01-25T18:35:19.050Z",
+      "dueDate": "2026-02-08T18:35:19.050Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c46",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4c01",
+        "name": "Betty Moore",
+        "email": "betty.moore2752@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35f53",
+        "title": "Fundamentals of Fiction 46",
+        "author": "Margaret Hamilton",
+        "isbn": "978-5915309383"
+      },
+      "issuedAt": "2026-01-28T13:00:13.167Z",
+      "dueDate": "2026-02-11T13:00:13.167Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c47",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4c01",
+        "name": "Betty Moore",
+        "email": "betty.moore2752@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad36035",
+        "title": "Fundamentals of Electrical 272",
+        "author": "Robert C. Martin",
+        "isbn": "978-790773811"
+      },
+      "issuedAt": "2025-11-09T00:02:23.791Z",
+      "dueDate": "2025-11-23T00:02:23.791Z",
+      "returnedAt": "2025-11-19T15:22:10.985Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c48",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4c01",
+        "name": "Betty Moore",
+        "email": "betty.moore2752@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad36057",
+        "title": "Classic Computer Science 306",
+        "author": "Andrew Ng",
+        "isbn": "978-1806541786"
+      },
+      "issuedAt": "2026-01-02T15:46:36.941Z",
+      "dueDate": "2026-01-16T15:46:36.941Z",
+      "returnedAt": "2026-01-09T09:16:10.267Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c49",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b8f",
+        "name": "Donald Miller",
+        "email": "donald.miller9931@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35f74",
+        "title": "Modern AI / ML 79",
+        "author": "Margaret Hamilton",
+        "isbn": "978-1597352696"
+      },
+      "issuedAt": "2026-01-24T01:32:42.462Z",
+      "dueDate": "2026-02-07T01:32:42.462Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c4a",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4be4",
+        "name": "Joseph Johnson",
+        "email": "joseph.johnson6@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35f62",
+        "title": "Introduction to Science 61",
+        "author": "Kyle Simpson",
+        "isbn": "978-6490080009"
+      },
+      "issuedAt": "2026-01-30T05:17:46.694Z",
+      "dueDate": "2026-02-13T05:17:46.694Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c4b",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4bc5",
+        "name": "Mary Williams",
+        "email": "mary.williams5511@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35ff0",
+        "title": "Fundamentals of Mathematics 203",
+        "author": "Grace Hopper",
+        "isbn": "978-3459712067"
+      },
+      "issuedAt": "2026-01-26T10:40:49.311Z",
+      "dueDate": "2026-02-09T10:40:49.311Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c4c",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4be6",
+        "name": "Sandra Anderson",
+        "email": "sandra.anderson1309@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad36012",
+        "title": "Mastering Electrical 237",
+        "author": "Grace Hopper",
+        "isbn": "978-2494742098"
+      },
+      "issuedAt": "2026-01-24T01:33:35.221Z",
+      "dueDate": "2026-02-07T01:33:35.221Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c4d",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4be6",
+        "name": "Sandra Anderson",
+        "email": "sandra.anderson1309@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35f2f",
+        "title": "Fundamentals of History 10",
+        "author": "Grace Hopper",
+        "isbn": "978-9707444300"
+      },
+      "issuedAt": "2025-12-26T07:35:29.543Z",
+      "dueDate": "2026-01-09T07:35:29.543Z",
+      "returnedAt": "2026-01-02T03:29:52.438Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c4e",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b9e",
+        "name": "Margaret Smith",
+        "email": "margaret.smith2007@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad36105",
+        "title": "Advanced Electrical 480",
+        "author": "Donald Knuth",
+        "isbn": "978-9673880948"
+      },
+      "issuedAt": "2026-02-03T19:35:15.149Z",
+      "dueDate": "2026-02-17T19:35:15.149Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c4f",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4bae",
+        "name": "Patricia Brown",
+        "email": "patricia.brown9394@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35fbd",
+        "title": "Mastering Fiction 152",
+        "author": "Kyle Simpson",
+        "isbn": "978-5289271384"
+      },
+      "issuedAt": "2025-12-02T04:52:15.529Z",
+      "dueDate": "2025-12-16T04:52:15.529Z",
+      "returnedAt": "2025-12-13T08:31:08.594Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c50",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4bae",
+        "name": "Patricia Brown",
+        "email": "patricia.brown9394@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35f8e",
+        "title": "Mastering Mathematics 105",
+        "author": "Ada Lovelace",
+        "isbn": "978-7469693258"
+      },
+      "issuedAt": "2026-01-01T12:27:13.159Z",
+      "dueDate": "2026-01-15T12:27:13.159Z",
+      "returnedAt": "2026-01-17T12:27:13.159Z",
+      "fineAmount": 10,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c51",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4bae",
+        "name": "Patricia Brown",
+        "email": "patricia.brown9394@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad360ff",
+        "title": "Advanced Mechanical 474",
+        "author": "Robert C. Martin",
+        "isbn": "978-909543071"
+      },
+      "issuedAt": "2025-12-25T14:00:01.375Z",
+      "dueDate": "2026-01-08T14:00:01.375Z",
+      "returnedAt": "2026-01-06T17:51:47.123Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c52",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b8b",
+        "name": "Richard Lopez",
+        "email": "richard.lopez6149@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad36031",
+        "title": "Classic Philosophy 268",
+        "author": "Alan Turing",
+        "isbn": "978-527734354"
+      },
+      "issuedAt": "2026-01-25T06:31:24.925Z",
+      "dueDate": "2026-02-08T06:31:24.925Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c53",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b8b",
+        "name": "Richard Lopez",
+        "email": "richard.lopez6149@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad360fd",
+        "title": "Advanced Fiction 472",
+        "author": "Robert C. Martin",
+        "isbn": "978-5788715619"
+      },
+      "issuedAt": "2026-02-02T15:55:43.309Z",
+      "dueDate": "2026-02-16T15:55:43.309Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c54",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b8b",
+        "name": "Richard Lopez",
+        "email": "richard.lopez6149@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad36059",
+        "title": "Classic Management 308",
+        "author": "Robert C. Martin",
+        "isbn": "978-5142778022"
+      },
+      "issuedAt": "2026-01-27T00:24:08.689Z",
+      "dueDate": "2026-02-10T00:24:08.689Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c55",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b90",
+        "name": "William Miller",
+        "email": "william.miller6043@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad3605e",
+        "title": "Essential Computer Science 313",
+        "author": "Douglas Crockford",
+        "isbn": "978-8541140664"
+      },
+      "issuedAt": "2025-11-20T07:34:26.776Z",
+      "dueDate": "2025-12-04T07:34:26.776Z",
+      "returnedAt": "2025-12-01T15:29:04.949Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c56",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b90",
+        "name": "William Miller",
+        "email": "william.miller6043@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad36099",
+        "title": "Fundamentals of History 372",
+        "author": "Kyle Simpson",
+        "isbn": "978-4394173706"
+      },
+      "issuedAt": "2026-01-29T15:56:24.883Z",
+      "dueDate": "2026-02-12T15:56:24.883Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c57",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4bdf",
+        "name": "Michael Martin",
+        "email": "michael.martin9550@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35f7e",
+        "title": "Essential Fiction 89",
+        "author": "Margaret Hamilton",
+        "isbn": "978-8586695873"
+      },
+      "issuedAt": "2025-12-21T02:02:31.812Z",
+      "dueDate": "2026-01-04T02:02:31.812Z",
+      "returnedAt": "2026-01-10T02:02:31.812Z",
+      "fineAmount": 30,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c58",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4bdf",
+        "name": "Michael Martin",
+        "email": "michael.martin9550@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad36079",
+        "title": "Fundamentals of AI / ML 340",
+        "author": "Grace Hopper",
+        "isbn": "978-9880517726"
+      },
+      "issuedAt": "2026-01-26T17:02:32.027Z",
+      "dueDate": "2026-02-09T17:02:32.027Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c59",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4bdf",
+        "name": "Michael Martin",
+        "email": "michael.martin9550@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35f95",
+        "title": "Introduction to Science 112",
+        "author": "Robert C. Martin",
+        "isbn": "978-7913185155"
+      },
+      "issuedAt": "2025-11-12T04:12:48.160Z",
+      "dueDate": "2025-11-26T04:12:48.160Z",
+      "returnedAt": "2025-11-24T15:38:53.408Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.051Z",
+      "updatedAt": "2026-02-05T16:42:41.051Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c5a",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b78",
+        "name": "Sarah Wilson",
+        "email": "sarah.wilson4108@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad36037",
+        "title": "The Art of Science 274",
+        "author": "Margaret Hamilton",
+        "isbn": "978-3107046255"
+      },
+      "issuedAt": "2026-01-05T08:37:31.744Z",
+      "dueDate": "2026-01-19T08:37:31.744Z",
+      "returnedAt": "2026-01-16T12:00:42.347Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.052Z",
+      "updatedAt": "2026-02-05T16:42:41.052Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c5b",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b78",
+        "name": "Sarah Wilson",
+        "email": "sarah.wilson4108@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35fca",
+        "title": "The Art of Electrical 165",
+        "author": "Alan Turing",
+        "isbn": "978-5465139956"
+      },
+      "issuedAt": "2025-12-08T17:48:54.075Z",
+      "dueDate": "2025-12-22T17:48:54.075Z",
+      "returnedAt": "2025-12-25T17:48:54.075Z",
+      "fineAmount": 15,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.052Z",
+      "updatedAt": "2026-02-05T16:42:41.052Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c5c",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4c25",
+        "name": "Richard Rodriguez",
+        "email": "richard.rodriguez4287@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad3606e",
+        "title": "Essential History 329",
+        "author": "Linus Torvalds",
+        "isbn": "978-4411685747"
+      },
+      "issuedAt": "2025-11-23T22:23:04.815Z",
+      "dueDate": "2025-12-07T22:23:04.815Z",
+      "returnedAt": "2025-12-06T23:38:34.033Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.052Z",
+      "updatedAt": "2026-02-05T16:42:41.052Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c5d",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4c25",
+        "name": "Richard Rodriguez",
+        "email": "richard.rodriguez4287@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35f56",
+        "title": "Essential History 49",
+        "author": "Robert C. Martin",
+        "isbn": "978-7501894256"
+      },
+      "issuedAt": "2025-12-29T19:59:15.395Z",
+      "dueDate": "2026-01-12T19:59:15.395Z",
+      "returnedAt": "2025-12-30T22:24:14.980Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.052Z",
+      "updatedAt": "2026-02-05T16:42:41.052Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c5e",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4c25",
+        "name": "Richard Rodriguez",
+        "email": "richard.rodriguez4287@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35f3b",
+        "title": "Advanced Computer Science 22",
+        "author": "Alan Turing",
+        "isbn": "978-1990461235"
+      },
+      "issuedAt": "2026-01-28T20:47:42.259Z",
+      "dueDate": "2026-02-11T20:47:42.259Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.052Z",
+      "updatedAt": "2026-02-05T16:42:41.052Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c5f",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b86",
+        "name": "Elizabeth Wilson",
+        "email": "elizabeth.wilson2199@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35f71",
+        "title": "Advanced Management 76",
+        "author": "Ada Lovelace",
+        "isbn": "978-3488476237"
+      },
+      "issuedAt": "2025-11-27T13:07:06.293Z",
+      "dueDate": "2025-12-11T13:07:06.293Z",
+      "returnedAt": "2025-12-16T13:07:06.293Z",
+      "fineAmount": 25,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.052Z",
+      "updatedAt": "2026-02-05T16:42:41.052Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c60",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b86",
+        "name": "Elizabeth Wilson",
+        "email": "elizabeth.wilson2199@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad36082",
+        "title": "Essential Civil 349",
+        "author": "Linus Torvalds",
+        "isbn": "978-7335381056"
+      },
+      "issuedAt": "2026-01-30T23:58:01.146Z",
+      "dueDate": "2026-02-13T23:58:01.146Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.052Z",
+      "updatedAt": "2026-02-05T16:42:41.052Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c61",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4bc0",
+        "name": "Charles Garcia",
+        "email": "charles.garcia1329@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad36078",
+        "title": "Mastering Mechanical 339",
+        "author": "Douglas Crockford",
+        "isbn": "978-9916468111"
+      },
+      "issuedAt": "2026-01-22T00:07:20.690Z",
+      "dueDate": "2026-02-05T00:07:20.690Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.052Z",
+      "updatedAt": "2026-02-05T16:42:41.052Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c62",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4c1a",
+        "name": "Lisa Martin",
+        "email": "lisa.martin9300@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad360fb",
+        "title": "Applied Mathematics 470",
+        "author": "Ada Lovelace",
+        "isbn": "978-4711561608"
+      },
+      "issuedAt": "2026-01-27T11:23:45.753Z",
+      "dueDate": "2026-02-10T11:23:45.753Z",
+      "returnedAt": null,
+      "fineAmount": 0,
+      "status": "BORROWED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.052Z",
+      "updatedAt": "2026-02-05T16:42:41.052Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c63",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b75",
+        "name": "Anthony Lopez",
+        "email": "anthony.lopez6896@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad36062",
+        "title": "The Art of Fiction 317",
+        "author": "Linus Torvalds",
+        "isbn": "978-8207879951"
+      },
+      "issuedAt": "2026-01-04T15:18:43.665Z",
+      "dueDate": "2026-01-18T15:18:43.665Z",
+      "returnedAt": "2026-01-24T15:18:43.665Z",
+      "fineAmount": 30,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.052Z",
+      "updatedAt": "2026-02-05T16:42:41.052Z"
+    },
+    {
+      "_id": "6984c8807934cf6cc49c4c64",
+      "studentId": {
+        "_id": "6984c8807934cf6cc49c4b6a",
+        "name": "Richard Johnson",
+        "email": "richard.johnson6481@university.edu"
+      },
+      "bookId": {
+        "_id": "69397d72dc9a86615ad35f5a",
+        "title": "Fundamentals of Science 53",
+        "author": "Douglas Crockford",
+        "isbn": "978-9830897866"
+      },
+      "issuedAt": "2025-11-10T18:17:18.569Z",
+      "dueDate": "2025-11-24T18:17:18.569Z",
+      "returnedAt": "2025-11-15T15:59:04.978Z",
+      "fineAmount": 0,
+      "status": "RETURNED",
+      "renewalCount": 0,
+      "demo": false,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:42:41.052Z",
+      "updatedAt": "2026-02-05T16:42:41.052Z"
+    }
+  ],
+  "reservations": [
+    {
+      "_id": "6978c399ba14f862e24f7962",
+      "book": {
+        "_id": "69397d72dc9a86615ad3603a",
+        "title": "Advanced Civil 277",
+        "author": "Robert C. Martin",
+        "isbn": "978-5377147823"
+      },
+      "student": null,
+      "status": "Active",
+      "queuePosition": 1,
+      "expiryDate": "2026-01-30T00:00:00.000Z",
+      "timestamp": "2026-01-27T13:54:33.298Z",
+      "createdAt": "2026-01-27T13:54:33.345Z",
+      "updatedAt": "2026-01-27T13:54:33.345Z",
+      "__v": 0
+    },
+    {
+      "_id": "697995247d424c6ab17185d1",
+      "book": {
+        "_id": "69397d72dc9a86615ad35f42",
+        "title": "Advanced AI / ML 29",
+        "author": "Donald Knuth",
+        "isbn": "978-8271076151"
+      },
+      "student": null,
+      "status": "Active",
+      "queuePosition": 1,
+      "expiryDate": "2026-01-31T00:00:00.000Z",
+      "timestamp": "2026-01-28T04:48:36.839Z",
+      "createdAt": "2026-01-28T04:48:36.911Z",
+      "updatedAt": "2026-01-28T04:48:36.911Z",
+      "__v": 0
+    }
+  ],
+  "auditLogs": [
+    {
+      "_id": "6984c8817934cf6cc49c4e11",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad360ae",
+      "studentId": "6984c8807934cf6cc49c4bd0",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-02-05T14:17:31.181Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e50",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad36044",
+      "studentId": "6984c8807934cf6cc49c4b6a",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-02-05T05:08:22.179Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4ec4",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad35f7b",
+      "studentId": "6984c8807934cf6cc49c4bff",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-02-05T03:11:51.359Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4eb5",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad360d1",
+      "studentId": "6984c8807934cf6cc49c4c17",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-02-04T18:31:48.732Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4eef",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad35fe8",
+      "studentId": "6984c8807934cf6cc49c4c19",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-02-04T08:52:21.498Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e2c",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad36105",
+      "studentId": "6984c8807934cf6cc49c4b9e",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-02-03T19:35:15.149Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e5c",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad36059",
+      "studentId": "6984c8807934cf6cc49c4b9c",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-02-03T18:41:10.883Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4ea6",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad35fb6",
+      "studentId": "6984c8807934cf6cc49c4c2a",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-02-03T16:01:20.833Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4eae",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad35fa8",
+      "studentId": "6984c8807934cf6cc49c4c2d",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-02-02T22:52:27.323Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e34",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad360fd",
+      "studentId": "6984c8807934cf6cc49c4b8b",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-02-02T15:55:43.309Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4ead",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad360db",
+      "studentId": "6984c8807934cf6cc49c4bd8",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-02-02T15:45:25.550Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e61",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad35f42",
+      "studentId": "6984c8807934cf6cc49c4bf5",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-02-02T04:58:49.188Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e0d",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad35fcb",
+      "studentId": "6984c8807934cf6cc49c4bb8",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-02-01T20:56:40.116Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4edb",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad3604b",
+      "studentId": "6984c8807934cf6cc49c4b73",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-02-01T19:57:31.737Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4ed8",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad36098",
+      "studentId": "6984c8807934cf6cc49c4b73",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-31T11:05:17.198Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e49",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad36082",
+      "studentId": "6984c8807934cf6cc49c4b86",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-30T23:58:01.146Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4ed0",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad3608e",
+      "studentId": "6984c8807934cf6cc49c4b82",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-30T13:29:28.318Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4ed7",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad35fbf",
+      "studentId": "6984c8807934cf6cc49c4b79",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-30T10:17:07.343Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e69",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad360db",
+      "studentId": "6984c8807934cf6cc49c4bd7",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-30T07:34:37.872Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e27",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad35f62",
+      "studentId": "6984c8807934cf6cc49c4be4",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-30T05:17:46.694Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e97",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad35f27",
+      "studentId": "6984c8807934cf6cc49c4bed",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-29T20:03:07.997Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e38",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad36099",
+      "studentId": "6984c8807934cf6cc49c4b90",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-29T15:56:24.883Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e8a",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad3606c",
+      "studentId": "6984c8807934cf6cc49c4b7f",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-29T11:16:02.498Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4ef6",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad36072",
+      "studentId": "6984c8807934cf6cc49c4c29",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-29T08:02:09.986Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e46",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad35f3b",
+      "studentId": "6984c8807934cf6cc49c4c25",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-28T20:47:42.259Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e7a",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad35f9f",
+      "studentId": "6984c8807934cf6cc49c4b8e",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-28T14:37:33.845Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e21",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad35f53",
+      "studentId": "6984c8807934cf6cc49c4c01",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-28T13:00:13.167Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e4b",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad360fb",
+      "studentId": "6984c8807934cf6cc49c4c1a",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-27T11:23:45.753Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e66",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad360f7",
+      "studentId": "6984c8807934cf6cc49c4c26",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-27T10:11:15.430Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4edc",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad35fff",
+      "studentId": "6984c8807934cf6cc49c4bfa",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-27T05:01:58.849Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e35",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad36059",
+      "studentId": "6984c8807934cf6cc49c4b8b",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-27T00:24:08.689Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e55",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad3604e",
+      "studentId": "6984c8807934cf6cc49c4bb0",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-26T17:54:31.325Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e3b",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad36079",
+      "studentId": "6984c8807934cf6cc49c4bdf",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-26T17:02:32.027Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e28",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad35ff0",
+      "studentId": "6984c8807934cf6cc49c4bc5",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-26T10:40:49.311Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4eb6",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad360d2",
+      "studentId": "6984c8807934cf6cc49c4ba4",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-26T00:23:00.701Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e20",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad360c0",
+      "studentId": "6984c8807934cf6cc49c4b6c",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-25T18:35:19.050Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4ea3",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad3601b",
+      "studentId": "6984c8807934cf6cc49c4b99",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-25T14:50:29.298Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e33",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad36031",
+      "studentId": "6984c8807934cf6cc49c4b8b",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-25T06:31:24.925Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e56",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad35fe4",
+      "studentId": "6984c8807934cf6cc49c4bb0",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-25T05:37:43.886Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e1f",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad36114",
+      "studentId": "6984c8807934cf6cc49c4c0d",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-25T05:33:47.180Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4eb1",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad35f8d",
+      "studentId": "6984c8807934cf6cc49c4c2d",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-25T02:05:26.534Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e4d",
+      "action": "RETURN",
+      "bookId": "69397d72dc9a86615ad36062",
+      "studentId": "6984c8807934cf6cc49c4b75",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-24T15:18:43.665Z",
+      "metadata": {
+        "fine": 30,
+        "info": "Seeded Return"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e7b",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad360fd",
+      "studentId": "6984c8807934cf6cc49c4b8e",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-24T08:04:53.560Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e29",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad36012",
+      "studentId": "6984c8807934cf6cc49c4be6",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-24T01:33:35.221Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e26",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad35f74",
+      "studentId": "6984c8807934cf6cc49c4b8f",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-24T01:32:42.462Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e79",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad36041",
+      "studentId": "6984c8807934cf6cc49c4ba5",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-23T08:39:36.455Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e59",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad35f4c",
+      "studentId": "6984c8807934cf6cc49c4c0e",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-22T21:32:45.892Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e6e",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad3610b",
+      "studentId": "6984c8807934cf6cc49c4c0b",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-22T11:16:41.947Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4e4a",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad36078",
+      "studentId": "6984c8807934cf6cc49c4bc0",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-22T00:07:20.690Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    },
+    {
+      "_id": "6984c8817934cf6cc49c4eb2",
+      "action": "BORROW",
+      "bookId": "69397d72dc9a86615ad36109",
+      "studentId": "6984c8807934cf6cc49c4c17",
+      "adminId": "6984c8817934cf6cc49c4e02",
+      "timestamp": "2026-01-21T15:35:32.887Z",
+      "metadata": {
+        "info": "Seeded Transaction"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "SeedScript/1.0",
+      "__v": 0
+    }
+  ],
+  "fines": [],
+  "transactions": [
+    {
+      "_id": "6984c8956797c0264d6913d8",
+      "book": {
+        "_id": "69397d72dc9a86615ad360da",
+        "title": "Introduction to Mechanical 437",
+        "author": "Kyle Simpson"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b74",
+        "name": "Susan Miller",
+        "email": "susan.miller3038@university.edu"
+      },
+      "issueDate": "2026-01-25T16:43:01.599Z",
+      "dueDate": "2026-02-08T16:43:01.599Z",
+      "returnDate": "2026-02-09T17:49:00.141Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.042Z",
+      "updatedAt": "2026-02-05T16:43:02.042Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913d9",
+      "book": {
+        "_id": "69397d72dc9a86615ad360da",
+        "title": "Introduction to Mechanical 437",
+        "author": "Kyle Simpson"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b9a",
+        "name": "John Taylor",
+        "email": "john.taylor8515@university.edu"
+      },
+      "issueDate": "2026-01-31T16:43:01.606Z",
+      "dueDate": "2026-02-14T16:43:01.606Z",
+      "returnDate": "2026-02-19T06:32:59.369Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.042Z",
+      "updatedAt": "2026-02-05T16:43:02.042Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913da",
+      "book": {
+        "_id": "69397d72dc9a86615ad360da",
+        "title": "Introduction to Mechanical 437",
+        "author": "Kyle Simpson"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b84",
+        "name": "Barbara Moore",
+        "email": "barbara.moore629@university.edu"
+      },
+      "issueDate": "2025-12-26T16:43:01.606Z",
+      "dueDate": "2026-01-09T16:43:01.606Z",
+      "returnDate": null,
+      "status": "Issued",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.042Z",
+      "updatedAt": "2026-02-05T16:43:02.042Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913db",
+      "book": {
+        "_id": "69397d72dc9a86615ad360da",
+        "title": "Introduction to Mechanical 437",
+        "author": "Kyle Simpson"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b8c",
+        "name": "Daniel Johnson",
+        "email": "daniel.johnson8810@university.edu"
+      },
+      "issueDate": "2026-01-22T16:43:01.606Z",
+      "dueDate": "2026-02-05T16:43:01.606Z",
+      "returnDate": "2026-02-02T07:02:42.266Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.043Z",
+      "updatedAt": "2026-02-05T16:43:02.043Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913dc",
+      "book": {
+        "_id": "69397d72dc9a86615ad360da",
+        "title": "Introduction to Mechanical 437",
+        "author": "Kyle Simpson"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b7e",
+        "name": "Susan Davis",
+        "email": "susan.davis617@university.edu"
+      },
+      "issueDate": "2026-01-26T16:43:01.606Z",
+      "dueDate": "2026-02-09T16:43:01.606Z",
+      "returnDate": null,
+      "status": "Issued",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.043Z",
+      "updatedAt": "2026-02-05T16:43:02.043Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913dd",
+      "book": {
+        "_id": "69397d72dc9a86615ad360da",
+        "title": "Introduction to Mechanical 437",
+        "author": "Kyle Simpson"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b88",
+        "name": "Sandra Miller",
+        "email": "sandra.miller7085@university.edu"
+      },
+      "issueDate": "2026-01-05T16:43:01.606Z",
+      "dueDate": "2026-01-19T16:43:01.606Z",
+      "returnDate": "2026-01-24T14:01:21.556Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.043Z",
+      "updatedAt": "2026-02-05T16:43:02.043Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913de",
+      "book": {
+        "_id": "69397d72dc9a86615ad360da",
+        "title": "Introduction to Mechanical 437",
+        "author": "Kyle Simpson"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b88",
+        "name": "Sandra Miller",
+        "email": "sandra.miller7085@university.edu"
+      },
+      "issueDate": "2026-01-17T16:43:01.606Z",
+      "dueDate": "2026-01-31T16:43:01.606Z",
+      "returnDate": "2026-01-31T02:39:21.720Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.043Z",
+      "updatedAt": "2026-02-05T16:43:02.043Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913df",
+      "book": {
+        "_id": "69397d72dc9a86615ad360da",
+        "title": "Introduction to Mechanical 437",
+        "author": "Kyle Simpson"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b70",
+        "name": "Michael Jackson",
+        "email": "michael.jackson9128@university.edu"
+      },
+      "issueDate": "2026-01-10T16:43:01.606Z",
+      "dueDate": "2026-01-24T16:43:01.606Z",
+      "returnDate": "2026-01-27T14:55:12.201Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.043Z",
+      "updatedAt": "2026-02-05T16:43:02.043Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913e0",
+      "book": {
+        "_id": "69397d72dc9a86615ad360da",
+        "title": "Introduction to Mechanical 437",
+        "author": "Kyle Simpson"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b8e",
+        "name": "Donald Hernandez",
+        "email": "donald.hernandez3780@university.edu"
+      },
+      "issueDate": "2026-01-21T16:43:01.606Z",
+      "dueDate": "2026-02-04T16:43:01.606Z",
+      "returnDate": "2026-02-03T15:23:58.902Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.043Z",
+      "updatedAt": "2026-02-05T16:43:02.043Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913e1",
+      "book": {
+        "_id": "69397d72dc9a86615ad360da",
+        "title": "Introduction to Mechanical 437",
+        "author": "Kyle Simpson"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b96",
+        "name": "Richard Martin",
+        "email": "richard.martin5160@university.edu"
+      },
+      "issueDate": "2025-12-22T16:43:01.606Z",
+      "dueDate": "2026-01-05T16:43:01.606Z",
+      "returnDate": null,
+      "status": "Issued",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.043Z",
+      "updatedAt": "2026-02-05T16:43:02.043Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913e2",
+      "book": {
+        "_id": "69397d72dc9a86615ad360da",
+        "title": "Introduction to Mechanical 437",
+        "author": "Kyle Simpson"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b82",
+        "name": "Michael Miller",
+        "email": "michael.miller1128@university.edu"
+      },
+      "issueDate": "2025-12-08T16:43:01.606Z",
+      "dueDate": "2025-12-22T16:43:01.606Z",
+      "returnDate": "2025-12-23T21:47:40.579Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.043Z",
+      "updatedAt": "2026-02-05T16:43:02.043Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913e3",
+      "book": {
+        "_id": "69397d72dc9a86615ad360da",
+        "title": "Introduction to Mechanical 437",
+        "author": "Kyle Simpson"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b9a",
+        "name": "John Taylor",
+        "email": "john.taylor8515@university.edu"
+      },
+      "issueDate": "2026-01-26T16:43:01.606Z",
+      "dueDate": "2026-02-09T16:43:01.606Z",
+      "returnDate": "2026-02-06T00:51:52.856Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.043Z",
+      "updatedAt": "2026-02-05T16:43:02.043Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913e4",
+      "book": {
+        "_id": "69397d72dc9a86615ad360da",
+        "title": "Introduction to Mechanical 437",
+        "author": "Kyle Simpson"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b74",
+        "name": "Susan Miller",
+        "email": "susan.miller3038@university.edu"
+      },
+      "issueDate": "2026-02-02T16:43:01.606Z",
+      "dueDate": "2026-02-16T16:43:01.606Z",
+      "returnDate": null,
+      "status": "Issued",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.043Z",
+      "updatedAt": "2026-02-05T16:43:02.043Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913e5",
+      "book": {
+        "_id": "69397d72dc9a86615ad360c3",
+        "title": "Modern Civil 414",
+        "author": "Alan Turing"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b8f",
+        "name": "Donald Miller",
+        "email": "donald.miller9931@university.edu"
+      },
+      "issueDate": "2026-01-17T16:43:01.606Z",
+      "dueDate": "2026-01-31T16:43:01.606Z",
+      "returnDate": "2026-01-28T07:17:17.527Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.043Z",
+      "updatedAt": "2026-02-05T16:43:02.043Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913e6",
+      "book": {
+        "_id": "69397d72dc9a86615ad360c3",
+        "title": "Modern Civil 414",
+        "author": "Alan Turing"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b6d",
+        "name": "Karen Brown",
+        "email": "karen.brown5049@university.edu"
+      },
+      "issueDate": "2026-01-11T16:43:01.606Z",
+      "dueDate": "2026-01-25T16:43:01.606Z",
+      "returnDate": "2026-01-24T00:18:50.532Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.043Z",
+      "updatedAt": "2026-02-05T16:43:02.043Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913e7",
+      "book": {
+        "_id": "69397d72dc9a86615ad360c3",
+        "title": "Modern Civil 414",
+        "author": "Alan Turing"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b6c",
+        "name": "Charles Brown",
+        "email": "charles.brown8749@university.edu"
+      },
+      "issueDate": "2026-01-17T16:43:01.606Z",
+      "dueDate": "2026-01-31T16:43:01.606Z",
+      "returnDate": "2026-02-01T23:45:19.180Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.043Z",
+      "updatedAt": "2026-02-05T16:43:02.043Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913e8",
+      "book": {
+        "_id": "69397d72dc9a86615ad360c3",
+        "title": "Modern Civil 414",
+        "author": "Alan Turing"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b98",
+        "name": "Robert Martin",
+        "email": "robert.martin1378@university.edu"
+      },
+      "issueDate": "2026-01-29T16:43:01.606Z",
+      "dueDate": "2026-02-12T16:43:01.606Z",
+      "returnDate": null,
+      "status": "Issued",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.043Z",
+      "updatedAt": "2026-02-05T16:43:02.043Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913e9",
+      "book": {
+        "_id": "69397d72dc9a86615ad360c3",
+        "title": "Modern Civil 414",
+        "author": "Alan Turing"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b7c",
+        "name": "Margaret Garcia",
+        "email": "margaret.garcia8467@university.edu"
+      },
+      "issueDate": "2026-01-25T16:43:01.606Z",
+      "dueDate": "2026-02-08T16:43:01.606Z",
+      "returnDate": "2026-02-11T17:42:18.667Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.043Z",
+      "updatedAt": "2026-02-05T16:43:02.043Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913ea",
+      "book": {
+        "_id": "69397d72dc9a86615ad360c3",
+        "title": "Modern Civil 414",
+        "author": "Alan Turing"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b6b",
+        "name": "Karen Wilson",
+        "email": "karen.wilson8753@university.edu"
+      },
+      "issueDate": "2025-12-22T16:43:01.606Z",
+      "dueDate": "2026-01-05T16:43:01.606Z",
+      "returnDate": "2026-01-08T11:39:56.235Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.043Z",
+      "updatedAt": "2026-02-05T16:43:02.043Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913eb",
+      "book": {
+        "_id": "69397d72dc9a86615ad360cb",
+        "title": "Essential Philosophy 422",
+        "author": "Alan Turing"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b84",
+        "name": "Barbara Moore",
+        "email": "barbara.moore629@university.edu"
+      },
+      "issueDate": "2025-12-15T16:43:01.606Z",
+      "dueDate": "2025-12-29T16:43:01.606Z",
+      "returnDate": "2025-12-30T20:44:33.548Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.043Z",
+      "updatedAt": "2026-02-05T16:43:02.043Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913ec",
+      "book": {
+        "_id": "69397d72dc9a86615ad360cb",
+        "title": "Essential Philosophy 422",
+        "author": "Alan Turing"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b8a",
+        "name": "Thomas Wilson",
+        "email": "thomas.wilson8564@university.edu"
+      },
+      "issueDate": "2026-01-14T16:43:01.606Z",
+      "dueDate": "2026-01-28T16:43:01.606Z",
+      "returnDate": "2026-01-24T02:15:28.190Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.043Z",
+      "updatedAt": "2026-02-05T16:43:02.043Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913ed",
+      "book": {
+        "_id": "69397d72dc9a86615ad360cb",
+        "title": "Essential Philosophy 422",
+        "author": "Alan Turing"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b96",
+        "name": "Richard Martin",
+        "email": "richard.martin5160@university.edu"
+      },
+      "issueDate": "2026-01-29T16:43:01.606Z",
+      "dueDate": "2026-02-12T16:43:01.606Z",
+      "returnDate": "2026-02-12T15:42:36.919Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913ee",
+      "book": {
+        "_id": "69397d72dc9a86615ad360cb",
+        "title": "Essential Philosophy 422",
+        "author": "Alan Turing"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b77",
+        "name": "Joseph Gonzalez",
+        "email": "joseph.gonzalez7791@university.edu"
+      },
+      "issueDate": "2025-12-23T16:43:01.606Z",
+      "dueDate": "2026-01-06T16:43:01.606Z",
+      "returnDate": "2026-01-07T12:29:00.000Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913ef",
+      "book": {
+        "_id": "69397d72dc9a86615ad360cb",
+        "title": "Essential Philosophy 422",
+        "author": "Alan Turing"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b8d",
+        "name": "Jennifer Moore",
+        "email": "jennifer.moore6065@university.edu"
+      },
+      "issueDate": "2026-01-04T16:43:01.606Z",
+      "dueDate": "2026-01-18T16:43:01.606Z",
+      "returnDate": "2026-01-22T06:05:06.137Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913f0",
+      "book": {
+        "_id": "69397d72dc9a86615ad360cb",
+        "title": "Essential Philosophy 422",
+        "author": "Alan Turing"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b95",
+        "name": "Margaret Wilson",
+        "email": "margaret.wilson7145@university.edu"
+      },
+      "issueDate": "2026-01-21T16:43:01.606Z",
+      "dueDate": "2026-02-04T16:43:01.606Z",
+      "returnDate": "2026-02-07T00:55:19.841Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913f1",
+      "book": {
+        "_id": "69397d72dc9a86615ad360cb",
+        "title": "Essential Philosophy 422",
+        "author": "Alan Turing"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b6f",
+        "name": "Anthony Jones",
+        "email": "anthony.jones4847@university.edu"
+      },
+      "issueDate": "2025-12-13T16:43:01.606Z",
+      "dueDate": "2025-12-27T16:43:01.606Z",
+      "returnDate": "2025-12-27T00:55:24.184Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913f2",
+      "book": {
+        "_id": "69397d72dc9a86615ad360cb",
+        "title": "Essential Philosophy 422",
+        "author": "Alan Turing"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b7b",
+        "name": "Sarah Martin",
+        "email": "sarah.martin5795@university.edu"
+      },
+      "issueDate": "2025-12-23T16:43:01.606Z",
+      "dueDate": "2026-01-06T16:43:01.606Z",
+      "returnDate": "2026-01-10T20:20:25.872Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913f3",
+      "book": {
+        "_id": "69397d72dc9a86615ad360cb",
+        "title": "Essential Philosophy 422",
+        "author": "Alan Turing"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b93",
+        "name": "Christopher Martin",
+        "email": "christopher.martin808@university.edu"
+      },
+      "issueDate": "2026-01-26T16:43:01.607Z",
+      "dueDate": "2026-02-09T16:43:01.607Z",
+      "returnDate": "2026-02-06T19:53:24.407Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913f4",
+      "book": {
+        "_id": "69397d72dc9a86615ad360cb",
+        "title": "Essential Philosophy 422",
+        "author": "Alan Turing"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b6f",
+        "name": "Anthony Jones",
+        "email": "anthony.jones4847@university.edu"
+      },
+      "issueDate": "2026-01-18T16:43:01.607Z",
+      "dueDate": "2026-02-01T16:43:01.607Z",
+      "returnDate": "2026-02-04T16:46:57.500Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913f5",
+      "book": {
+        "_id": "69397d72dc9a86615ad360b1",
+        "title": "Advanced Management 396",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b71",
+        "name": "Thomas Anderson",
+        "email": "thomas.anderson3969@university.edu"
+      },
+      "issueDate": "2025-12-12T16:43:01.607Z",
+      "dueDate": "2025-12-26T16:43:01.607Z",
+      "returnDate": "2025-12-27T09:15:43.420Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913f6",
+      "book": {
+        "_id": "69397d72dc9a86615ad360b1",
+        "title": "Advanced Management 396",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b7b",
+        "name": "Sarah Martin",
+        "email": "sarah.martin5795@university.edu"
+      },
+      "issueDate": "2026-01-12T16:43:01.607Z",
+      "dueDate": "2026-01-26T16:43:01.607Z",
+      "returnDate": "2026-01-28T13:29:17.295Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913f7",
+      "book": {
+        "_id": "69397d72dc9a86615ad360b1",
+        "title": "Advanced Management 396",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b7b",
+        "name": "Sarah Martin",
+        "email": "sarah.martin5795@university.edu"
+      },
+      "issueDate": "2026-01-16T16:43:01.607Z",
+      "dueDate": "2026-01-30T16:43:01.607Z",
+      "returnDate": null,
+      "status": "Issued",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913f8",
+      "book": {
+        "_id": "69397d72dc9a86615ad360b1",
+        "title": "Advanced Management 396",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b8f",
+        "name": "Donald Miller",
+        "email": "donald.miller9931@university.edu"
+      },
+      "issueDate": "2026-01-05T16:43:01.607Z",
+      "dueDate": "2026-01-19T16:43:01.607Z",
+      "returnDate": "2026-01-16T15:17:58.118Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913f9",
+      "book": {
+        "_id": "69397d72dc9a86615ad360b1",
+        "title": "Advanced Management 396",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b97",
+        "name": "Betty Garcia",
+        "email": "betty.garcia5927@university.edu"
+      },
+      "issueDate": "2026-01-24T16:43:01.607Z",
+      "dueDate": "2026-02-07T16:43:01.607Z",
+      "returnDate": "2026-02-03T16:57:11.798Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913fa",
+      "book": {
+        "_id": "69397d72dc9a86615ad360b1",
+        "title": "Advanced Management 396",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b8c",
+        "name": "Daniel Johnson",
+        "email": "daniel.johnson8810@university.edu"
+      },
+      "issueDate": "2025-12-19T16:43:01.607Z",
+      "dueDate": "2026-01-02T16:43:01.607Z",
+      "returnDate": "2025-12-30T18:32:05.446Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913fb",
+      "book": {
+        "_id": "69397d72dc9a86615ad360b1",
+        "title": "Advanced Management 396",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b74",
+        "name": "Susan Miller",
+        "email": "susan.miller3038@university.edu"
+      },
+      "issueDate": "2026-01-01T16:43:01.607Z",
+      "dueDate": "2026-01-15T16:43:01.607Z",
+      "returnDate": "2026-01-11T01:55:22.808Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913fc",
+      "book": {
+        "_id": "69397d72dc9a86615ad360b1",
+        "title": "Advanced Management 396",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b8b",
+        "name": "Richard Lopez",
+        "email": "richard.lopez6149@university.edu"
+      },
+      "issueDate": "2025-12-20T16:43:01.607Z",
+      "dueDate": "2026-01-03T16:43:01.607Z",
+      "returnDate": null,
+      "status": "Issued",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913fd",
+      "book": {
+        "_id": "69397d72dc9a86615ad360b1",
+        "title": "Advanced Management 396",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b72",
+        "name": "William Lopez",
+        "email": "william.lopez3534@university.edu"
+      },
+      "issueDate": "2025-12-21T16:43:01.607Z",
+      "dueDate": "2026-01-04T16:43:01.607Z",
+      "returnDate": "2026-01-04T20:29:09.893Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913fe",
+      "book": {
+        "_id": "69397d72dc9a86615ad360b1",
+        "title": "Advanced Management 396",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b82",
+        "name": "Michael Miller",
+        "email": "michael.miller1128@university.edu"
+      },
+      "issueDate": "2026-02-02T16:43:01.607Z",
+      "dueDate": "2026-02-16T16:43:01.607Z",
+      "returnDate": "2026-02-12T06:51:05.259Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d6913ff",
+      "book": {
+        "_id": "69397d72dc9a86615ad360b1",
+        "title": "Advanced Management 396",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b79",
+        "name": "Daniel Gonzalez",
+        "email": "daniel.gonzalez4704@university.edu"
+      },
+      "issueDate": "2026-02-03T16:43:01.607Z",
+      "dueDate": "2026-02-17T16:43:01.607Z",
+      "returnDate": "2026-02-18T04:14:29.903Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d691400",
+      "book": {
+        "_id": "69397d72dc9a86615ad360b1",
+        "title": "Advanced Management 396",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b6c",
+        "name": "Charles Brown",
+        "email": "charles.brown8749@university.edu"
+      },
+      "issueDate": "2025-12-14T16:43:01.607Z",
+      "dueDate": "2025-12-28T16:43:01.607Z",
+      "returnDate": "2026-01-01T05:56:51.459Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.044Z",
+      "updatedAt": "2026-02-05T16:43:02.044Z"
+    },
+    {
+      "_id": "6984c8956797c0264d691401",
+      "book": {
+        "_id": "69397d72dc9a86615ad360b1",
+        "title": "Advanced Management 396",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b85",
+        "name": "John Jackson",
+        "email": "john.jackson9736@university.edu"
+      },
+      "issueDate": "2025-12-08T16:43:01.607Z",
+      "dueDate": "2025-12-22T16:43:01.607Z",
+      "returnDate": null,
+      "status": "Issued",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.045Z",
+      "updatedAt": "2026-02-05T16:43:02.045Z"
+    },
+    {
+      "_id": "6984c8956797c0264d691402",
+      "book": {
+        "_id": "69397d72dc9a86615ad360b1",
+        "title": "Advanced Management 396",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b79",
+        "name": "Daniel Gonzalez",
+        "email": "daniel.gonzalez4704@university.edu"
+      },
+      "issueDate": "2026-01-03T16:43:01.607Z",
+      "dueDate": "2026-01-17T16:43:01.607Z",
+      "returnDate": null,
+      "status": "Issued",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.045Z",
+      "updatedAt": "2026-02-05T16:43:02.045Z"
+    },
+    {
+      "_id": "6984c8956797c0264d691403",
+      "book": {
+        "_id": "69397d72dc9a86615ad3602d",
+        "title": "Advanced Electrical 264",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b8b",
+        "name": "Richard Lopez",
+        "email": "richard.lopez6149@university.edu"
+      },
+      "issueDate": "2026-01-08T16:43:01.607Z",
+      "dueDate": "2026-01-22T16:43:01.607Z",
+      "returnDate": "2026-01-25T13:44:50.978Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.045Z",
+      "updatedAt": "2026-02-05T16:43:02.045Z"
+    },
+    {
+      "_id": "6984c8956797c0264d691404",
+      "book": {
+        "_id": "69397d72dc9a86615ad3602d",
+        "title": "Advanced Electrical 264",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b7c",
+        "name": "Margaret Garcia",
+        "email": "margaret.garcia8467@university.edu"
+      },
+      "issueDate": "2025-12-07T16:43:01.607Z",
+      "dueDate": "2025-12-21T16:43:01.607Z",
+      "returnDate": null,
+      "status": "Issued",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.045Z",
+      "updatedAt": "2026-02-05T16:43:02.045Z"
+    },
+    {
+      "_id": "6984c8956797c0264d691405",
+      "book": {
+        "_id": "69397d72dc9a86615ad3602d",
+        "title": "Advanced Electrical 264",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b86",
+        "name": "Elizabeth Wilson",
+        "email": "elizabeth.wilson2199@university.edu"
+      },
+      "issueDate": "2026-01-27T16:43:01.607Z",
+      "dueDate": "2026-02-10T16:43:01.607Z",
+      "returnDate": "2026-02-14T23:28:34.075Z",
+      "status": "Returned",
+      "renewalCount": 0,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.045Z",
+      "updatedAt": "2026-02-05T16:43:02.045Z"
+    },
+    {
+      "_id": "6984c8956797c0264d691406",
+      "book": {
+        "_id": "69397d72dc9a86615ad3602d",
+        "title": "Advanced Electrical 264",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b99",
+        "name": "Michael Wilson",
+        "email": "michael.wilson8349@university.edu"
+      },
+      "issueDate": "2025-12-17T16:43:01.607Z",
+      "dueDate": "2025-12-31T16:43:01.607Z",
+      "returnDate": null,
+      "status": "Issued",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.045Z",
+      "updatedAt": "2026-02-05T16:43:02.045Z"
+    },
+    {
+      "_id": "6984c8956797c0264d691407",
+      "book": {
+        "_id": "69397d72dc9a86615ad3602d",
+        "title": "Advanced Electrical 264",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b7f",
+        "name": "Sarah Gonzalez",
+        "email": "sarah.gonzalez1925@university.edu"
+      },
+      "issueDate": "2026-01-07T16:43:01.607Z",
+      "dueDate": "2026-01-21T16:43:01.607Z",
+      "returnDate": null,
+      "status": "Issued",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.045Z",
+      "updatedAt": "2026-02-05T16:43:02.045Z"
+    },
+    {
+      "_id": "6984c8956797c0264d691408",
+      "book": {
+        "_id": "69397d72dc9a86615ad3602d",
+        "title": "Advanced Electrical 264",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b86",
+        "name": "Elizabeth Wilson",
+        "email": "elizabeth.wilson2199@university.edu"
+      },
+      "issueDate": "2026-01-05T16:43:01.607Z",
+      "dueDate": "2026-01-19T16:43:01.607Z",
+      "returnDate": "2026-01-18T15:26:29.059Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.045Z",
+      "updatedAt": "2026-02-05T16:43:02.045Z"
+    },
+    {
+      "_id": "6984c8956797c0264d691409",
+      "book": {
+        "_id": "69397d72dc9a86615ad3602d",
+        "title": "Advanced Electrical 264",
+        "author": "Margaret Hamilton"
+      },
+      "student": {
+        "_id": "6984c8807934cf6cc49c4b7c",
+        "name": "Margaret Garcia",
+        "email": "margaret.garcia8467@university.edu"
+      },
+      "issueDate": "2026-01-02T16:43:01.607Z",
+      "dueDate": "2026-01-16T16:43:01.607Z",
+      "returnDate": "2026-01-17T16:15:01.288Z",
+      "status": "Returned",
+      "renewalCount": 1,
+      "fine": 0,
+      "__v": 0,
+      "createdAt": "2026-02-05T16:43:02.045Z",
+      "updatedAt": "2026-02-05T16:43:02.045Z"
+    }
+  ],
+  "users": [
+    {
+      "_id": "69412a924f66119d599b2384",
+      "name": "System Admin",
+      "email": "admin@gmail.com",
+      "password": "$2b$12$AOUPcVqglZRYfWrkq.YLNOQsm9u4ur2dcFbLEtSPk.AS/dRiwuM4.",
+      "role": "admin",
+      "authProvider": "local",
+      "createdAt": "2025-12-16T09:46:58.123Z",
+      "updatedAt": "2025-12-16T09:57:08.761Z",
+      "__v": 0
+    },
+    {
+      "_id": "69415506a31dfe7670445224",
+      "name": "System Admin",
+      "email": "admin@studentdb.com",
+      "password": "$2b$12$btNc7/cIrw19PxjJNNbIq.CeHURZvkt.5KI3pQnnxbcHml8e1KT9K",
+      "role": "admin",
+      "authProvider": "local",
+      "createdAt": "2025-12-16T12:48:06.599Z",
+      "updatedAt": "2025-12-16T12:48:06.599Z",
+      "__v": 0
+    }
+  ],
+  "stats": {
+    "totalStudents": 200,
+    "totalBooks": 700,
+    "totalBorrowTransactions": 154,
+    "totalReservations": 2,
+    "totalAuditLogs": 244,
+    "totalFines": 0,
+    "totalTransactions": 91,
+    "totalUsers": 2,
+    "activeStudents": 173,
+    "availableBooks": 694,
+    "activeBorrows": 64,
+    "activeReservations": 2,
+    "unpaidFines": 0
+  }
+}

@@ -40,6 +40,39 @@ const integrityRegistry = {
         dbOperation: 'Student.findByIdAndDelete',
         rbac: ['ADMIN']
     },
+    'BOOK_CREATE': {
+        ui: 'Library',
+        handler: 'handleBookSubmit',
+        api: 'bookService.create',
+        method: 'POST',
+        endpoint: '/api/v1/library/books',
+        controller: 'library.js',
+        service: 'Book.create',
+        dbOperation: 'Book.save',
+        rbac: ['ADMIN']
+    },
+    'BOOK_UPDATE': {
+        ui: 'Library',
+        handler: 'handleBookSubmit',
+        api: 'bookService.update',
+        method: 'PATCH',
+        endpoint: '/api/v1/library/books/:id',
+        controller: 'library.js',
+        service: 'Book.save',
+        dbOperation: 'Book.findByIdAndUpdate',
+        rbac: ['ADMIN']
+    },
+    'BOOK_DELETE': {
+        ui: 'Library',
+        handler: 'handleDelete',
+        api: 'bookService.delete',
+        method: 'DELETE',
+        endpoint: '/api/v1/library/books/:id',
+        controller: 'library.js',
+        service: 'Book.findByIdAndDelete',
+        dbOperation: 'Book.deleteOne',
+        rbac: ['ADMIN']
+    },
 
     // --- LIBRARY ACTIONS ---
     'BOOK_ISSUE': {
@@ -51,7 +84,7 @@ const integrityRegistry = {
         controller: 'library.js (inline)',
         service: 'bookService.issue',
         dbOperation: 'BorrowTransaction.save',
-        rbac: ['ADMIN']
+        rbac: ['ADMIN', 'LIBRARIAN']
     },
     'BOOK_RETURN': {
         ui: 'TransactionHistory',
@@ -62,7 +95,7 @@ const integrityRegistry = {
         controller: 'library.js (inline)',
         service: 'bookService.returnBook',
         dbOperation: 'BorrowTransaction.findByIdAndUpdate',
-        rbac: ['ADMIN']
+        rbac: ['ADMIN', 'LIBRARIAN']
     },
     'BOOK_RENEW': {
         ui: 'TransactionHistory',
@@ -73,7 +106,7 @@ const integrityRegistry = {
         controller: 'library.js (inline)',
         service: 'bookService.renew',
         dbOperation: 'BorrowTransaction.findByIdAndUpdate',
-        rbac: ['ADMIN']
+        rbac: ['ADMIN', 'LIBRARIAN']
     },
     'BOOK_RESERVE': {
         ui: 'BookInventory',
@@ -84,7 +117,29 @@ const integrityRegistry = {
         controller: 'library.js (inline)',
         service: 'bookService.reserveBook',
         dbOperation: 'BookReservation.save',
-        rbac: ['ADMIN']
+        rbac: ['ADMIN', 'LIBRARIAN']
+    },
+    'RESERVATION_FULFILL': {
+        ui: 'LibraryReservations',
+        handler: 'handleAction',
+        api: 'bookService.manageReservation',
+        method: 'POST',
+        endpoint: '/api/v1/library/reserve/action',
+        controller: 'library.js',
+        service: 'BookReservation.save',
+        dbOperation: 'Multiple.update',
+        rbac: ['ADMIN', 'LIBRARIAN']
+    },
+    'RESERVATION_CANCEL': {
+        ui: 'LibraryReservations',
+        handler: 'handleAction',
+        api: 'bookService.manageReservation',
+        method: 'POST',
+        endpoint: '/api/v1/library/reserve/action',
+        controller: 'library.js',
+        service: 'BookReservation.save',
+        dbOperation: 'BookReservation.findByIdAndUpdate',
+        rbac: ['ADMIN', 'LIBRARIAN']
     },
 
     // --- SYSTEM ACTIONS ---
@@ -108,6 +163,22 @@ const integrityRegistry = {
         controller: 'system.js',
         service: 'dbIntegrityService.cleanupOrphans',
         dbOperation: 'Multiple.deleteMany',
+        rbac: ['ADMIN']
+    },
+    'TRIGGER_REMINDERS': {
+        ui: 'Library',
+        handler: 'handleTriggerReminders',
+        api: 'analyticsService.triggerReminders',
+        method: 'POST',
+        endpoint: '/api/v1/library/trigger-reminders',
+        rbac: ['ADMIN']
+    },
+    'EMAIL_BLAST': {
+        ui: 'N/A',
+        handler: 'N/A',
+        api: 'analyticsService.sendBlastEmail',
+        method: 'POST',
+        endpoint: '/api/v1/notifications/blast',
         rbac: ['ADMIN']
     }
 };

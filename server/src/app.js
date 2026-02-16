@@ -40,12 +40,14 @@ app.get('/', (req, res) => {
   res.status(200).json({ status: 'success', message: 'Student DB API is running' });
 });
 
-// SCHEDULER
+// SCHEDULER - skip scheduling during tests to avoid open handles
 try {
-  const { initScheduler } = require('./utils/scheduler');
-  const { initLibraryJob } = require('./utils/libraryJob');
-  initScheduler();
-  initLibraryJob();
+  if (process.env.NODE_ENV !== 'test') {
+    const { initScheduler } = require('./utils/scheduler');
+    const { initLibraryJob } = require('./utils/libraryJob');
+    initScheduler();
+    initLibraryJob();
+  }
 } catch (e) {
   console.warn("Scheduler/Job failed to start:", e.message);
 }

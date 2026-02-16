@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 // Mock Mongoose Models
 jest.mock('../src/models/Book');
-jest.mock('../src/models/Transaction');
+jest.mock('../src/models/BorrowTransaction');
 jest.mock('../src/models/Student');
 jest.mock('../src/models/LibraryFineLedger');
 jest.mock('../src/models/BookReservation');
@@ -15,7 +15,7 @@ jest.mock('../src/models/LibraryAuditLog');
 jest.mock('../src/middleware/rbac', () => () => (req, res, next) => next());
 
 const Book = require('../src/models/Book');
-const Transaction = require('../src/models/Transaction');
+const Transaction = require('../src/models/BorrowTransaction');
 const BookReservation = require('../src/models/BookReservation');
 
 const app = express();

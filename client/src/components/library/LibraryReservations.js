@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { bookService } from '../../services/bookService';
+import ActionGuard from '../../utils/ActionGuard';
 
 const LibraryReservations = () => {
     const [reservations, setReservations] = useState([]);
@@ -240,58 +241,61 @@ const LibraryReservations = () => {
                                             gap: '10px',
                                             justifyContent: 'flex-end'
                                         }}>
-                                            <button
-                                                onClick={() => handleAction(r._id, 'FULFILL')}
-                                                title="Issue Book Now"
-                                                style={{
-                                                    background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                                                    color: '#ffffff',
-                                                    border: 'none',
-                                                    padding: '10px 20px',
-                                                    borderRadius: '8px',
-                                                    fontSize: '0.875rem',
-                                                    fontWeight: 600,
-                                                    cursor: 'pointer',
-                                                    transition: 'all 0.2s ease',
-                                                    boxShadow: '0 2px 8px rgba(16, 185, 129, 0.3)'
-                                                }}
-                                                onMouseEnter={(e) => {
-                                                    e.currentTarget.style.transform = 'translateY(-2px)';
-                                                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.4)';
-                                                }}
-                                                onMouseLeave={(e) => {
-                                                    e.currentTarget.style.transform = 'translateY(0)';
-                                                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(16, 185, 129, 0.3)';
-                                                }}
-                                            >
-                                                ✓ Issue
-                                            </button>
-                                            <button
-                                                onClick={() => handleAction(r._id, 'CANCEL')}
-                                                title="Cancel Reservation"
-                                                style={{
-                                                    background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
-                                                    color: '#ffffff',
-                                                    border: 'none',
-                                                    padding: '10px 20px',
-                                                    borderRadius: '8px',
-                                                    fontSize: '0.875rem',
-                                                    fontWeight: 600,
-                                                    cursor: 'pointer',
-                                                    transition: 'all 0.2s ease',
-                                                    boxShadow: '0 2px 8px rgba(239, 68, 68, 0.3)'
-                                                }}
-                                                onMouseEnter={(e) => {
-                                                    e.currentTarget.style.transform = 'translateY(-2px)';
-                                                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(239, 68, 68, 0.4)';
-                                                }}
-                                                onMouseLeave={(e) => {
-                                                    e.currentTarget.style.transform = 'translateY(0)';
-                                                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(239, 68, 68, 0.3)';
-                                                }}
-                                            >
-                                                ✕ Cancel
-                                            </button>
+                                            <ActionGuard actionKey="RESERVATION_FULFILL" handler={() => handleAction(r._id, 'FULFILL')} role="ADMIN">
+                                                <button
+                                                    title="Issue Book Now"
+                                                    style={{
+                                                        background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                                        color: '#ffffff',
+                                                        border: 'none',
+                                                        padding: '10px 20px',
+                                                        borderRadius: '8px',
+                                                        fontSize: '0.875rem',
+                                                        fontWeight: 600,
+                                                        cursor: 'pointer',
+                                                        transition: 'all 0.2s ease',
+                                                        boxShadow: '0 2px 8px rgba(16, 185, 129, 0.3)'
+                                                    }}
+                                                    onMouseEnter={(e) => {
+                                                        e.currentTarget.style.transform = 'translateY(-2px)';
+                                                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.4)';
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        e.currentTarget.style.transform = 'translateY(0)';
+                                                        e.currentTarget.style.boxShadow = '0 2px 8px rgba(16, 185, 129, 0.3)';
+                                                    }}
+                                                >
+                                                    ✓ Issue
+                                                </button>
+                                            </ActionGuard>
+
+                                            <ActionGuard actionKey="RESERVATION_CANCEL" handler={() => handleAction(r._id, 'CANCEL')} role="ADMIN">
+                                                <button
+                                                    title="Cancel Reservation"
+                                                    style={{
+                                                        background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                                                        color: '#ffffff',
+                                                        border: 'none',
+                                                        padding: '10px 20px',
+                                                        borderRadius: '8px',
+                                                        fontSize: '0.875rem',
+                                                        fontWeight: 600,
+                                                        cursor: 'pointer',
+                                                        transition: 'all 0.2s ease',
+                                                        boxShadow: '0 2px 8px rgba(239, 68, 68, 0.3)'
+                                                    }}
+                                                    onMouseEnter={(e) => {
+                                                        e.currentTarget.style.transform = 'translateY(-2px)';
+                                                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(239, 68, 68, 0.4)';
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        e.currentTarget.style.transform = 'translateY(0)';
+                                                        e.currentTarget.style.boxShadow = '0 2px 8px rgba(239, 68, 68, 0.3)';
+                                                    }}
+                                                >
+                                                    ✕ Cancel
+                                                </button>
+                                            </ActionGuard>
                                         </div>
                                     </td>
                                 </tr>

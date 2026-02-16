@@ -3,6 +3,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import Modal from 'react-modal';
 import { bookService } from '../services/bookService';
 import { analyticsService } from '../services/analyticsService';
+import ActionGuard from '../utils/ActionGuard';
 import '../App.css';
 
 // Sub Components
@@ -136,7 +137,9 @@ const Library = ({ students = [], viewMode }) => {
                 {activeTab === 'books' && (
                     <>
                         <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'flex-end' }}>
-                            <button className="button button-submit" onClick={() => { setCurrentBook(null); setIsBookModalOpen(true); }}>+ Add New Book</button>
+                            <ActionGuard actionKey="BOOK_CREATE" handler={() => { setCurrentBook(null); setIsBookModalOpen(true); }} role="ADMIN">
+                                <button className="button button-submit">+ Add New Book</button>
+                            </ActionGuard>
                         </div>
                         <BookInventory key={refreshKey} onEdit={openEditBook} onIssue={openIssueBook} viewMode={viewMode} />
                     </>
@@ -226,7 +229,13 @@ const Library = ({ students = [], viewMode }) => {
 
                             <div style={{ marginTop: '20px', display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
                                 <button type="button" onClick={() => setIsBookModalOpen(false)} style={{ padding: '12px 25px', borderRadius: '10px', border: '2px solid #e2e8f0', background: 'white', color: '#64748b', fontWeight: 600, cursor: 'pointer' }}>Cancel</button>
-                                <button type="submit" style={{ padding: '12px 30px', borderRadius: '10px', border: 'none', background: 'linear-gradient(135deg, #6366f1 0%, #4338ca 100%)', color: 'white', fontWeight: 700, cursor: 'pointer', boxShadow: '0 10px 20px rgba(99, 102, 241, 0.2)' }}>Save changes</button>
+                                <ActionGuard
+                                    actionKey={currentBook ? "BOOK_UPDATE" : "BOOK_CREATE"}
+                                    handler={handleBookSubmit}
+                                    role="ADMIN"
+                                >
+                                    <button type="submit" style={{ padding: '12px 30px', borderRadius: '10px', border: 'none', background: 'linear-gradient(135deg, #6366f1 0%, #4338ca 100%)', color: 'white', fontWeight: 700, cursor: 'pointer', boxShadow: '0 10px 20px rgba(99, 102, 241, 0.2)' }}>Save changes</button>
+                                </ActionGuard>
                             </div>
                         </form>
                     </div>
