@@ -1,0 +1,29 @@
+{
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "java.enabled": false,
+    "java.autobuild.enabled": false,
+    "code-runner.runInTerminal": true,
+    "code-runner.clearPreviousOutput": true,
+    "code-runner.saveFileBeforeRun": true,
+    "debug.console.closeOnEnd": false,
+    "debug.internalConsoleOptions": "openOnSessionStart",
+    "json.schemaDownload.enable": false,
+    "json.schemas": [
+        {
+            "fileMatch": [
+                "package.json"
+            ],
+            "url": "./empty-schema.json"
+        }
+    ],
+    "chat.tools.terminal.autoApprove": {
+        "/^powershell -Command \"Try\\{ Start-Service -Name MySQL80 -ErrorAction Stop; Write-Host 'Started MySQL80' \\} Catch \\{ Try\\{ Start-Service -Name MySQL -ErrorAction Stop; Write-Host 'Started MySQL' \\} Catch \\{ Write-Host 'Could not start MySQL service via common names\\. List services matching mysql:'; Get-Service \\| Where-Object \\{\\$_\\.Name -match 'mysql' -or \\$_\\.DisplayName -match 'mysql'\\} \\| Format-Table -AutoSize \\} \\}\"$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^powershell -Command \"Get-Service \\| Where-Object \\{ \\$_\\.Name -match 'mysql' -or \\$_\\.DisplayName -match 'mysql' \\} \\| Select-Object Name, DisplayName, Status \\| Format-Table -AutoSize\"$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
